@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Swatchbook merchant portal, Manmit Dhindsa</title>
+<meta name="description" content="Designing the merchant side of Swatchbook, Sewjo's discovery marketplace: catalogue sync, analytics and search signals.">
+<meta property="og:title" content="Proving value without seeing the sale">
+<meta property="og:description" content="Swatchbook needs merchants to participate. Merchants need a reason to.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.manmitdhindsa.ca/sewjo-merchant-dashboard/">
+<meta property="og:image" content="https://www.manmitdhindsa.ca/assets/img/sb-concept.webp">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../assets/img/avatar.webp">
+<link rel="stylesheet" href="../assets/site.css">
+<script src="../assets/site.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="wordmark" href="../">Manmit Dhindsa</a>
+    <nav class="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="../about-me/">About</a></li>
+        <li><a href="../#work">Work</a></li>
+        <li><a href="../s/Manmit-Dhindsa-Resume.pdf">Resume</a></li>
+        <li><a href="https://www.linkedin.com/in/manmit-dhindsa/">LinkedIn</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="cs2">
+  <div class="cs2-layout">
+
+    <nav class="cs2-toc" aria-label="On this page">
+      <a class="cs2-back" href="../#work">All work</a>
+      <ol>
+        <li><a href="#challenge">The challenge</a></li>
+        <li><a href="#glance">Swatchbook at a glance</a></li>
+        <li><a href="#research">Research</a></li>
+        <li><a href="#catalogue">Catalogue integration</a></li>
+        <li><a href="#analytics">Analytics</a></li>
+        <li><a href="#search">Search &amp; discovery</a></li>
+        <li><a href="#outcome">Outcome</a></li>
+        <li><a href="#learned">What this taught me</a></li>
+      </ol>
+    </nav>
+
+    <article class="cs2-body">
+
+      <div class="cs2-back-top"><a class="cs2-back" href="../#work">All work</a></div>
+
+      <header class="cs2-head">
+        <h1>Swatchbook needs merchants to participate. Merchants need a reason to.</h1>
+      </header>
+
+      <figure class="cs2-media cs2-cover">
+        <img style="view-transition-name: cover-swatchbook" src="../assets/img/sb-cover.webp" srcset="../assets/img/sb-cover-1000.webp 1000w, ../assets/img/sb-cover.webp 2000w" sizes="(max-width: 760px) 100vw, 60rem" width="2000" height="679" fetchpriority="high" decoding="sync" alt="The Sewjo merchant dashboard on a laptop and phone, beside the Sewjo bee logo">
+      </figure>
+
+      <div class="cs2-intro-row">
+        <img src="../assets/img/sb-bee-circle.webp" width="520" height="520" loading="lazy" alt="">
+        <div class="cs2-text cs2-intro">
+          <p><strong>Swatchbook brings products from independent shops into one discovery experience for users.</strong></p>
+          <p>I led the merchant experience, from bringing existing catalogues into Swatchbook to showing shops how their products were being discovered.</p>
+        </div>
+      </div>
+
+      <dl class="cs2-facts cs2-facts-3">
+        <div><dt>Role</dt><dd>Lead Product Designer</dd></div>
+        <div><dt>Timeline</dt><dd>May-August, 2026</dd></div>
+        <div><dt>Status</dt><dd>Shipped</dd></div>
+      </dl>
+
+      <figure class="cs2-media cs2-after-facts">
+        <img src="../assets/img/sb-concept.webp" srcset="../assets/img/sb-concept-1000.webp 1000w, ../assets/img/sb-concept.webp 2000w" sizes="(max-width: 760px) 100vw, 60rem" width="2000" height="1125" loading="lazy" alt="The Sewjo merchant dashboard overview showing views, saves and clicks on a laptop">
+      </figure>
+
+      <!-- The challenge -->
+      <section class="cs2-section" id="challenge" aria-labelledby="challenge-h">
+        <p class="cs2-label"><span>The challenge</span></p>
+        <h2 id="challenge-h">Building the merchant side of a discovery marketplace</h2>
+        <div class="cs2-text">
+          <p>Swatchbook depends on independent shops making their products available for discovery. But participation created two immediate challenges.</p>
+          <p>First, merchants were already managing their products elsewhere. Asking them to recreate and maintain the same catalogue in Swatchbook meant <strong>duplicating work they were already doing.</strong></p>
+          <p>Second, merchants needed a reason to participate. <strong>Users could discover products through Swatchbook, but purchases happened on the merchant's own storefront. That meant Sewjo couldn't see the final transaction.</strong></p>
+        </div>
+        <div class="cs2-callout">
+          <p class="cs2-callout-label">The problem to solve</p>
+          <h3>Reduce the work for merchants without losing sight of the value.</h3>
+        </div>
+      </section>
+
+      <!-- At a glance -->
+      <section class="cs2-section" id="glance" aria-labelledby="glance-h">
+        <h2 id="glance-h">Swatchbook at a glance</h2>
+        <figure class="cs2-media cs2-captioned">
+          <img src="../assets/img/sb-ecosystem.webp" srcset="../assets/img/sb-ecosystem-1000.webp 1000w, ../assets/img/sb-ecosystem.webp 2000w" sizes="(max-width: 760px) 100vw, 60rem" width="2000" height="671" loading="lazy" alt="Diagram: independent fabric shops send their catalogues to Swatchbook, makers search and save fabric there, then buy from the shop directly" class="cs2-outlined">
+          <figcaption>How products move from independent shops to users (makers) through Swatchbook.</figcaption>
+        </figure>
+      </section>
+
+      <!-- Research -->
+      <section class="cs2-section" id="research" aria-labelledby="research-h">
+        <p class="cs2-label"><span>Research</span></p>
+        <h2 id="research-h">Understanding what merchants needed</h2>
+        <div class="cs2-text">
+          <p>I spoke with five early merchant partners to understand what would make Swatchbook useful to them and what could make participation difficult.</p>
+          <p>Rather than starting with a predefined set of features, I used those conversations to understand where Swatchbook needed to fit into merchants' existing workflows.</p>
+          <p><strong>Across the conversations, two needs stood out.</strong></p>
+        </div>
+        <div class="cs2-findings">
+          <div>
+            <p class="cs2-finding-n">Finding 01</p>
+            <h3>Reduce duplicate catalogue work</h3>
+            <p>Product information already lived somewhere else. Asking merchants to recreate and maintain it in Swatchbook would add another workflow to their day.</p>
+          </div>
+          <div>
+            <p class="cs2-finding-n">Finding 02</p>
+            <h3>Make product discovery visible</h3>
+            <p>Once products were in Swatchbook, merchants had little visibility into what happened next. They needed to understand which products were getting discovered and driving users to their storefront.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Catalogue integration -->
+      <section class="cs2-section" id="catalogue" aria-labelledby="catalogue-h">
+        <p class="cs2-label"><span>Catalogue integration</span></p>
+        <h2 id="catalogue-h">Making catalogue management easier</h2>
+        <div class="cs2-text">
+          <p>Rather than making Swatchbook another place merchants had to maintain product information, I built the experience around the systems they were already using.</p>
+          <p><strong>Merchants could either connect an existing catalogue and keep it synchronized, or manage their products manually when a connection wasn't available.</strong></p>
+          <p>Both paths feed the same Swatchbook discovery experience without forcing merchants into the same workflow.</p>
+        </div>
+        <p class="cs2-result">10 out of 15 merchants are using the connected catalogue path, while 5 manage their products manually.</p>
+        <figure class="cs2-media cs2-gap">
+          <video data-loop muted loop playsinline preload="none" width="1524" height="1080" poster="../assets/video/sb-catalogue-sync.webp" aria-label="Screen recording of a merchant connecting their store and watching products import into Swatchbook">
+            <source src="../assets/video/sb-catalogue-sync.mp4" type="video/mp4">
+          </video>
+        </figure>
+        <img class="cs2-arrow" src="../assets/img/sb-arrow.webp" width="50" height="300" loading="lazy" alt="">
+      </section>
+
+      <section class="cs2-section cs2-section-tight" aria-labelledby="understandable-h">
+        <h2 id="understandable-h">Making the integration understandable</h2>
+        <div class="cs2-text">
+          <p>Connecting a catalogue reduced duplicate work, but introduced a new challenge:</p>
+          <p><strong>Merchants needed to understand what was happening as information moved between systems.</strong></p>
+          <p>I worked with engineering to understand field relationships, sync behaviour, and system states, then translated that complexity into information merchants could understand and act on.</p>
+        </div>
+        <figure class="cs2-media cs2-gap">
+          <img src="../assets/img/sb-sync-breakdown.webp" srcset="../assets/img/sb-sync-breakdown-1000.webp 1000w, ../assets/img/sb-sync-breakdown.webp 2000w" sizes="(max-width: 760px) 100vw, 60rem" width="2000" height="1102" loading="lazy" alt="Annotated catalogue settings screen calling out sync visibility, system states, catalogue status and sync controls">
+        </figure>
+      </section>
+
+      <!-- Analytics -->
+      <section class="cs2-section" id="analytics" aria-labelledby="analytics-h">
+        <p class="cs2-label"><span>Analytics</span></p>
+        <h2 id="analytics-h">Measuring discovery without purchase data</h2>
+        <div class="cs2-text">
+          <p>A sale would be the clearest measure of value, but purchases happen on each merchant's storefront, outside of Sewjo.</p>
+          <p>So how do you demonstrate value when you can't measure the final conversion?</p>
+          <p><strong>Rather than implying a connection to sales we couldn't verify, I focused the reporting on what Sewjo could measure: appearances, views, saves, and outbound clicks.</strong></p>
+          <p>This gave merchants visibility into Swatchbook's role in discovery without presenting engagement as confirmed sales.</p>
+        </div>
+        <figure class="cs2-media cs2-gap">
+          <video data-loop muted loop playsinline preload="none" width="1600" height="1010" poster="../assets/video/sb-analytics.webp" aria-label="Screen recording of the performance chart switching between appearances, views, saves and clicks">
+            <source src="../assets/video/sb-analytics.mp4" type="video/mp4">
+          </video>
+        </figure>
+      </section>
+
+      <!-- Search & discovery -->
+      <section class="cs2-section" id="search" aria-labelledby="search-h">
+        <p class="cs2-label"><span>Search &amp; discovery</span></p>
+        <h2 id="search-h">Turning search behaviour into useful signals</h2>
+        <div class="cs2-text">
+          <p>Swatchbook has something a merchant's own analytics doesn't: <strong>visibility into both what users are searching for and what merchants have in their catalogues.</strong></p>
+          <p>I used that relationship to surface unmet demand, low engagement, and gaps in catalogue coverage, then connected those signals to relevant actions while leaving the final decision with the merchant.</p>
+        </div>
+        <figure class="cs2-media cs2-gap">
+          <img src="../assets/img/sb-search-signals.webp" srcset="../assets/img/sb-search-signals-1000.webp 1000w, ../assets/img/sb-search-signals.webp 2000w" sizes="(max-width: 760px) 100vw, 60rem" width="2000" height="1362" loading="lazy" alt="Search and discovery screen with top search terms, trending searches and suggested opportunities for the merchant">
+        </figure>
+      </section>
+
+      <!-- Outcome -->
+      <section class="cs2-section" id="outcome" aria-labelledby="outcome-h">
+        <p class="cs2-label"><span>Outcome</span></p>
+        <h2 id="outcome-h">From merchant catalogues to measurable discovery</h2>
+        <div class="cs2-text">
+          <p>The Merchant Dashboard gave independent shops a lower-effort way to participate in Swatchbook while making their role in product discovery visible.</p>
+        </div>
+        <ul class="cs2-stats cs2-stats-2 cs2-gap" aria-label="Outcome at a glance">
+          <li><b>15</b> Merchants</li>
+          <li><b>~8,000</b> Products across merchant catalogues</li>
+        </ul>
+      </section>
+
+      <!-- What this taught me -->
+      <section class="cs2-section cs2-learned" id="learned" aria-labelledby="learned-h">
+        <p class="cs2-label"><span>What this taught me</span></p>
+        <h2 id="learned-h" class="cs2-sr">What this taught me</h2>
+        <div class="cs2-text cs2-reflect">
+          <p>The hardest part wasn't designing the dashboard itself. It was <strong>designing around the different ways merchants manage their catalogue data.</strong></p>
+          <p>A connected catalogue and a manually managed one could power the same Swatchbook experience, but getting them there required different workflows and constraints. Working through those differences pushed the work beyond individual screens and into <strong>the system connecting merchants, Sewjo, and users.</strong></p>
+          <p><strong>The interface was only one part of the design problem. The harder work was making those different systems and workflows feel like one coherent experience.</strong></p>
+        </div>
+        <img class="cs2-signoff" src="../assets/img/sb-bee.webp" width="420" height="378" loading="lazy" alt="">
+      </section>
+
+      <a class="cs2-next" href="../sewjo-challenges/">
+        <img src="../assets/img/ch-cover.webp" srcset="../assets/img/ch-cover-1000.webp 1000w, ../assets/img/ch-cover.webp 2000w" sizes="14rem" width="2000" height="1250" loading="lazy" alt="" style="view-transition-name: cover-challenges">
+        <span><small>Next project</small>Turning everyday product interactions into reasons to come back</span>
+      </a>
+
+    </article>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-id">
+      <img src="../assets/img/footer-figure.webp" width="291" height="400" loading="lazy" alt="">
+      <div>
+        <p class="footer-name">Manmit Dhindsa</p>
+        <p class="footer-note">Fuelled by too many Diet Cokes</p>
+      </div>
+    </div>
+    <ul class="footer-links">
+      <li><a href="../about-me/">About me</a></li>
+      <li><a href="../s/Manmit-Dhindsa-Resume.pdf">Resume</a></li>
+      <li><a href="https://www.linkedin.com/in/manmit-dhindsa/">LinkedIn</a></li>
+    </ul>
+  </div>
+</footer>
+</body>
+</html>
