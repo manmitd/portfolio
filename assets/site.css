@@ -889,3 +889,6 @@ body { background: var(--paper); color: var(--ink); }
 /* Navy number tiles */
 .cs2-stats li { background: var(--forest); color: #D6E1EE; }
 .badge-face { box-shadow: 0 18px 40px rgba(8, 22, 38, 0.36), 0 2px 6px rgba(8, 22, 38, 0.22); }
+
+/* Header spans the full width so the name lines up with the left edge of the hero */
+.site-header .wrap { max-width: none; }
