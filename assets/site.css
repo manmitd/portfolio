@@ -935,3 +935,6 @@ p { text-wrap: pretty; }
 
 /* Experience descriptions use more of the row so they wrap less */
 .role p:last-child { max-width: 46rem; }
+
+/* Centre the 18/20 callout in the column like the stats above it */
+.cs2-section > .cs2-highlight { margin-inline: auto; width: 100%; }
