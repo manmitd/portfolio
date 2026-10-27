@@ -84,6 +84,25 @@
     ".ss-coin:focus-visible{outline:3px solid var(--ss-label);outline-offset:3px}",
     ".ss-refill{font:600 .9375rem var(--font,Inter,sans-serif);background:var(--ss-navy);color:#fff;border:0;border-radius:999px;padding:.7rem 1.2rem;cursor:pointer}",
     ".ss-refill:hover{background:var(--ss-navy-3)}",
+    ".ss-refill.is-quiet{background:none;color:var(--ss-navy);box-shadow:inset 0 0 0 1.5px var(--ss-navy)}",
+    ".ss-refill.is-quiet:hover{background:var(--ss-tint)}",
+    ".ss-links{display:flex;gap:1.25rem;flex-wrap:wrap}",
+    ".ss-layer{position:absolute;top:0;left:0;right:0;height:0;overflow:hidden;pointer-events:none;z-index:40}",
+    ".ss-placed{position:absolute;width:104px;pointer-events:none}",
+    ".ss-placed img{width:100%;height:auto;display:block;filter:drop-shadow(0 2px 3px rgba(8,22,38,.25))}",
+    ".ss-carry{position:fixed;left:0;top:0;z-index:80;pointer-events:none;will-change:transform}",
+    ".ss-carry[hidden]{display:none!important}",
+    ".ss-stack{position:relative;width:84px;height:84px;margin-left:-42px;margin-top:-42px}",
+    ".ss-stack img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 3px 4px rgba(8,22,38,.28))}",
+    ".ss-tip{position:absolute;top:50px;left:50%;transform:translateX(-50%);white-space:nowrap;background:#fff;color:var(--forest,#112E4B);font:500 .75rem/1.35 var(--font,Inter,sans-serif);padding:.3rem .6rem;border-radius:6px;box-shadow:0 0 0 1px var(--rule,#E3E6EA),0 4px 10px rgba(8,22,38,.12);text-align:center}",
+    ".ss-tip span{display:block;color:var(--ink-soft,#3E5168)}",
+    ".ss-carry.is-touch{left:50%;top:auto;bottom:max(16px,env(safe-area-inset-bottom,0px));transform:translateX(-50%)!important;pointer-events:auto}",
+    ".ss-carry.is-touch .ss-stack{display:none}",
+    ".ss-carry.is-touch .ss-tip{position:static;transform:none;display:flex;align-items:center;gap:.75rem;padding:.5rem .5rem .5rem .9rem;font-size:.875rem;border-radius:999px}",
+    ".ss-carry.is-touch .ss-tip span{display:inline}",
+    ".ss-tip button{font:600 .8125rem var(--font,Inter,sans-serif);background:var(--forest,#112E4B);color:#fff;border:0;border-radius:999px;padding:.45rem .8rem;cursor:pointer}",
+    "html.ss-carrying,html.ss-carrying *{cursor:none!important}",
+    "html.ss-carrying [data-ss-keep],html.ss-carrying [data-ss-keep] *{cursor:pointer!important}",
     ".ss-sound{align-self:flex-start;background:none;border:0;padding:0;font:500 .8125rem var(--font,Inter,sans-serif);color:var(--ss-label);cursor:pointer;text-decoration:underline;text-underline-offset:.2em}",
 
     /* holo */
@@ -140,7 +159,8 @@
       '<div class="ss-side">' +
         '<p class="ss-hint" role="status">Drag a coin onto a slider</p>' +
         '<div class="ss-coins"></div>' +
-        '<button class="ss-sound" type="button" aria-pressed="true">Sound on</button>' +
+        '<div class="ss-links"><button class="ss-sound" type="button" aria-pressed="true" data-ss-keep>Sound on</button>' +
+        '<button class="ss-sound ss-peel" type="button" data-ss-keep hidden>Peel them off</button></div>' +
       "</div>" +
     "</div>";
 
@@ -168,6 +188,7 @@
 
   // ---------- state ----------
   var coins = 3, picked = null, pending = [], current = null;
+  var hand = [], placed = [], carrying = false;
   var mech = SERIES.map(function () { return { s: "idle" }; });
 
   // ---------- sound (quiet, and only after someone interacts) ----------
@@ -205,8 +226,15 @@
   function renderCoins() {
     var box = $(".ss-coins");
     if (coins === 0) {
-      box.innerHTML = '<button class="ss-refill" type="button">Get 3 more coins</button>';
-      $(".ss-refill").addEventListener("click", function () { coins = 3; renderCoins(); say("Drag a coin onto a slider"); sfx.coin(); });
+      var canStick = hand.length && !pending.length && !current;
+      box.innerHTML =
+        (carrying ? '<button class="ss-refill ss-away" type="button" data-ss-keep>Put them away</button>' :
+          canStick ? '<button class="ss-refill ss-go" type="button">Stick them on the page</button>' : "") +
+        (carrying ? "" : '<button class="ss-refill' + (canStick ? " is-quiet" : "") + ' ss-more" type="button">Get 3 more coins</button>');
+      var more = $(".ss-more"), go = $(".ss-go"), away = $(".ss-away");
+      if (more) more.addEventListener("click", function () { coins = 3; renderCoins(); say("Drag a coin onto a slider"); sfx.coin(); });
+      if (go) go.addEventListener("click", function (e) { startCarry(e); });
+      if (away) away.addEventListener("click", function () { stopCarry(true); });
       return;
     }
     var h = "";
@@ -361,9 +389,106 @@
     if (e.key === "Escape" && current && !packet.classList.contains("is-open")) { pending.unshift(current); current = null; closeOverlay(); renderChute(); }
   });
   stickBtn.addEventListener("click", function () {
+    if (current) hand.push(current);
     current = null; sfx.pop(); closeOverlay();
+    renderCoins();
     if (pending.length) say("Another packet is waiting");
-    else say(coins ? "Want another? Drag a coin onto a slider" : "Out of coins. Grab 3 more");
+    else if (coins) say("Want another? Drag a coin onto a slider");
+    else say("That's all three. Stick them anywhere on the page?");
+  });
+
+  // ---------- sticking stickers on the page ----------
+  var touch = window.matchMedia && window.matchMedia("(hover: none)").matches;
+  var layer = document.createElement("div");
+  layer.className = "ss-layer";
+  layer.setAttribute("aria-hidden", "true");
+  document.body.appendChild(layer);
+  var carry = document.createElement("div");
+  carry.className = "ss-carry" + (touch ? " is-touch" : "");
+  carry.hidden = true;
+  carry.innerHTML = '<div class="ss-stack"></div><div class="ss-tip" role="status"></div>';
+  document.body.appendChild(carry);
+  var px = 0, py = 0, raf = 0;
+  function paintCarry() {
+    raf = 0;
+    if (!touch) carry.style.transform = "translate(" + px + "px," + py + "px)";
+  }
+  function paintStack() {
+    var top = hand.slice(-3), tilts = [-9, 6, -3];
+    $(".ss-stack", carry).innerHTML = top.map(function (h, i) {
+      return '<img src="' + src(h.id) + '" alt="" style="transform:rotate(' + tilts[(3 - top.length) + i] + "deg) translate(" + (i - top.length + 1) * 3 + "px," + (i - top.length + 1) * 3 + 'px)">';
+    }).join("");
+    var left = hand.length + " left";
+    $(".ss-tip", carry).innerHTML = touch
+      ? "Tap anywhere to stick it <span>" + left + '</span><button type="button" class="ss-away2" data-ss-keep>Put away</button>'
+      : "Click anywhere to stick it<span>" + left + " · Esc to put away</span>";
+    var a2 = $(".ss-away2", carry);
+    if (a2) a2.addEventListener("click", function () { stopCarry(true); });
+  }
+  function onMove(e) {
+    if (e.pointerType === "touch") return;
+    px = e.clientX; py = e.clientY;
+    if (!raf) raf = requestAnimationFrame(paintCarry);
+  }
+  function onClick(e) {
+    if (!carrying) return;
+    if (e.target.closest && e.target.closest("[data-ss-keep]")) return;
+    if (e.detail === 0) return; // keyboard activation: leave links and buttons alone
+    e.preventDefault(); e.stopPropagation();
+    place(e.clientX, e.pageY);
+  }
+  function onKey(e) { if (carrying && e.key === "Escape") stopCarry(true); }
+  function startCarry(e) {
+    if (!hand.length) return;
+    carrying = true;
+    document.documentElement.classList.add("ss-carrying");
+    px = e && e.clientX ? e.clientX : window.innerWidth / 2;
+    py = e && e.clientY ? e.clientY : window.innerHeight / 2;
+    paintStack(); paintCarry(); carry.hidden = false;
+    // wait a tick so the click that started this doesn't place a sticker
+    setTimeout(function () {
+      if (!carrying) return;
+      document.addEventListener("pointermove", onMove, { passive: true });
+      document.addEventListener("click", onClick, true);
+      document.addEventListener("keydown", onKey);
+    }, 0);
+    renderCoins();
+    say(touch ? "Tap anywhere on the page to stick one" : "Click anywhere on the page to stick one");
+  }
+  function stopCarry(early) {
+    carrying = false;
+    document.documentElement.classList.remove("ss-carrying");
+    carry.hidden = true;
+    document.removeEventListener("pointermove", onMove);
+    document.removeEventListener("click", onClick, true);
+    document.removeEventListener("keydown", onKey);
+    renderCoins();
+    if (early && hand.length) say("Put away. You can stick them later.");
+  }
+  function place(cx, pageY) {
+    var st = hand.pop(); if (!st) return;
+    var w = 104, vw = document.documentElement.clientWidth;
+    cx = Math.max(w / 2, Math.min(vw - w / 2, cx));
+    var dx = Math.round(cx - vw / 2), tilt = Math.round(Math.random() * 28 - 14);
+    var el = document.createElement("div");
+    el.className = "ss-placed" + (st.holo ? " ss-holo" : "");
+    el.style.cssText = "left:calc(50% + " + dx + "px);top:" + Math.round(pageY) + "px;transform:translate(-50%,-50%) rotate(" + tilt + "deg);--m:url(" + src(st.id) + ")";
+    el.innerHTML = '<img src="' + src(st.id) + '" alt="" draggable="false">';
+    layer.style.height = Math.max(document.documentElement.scrollHeight, pageY + 80) + "px";
+    layer.appendChild(el);
+    placed.push(el);
+    if (!reduce && el.animate) el.animate([
+      { transform: "translate(-50%,-50%) rotate(" + tilt + "deg) scale(1.18)", opacity: 0.6 },
+      { transform: "translate(-50%,-50%) rotate(" + tilt + "deg) scale(1)", opacity: 1 }
+    ], { duration: 160, easing: "ease-out" });
+    noise(0.08, 0.06, 2200); tone(300, 0.06, "sine", 0.04);
+    $(".ss-peel").hidden = false;
+    if (hand.length) paintStack();
+    else { stopCarry(false); say("Stuck. Peel them off whenever you like."); }
+  }
+  $(".ss-peel").addEventListener("click", function () {
+    placed.forEach(function (el) { el.remove(); }); placed = []; layer.style.height = "0";
+    this.hidden = true; sfx.paper();
   });
 
   renderCoins(); renderChute();
