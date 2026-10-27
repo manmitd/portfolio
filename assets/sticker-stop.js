@@ -88,8 +88,9 @@
     ".ss-refill.is-quiet:hover{background:var(--ss-tint)}",
     ".ss-links{display:flex;gap:1.25rem;flex-wrap:wrap}",
     ".ss-layer{position:absolute;top:0;left:0;right:0;height:0;overflow:hidden;pointer-events:none;z-index:40}",
-    ".ss-placed{position:absolute;width:104px;pointer-events:none}",
-    ".ss-placed img{width:100%;height:auto;display:block;filter:drop-shadow(0 2px 3px rgba(8,22,38,.25))}",
+    ".ss-placed{position:absolute;width:104px;pointer-events:auto;cursor:pointer}",
+    ".ss-placed img{width:100%;height:auto;display:block;filter:drop-shadow(0 2px 3px rgba(8,22,38,.25));transition:transform .15s ease,filter .15s ease}",
+    ".ss-placed:hover img{transform:translateY(-2px);filter:drop-shadow(0 5px 6px rgba(8,22,38,.28))}",
     ".ss-carry{position:fixed;left:0;top:0;z-index:80;pointer-events:none;will-change:transform}",
     ".ss-carry[hidden]{display:none!important}",
     ".ss-stack{position:relative;width:84px;height:84px;margin-left:-42px;margin-top:-42px}",
@@ -475,6 +476,8 @@
     el.style.cssText = "left:calc(50% + " + dx + "px);top:" + Math.round(pageY) + "px;transform:translate(-50%,-50%) rotate(" + tilt + "deg);--m:url(" + src(st.id) + ")";
     el.innerHTML = '<img src="' + src(st.id) + '" alt="" draggable="false">';
     layer.style.height = Math.max(document.documentElement.scrollHeight, pageY + 80) + "px";
+    el.title = "Click to peel it off";
+    el.addEventListener("click", function () { peel(el, tilt); });
     layer.appendChild(el);
     placed.push(el);
     if (!reduce && el.animate) el.animate([
@@ -484,7 +487,19 @@
     noise(0.08, 0.06, 2200); tone(300, 0.06, "sine", 0.04);
     $(".ss-peel").hidden = false;
     if (hand.length) paintStack();
-    else { stopCarry(false); say("Stuck. Peel them off whenever you like."); }
+    else { stopCarry(false); say("Stuck. Click any sticker to peel it off."); }
+  }
+  function peel(el, tilt) {
+    if (carrying) return;
+    placed = placed.filter(function (p) { return p !== el; });
+    noise(0.12, 0.05, 3000);
+    var gone = function () { el.remove(); if (!placed.length) { layer.style.height = "0"; $(".ss-peel").hidden = true; } };
+    if (reduce || !el.animate) { gone(); return; }
+    el.style.pointerEvents = "none";
+    el.animate([
+      { transform: "translate(-50%,-50%) rotate(" + tilt + "deg)", opacity: 1 },
+      { transform: "translate(-50%,-62%) rotate(" + (tilt + 14) + "deg) scale(.9)", opacity: 0 }
+    ], { duration: 220, easing: "ease-in", fill: "forwards" }).onfinish = gone;
   }
   $(".ss-peel").addEventListener("click", function () {
     placed.forEach(function (el) { el.remove(); }); placed = []; layer.style.height = "0";
