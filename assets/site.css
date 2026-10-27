@@ -938,3 +938,9 @@ p { text-wrap: pretty; }
 
 /* Centre the 18/20 callout in the column like the stats above it */
 .cs2-section > .cs2-highlight { margin-inline: auto; width: 100%; }
+
+/* No stubby last lines: headings, quotes and captions share their words evenly across lines.
+   Body paragraphs keep full-width lines; site.js tucks the last few words together instead. */
+h1, h2, h3, figcaption, .project-title, .cs2-quote, .cs2-band-text, .cs2-band-sub, .cs2-result { text-wrap: balance; }
+/* Reflection quotes get a little more room */
+.cs2-learned .cs2-quote { max-width: 52rem; margin-inline: auto; }

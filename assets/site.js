@@ -94,3 +94,51 @@
   }
   if ("requestIdleCallback" in window) requestIdleCallback(run, { timeout: 2000 }); else setTimeout(run, 800);
 })();
+
+// Paragraphs sometimes end with two or three lonely words on the last line.
+// If the last line is very short, glue the final few words together so more of them move down with it.
+(function () {
+  var NBSP = " ";
+  var saved = [];
+  function lines(el) {
+    var r = document.createRange(); r.selectNodeContents(el);
+    var rows = [];
+    Array.prototype.forEach.call(r.getClientRects(), function (x) {
+      if (x.width < 1) return;
+      var row = rows.find(function (o) { return Math.abs(o.top - x.top) < 6; });
+      if (row) { row.left = Math.min(row.left, x.left); row.right = Math.max(row.right, x.right); }
+      else rows.push({ top: x.top, left: x.left, right: x.right });
+    });
+    rows.sort(function (a, b) { return a.top - b.top; });
+    return rows;
+  }
+  function lastText(el) {
+    var w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT), n, last = null;
+    while ((n = w.nextNode())) if (n.nodeValue.trim()) last = n;
+    return last;
+  }
+  function fix() {
+    saved.forEach(function (s) { s.node.nodeValue = s.text; }); saved = [];
+    document.querySelectorAll("main p, main li, .site-footer p").forEach(function (p) {
+      if (p.closest(".cs2-stats, .tags, .cs2-toc, .badge, .sticker-mount, .cs2-quote, .cs2-result")) return;
+      var rows = lines(p);
+      if (rows.length < 2) return;
+      var width = Math.max.apply(null, rows.map(function (o) { return o.right - o.left; }));
+      var tail = rows[rows.length - 1];
+      if ((tail.right - tail.left) / width >= 0.3) return;
+      var node = lastText(p); if (!node) return;
+      var original = node.nodeValue; saved.push({ node: node, text: original });
+      for (var k = 2; k <= 6; k++) {
+        var parts = original.replace(/\s+$/, "").split(" ");
+        if (parts.length <= k) break;
+        node.nodeValue = parts.slice(0, parts.length - k).join(" ") + " " + parts.slice(-k).join(NBSP);
+        var r2 = lines(p), t2 = r2[r2.length - 1];
+        if ((t2.right - t2.left) / width >= 0.3) break;
+      }
+    });
+  }
+  var timer;
+  function later() { clearTimeout(timer); timer = setTimeout(fix, 150); }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fix); else window.addEventListener("load", fix);
+  window.addEventListener("resize", later);
+})();
