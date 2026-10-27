@@ -932,3 +932,6 @@ body { background: var(--paper); color: var(--ink); }
 
 /* Avoid single-word last lines in body copy */
 p { text-wrap: pretty; }
+
+/* Experience descriptions use more of the row so they wrap less */
+.role p:last-child { max-width: 46rem; }
