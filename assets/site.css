@@ -892,3 +892,12 @@ body { background: var(--paper); color: var(--ink); }
 
 /* Header spans the full width so the name lines up with the left edge of the hero */
 .site-header .wrap { max-width: none; }
+
+/* Footer sign-off with a hand-drawn iced matcha */
+.footer-note { display: block; }
+.fn-keep { white-space: nowrap; }
+.footer-doodle { display: inline-block; width: auto !important; height: 2.1rem; vertical-align: -0.55rem; margin-left: 0.2rem; transform: rotate(6deg); }
+@media (max-width: 600px) {
+  .fn-copy, .fn-line { display: block; }
+  .fn-sep { display: none; }
+}
