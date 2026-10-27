@@ -909,4 +909,5 @@ body { background: var(--paper); color: var(--ink); }
 .sticker-section h2 { margin: 0 0 0.75rem; font-family: var(--font-display); font-size: clamp(1.75rem, 3.4vw, 2.5rem); letter-spacing: -0.02em; line-height: 1.1; }
 .sticker-section > p { max-width: var(--measure); color: var(--ink-soft); }
 .sticker-mount { min-height: 33rem; }
-@media (max-width: 760px) { .sticker-mount { min-height: 50rem; } }
+/* Phones skip it: dragging coins on a small screen is fiddly, and they never download it */
+@media (max-width: 760px) { .sticker-section { display: none; } }
