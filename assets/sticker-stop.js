@@ -438,7 +438,12 @@
     e.preventDefault(); e.stopPropagation();
     place(e.clientX, e.pageY);
   }
-  function onKey(e) { if (carrying && e.key === "Escape") stopCarry(true); }
+  // Esc always clears stickers: it puts the stack away while you're holding it, and peels off any that are stuck to the page.
+  window.addEventListener("keydown", function (e) {
+    if (e.key !== "Escape" || !overlay.hidden) return;
+    if (carrying) stopCarry(true);
+    if (placed.length) peelAll();
+  }, true);
   function startCarry(e) {
     if (!hand.length) return;
     carrying = true;
@@ -451,7 +456,6 @@
       if (!carrying) return;
       document.addEventListener("pointermove", onMove, { passive: true });
       document.addEventListener("click", onClick, true);
-      document.addEventListener("keydown", onKey);
     }, 0);
     renderCoins();
     say(touch ? "Tap anywhere on the page to stick one" : "Click anywhere on the page to stick one");
@@ -462,9 +466,8 @@
     carry.hidden = true;
     document.removeEventListener("pointermove", onMove);
     document.removeEventListener("click", onClick, true);
-    document.removeEventListener("keydown", onKey);
     renderCoins();
-    if (early && hand.length) say("Put away. You can stick them later.");
+    if (early && hand.length) say(placed.length ? "All cleared. You can stick the rest later." : "Put away. You can stick them later.");
   }
   function place(cx, pageY) {
     var st = hand.pop(); if (!st) return;
@@ -487,10 +490,9 @@
     noise(0.08, 0.06, 2200); tone(300, 0.06, "sine", 0.04);
     $(".ss-peel").hidden = false;
     if (hand.length) paintStack();
-    else { stopCarry(false); say("Stuck. Click any sticker to peel it off."); }
+    else { stopCarry(false); say("Stuck. Click a sticker or press Esc to peel them off."); }
   }
   function peel(el, tilt) {
-    if (carrying) return;
     placed = placed.filter(function (p) { return p !== el; });
     noise(0.12, 0.05, 3000);
     var gone = function () { el.remove(); if (!placed.length) { layer.style.height = "0"; $(".ss-peel").hidden = true; } };
@@ -500,6 +502,9 @@
       { transform: "translate(-50%,-50%) rotate(" + tilt + "deg)", opacity: 1 },
       { transform: "translate(-50%,-62%) rotate(" + (tilt + 14) + "deg) scale(.9)", opacity: 0 }
     ], { duration: 220, easing: "ease-in", fill: "forwards" }).onfinish = gone;
+  }
+  function peelAll() {
+    placed.slice().forEach(function (el) { peel(el, parseFloat((el.style.transform.match(/rotate\(([-\d.]+)deg/) || [0, 0])[1])); });
   }
   $(".ss-peel").addEventListener("click", function () {
     placed.forEach(function (el) { el.remove(); }); placed = []; layer.style.height = "0";
