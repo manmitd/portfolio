@@ -911,3 +911,24 @@ body { background: var(--paper); color: var(--ink); }
 .sticker-mount { min-height: 33rem; }
 /* Phones skip it: dragging coins on a small screen is fiddly, and they never download it */
 @media (max-width: 760px) { .sticker-section { display: none; } }
+
+/* Wildlight: the 18 of 20 result, given its own moment next to the testing numbers */
+.cs2-highlight {
+  display: flex; align-items: center; gap: clamp(1rem, 3vw, 1.75rem); max-width: var(--col);
+  margin: 0 0 1.75rem; padding: clamp(1.1rem, 3vw, 1.5rem) clamp(1.25rem, 3.5vw, 2rem);
+  border-radius: 14px; background: var(--powder-soft);
+}
+.cs2-highlight p { margin: 0; }
+.cs2-highlight p strong { color: var(--forest-deep); }
+.cs2-highlight .cs2-highlight-n {
+  flex: none; font-family: var(--font-display); font-weight: 800; line-height: 1; letter-spacing: -0.02em;
+  font-size: clamp(2.6rem, 6vw, 3.5rem); color: var(--forest); font-variant-numeric: tabular-nums;
+}
+.cs2-highlight-n span { font-size: 0.5em; font-weight: 700; color: var(--label); }
+@media (max-width: 480px) { .cs2-highlight { flex-direction: column; align-items: flex-start; gap: 0.5rem; } }
+
+/* StitchLog: the winking bee is a breather, not a hero, so it takes less height */
+.cs2-sl-bee > video { display: block; max-width: 38rem; margin-inline: auto; border-radius: 14px; }
+
+/* Avoid single-word last lines in body copy */
+p { text-wrap: pretty; }
