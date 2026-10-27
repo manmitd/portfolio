@@ -901,3 +901,12 @@ body { background: var(--paper); color: var(--ink); }
   .fn-copy, .fn-line { display: block; }
   .fn-sep { display: none; }
 }
+
+/* ---- Sticker Stop on the About page ----
+   The machine itself is built by assets/sticker-stop.js, which loads only when this section is near the screen.
+   The min-height holds its space so nothing jumps when it appears. */
+.sticker-section { padding-block: clamp(2.5rem, 5vw, 4rem) 0; border-top: 1px solid var(--rule); }
+.sticker-section h2 { margin: 0 0 0.75rem; font-family: var(--font-display); font-size: clamp(1.75rem, 3.4vw, 2.5rem); letter-spacing: -0.02em; line-height: 1.1; }
+.sticker-section > p { max-width: var(--measure); color: var(--ink-soft); }
+.sticker-mount { min-height: 34rem; }
+@media (max-width: 760px) { .sticker-mount { min-height: 56rem; } }
