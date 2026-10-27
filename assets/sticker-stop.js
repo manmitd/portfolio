@@ -84,16 +84,6 @@
     ".ss-coin:focus-visible{outline:3px solid var(--ss-label);outline-offset:3px}",
     ".ss-refill{font:600 .9375rem var(--font,Inter,sans-serif);background:var(--ss-navy);color:#fff;border:0;border-radius:999px;padding:.7rem 1.2rem;cursor:pointer}",
     ".ss-refill:hover{background:var(--ss-navy-3)}",
-    ".ss-got{border-top:1px solid var(--rule,#E3E6EA);padding-top:1rem}",
-    ".ss-got p{margin:0 0 .6rem;font-size:.9375rem;color:var(--ink-soft,#3E5168)}",
-    ".ss-got p span{font-variant-numeric:tabular-nums}",
-    ".ss-list{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:.5rem;min-height:56px}",
-    ".ss-list li{width:56px;height:56px;border-radius:12px;display:grid;place-items:center;position:relative}",
-    ".ss-list li.is-empty{border:1.5px dashed #C3CCD7}",
-    ".ss-list li img{max-width:100%;max-height:100%;object-fit:contain;filter:drop-shadow(0 1px 2px rgba(0,0,0,.18))}",
-    ".ss-list li.is-new{animation:ss-pulse .6s}",
-    "@keyframes ss-pulse{40%{transform:scale(1.15) rotate(-4deg)}}",
-    ".ss-dup{position:absolute;top:-5px;right:-5px;background:var(--ss-navy);color:#fff;font:700 .625rem/1 var(--font,Inter,sans-serif);border-radius:999px;padding:3px 5px}",
     ".ss-sound{align-self:flex-start;background:none;border:0;padding:0;font:500 .8125rem var(--font,Inter,sans-serif);color:var(--ss-label);cursor:pointer;text-decoration:underline;text-underline-offset:.2em}",
 
     /* holo */
@@ -125,8 +115,6 @@
     ".ss-stick{font:600 .9375rem var(--font,Inter,sans-serif);background:#fff;color:var(--ss-navy);border:0;border-radius:999px;padding:.75rem 1.3rem;cursor:pointer}",
     ".ss-stick:hover{background:var(--ss-tint)}",
     ".ss-stick:focus-visible,.ss-cover:focus-visible{outline:3px solid #fff;outline-offset:3px}",
-    ".ss-flyer{position:fixed;z-index:70;pointer-events:none;display:grid;place-items:center}",
-    ".ss-flyer img{max-width:100%;max-height:100%;object-fit:contain}",
     "@media (prefers-reduced-motion:reduce){.ss *,.ss-overlay *{animation-duration:.01ms!important;transition-duration:.01ms!important}}"
   ].join("\n");
   var style = document.createElement("style");
@@ -152,7 +140,6 @@
       '<div class="ss-side">' +
         '<p class="ss-hint" role="status">Drag a coin onto a slider</p>' +
         '<div class="ss-coins"></div>' +
-        '<div class="ss-got"><p>Your stickers <span class="ss-count"></span></p><ul class="ss-list"></ul></div>' +
         '<button class="ss-sound" type="button" aria-pressed="true">Sound on</button>' +
       "</div>" +
     "</div>";
@@ -170,7 +157,7 @@
           '<span class="ss-face ss-back"><b class="ss-pname"></b><span class="ss-pnote"></span></span>' +
         "</button>" +
       "</div>" +
-      '<button class="ss-stick" type="button" hidden>Keep it</button>' +
+      '<button class="ss-stick" type="button" hidden>Done</button>' +
     "</div>";
   document.body.appendChild(overlay);
 
@@ -180,9 +167,6 @@
   var mechEls = Array.prototype.slice.call(mount.querySelectorAll(".ss-mech"));
 
   // ---------- state ----------
-  var book = {};
-  try { book = JSON.parse(localStorage.getItem("sticker-stop") || "{}") || {}; } catch (e) { book = {}; }
-  function save() { try { localStorage.setItem("sticker-stop", JSON.stringify(book)); } catch (e) {} }
   var coins = 3, picked = null, pending = [], current = null;
   var mech = SERIES.map(function () { return { s: "idle" }; });
 
@@ -239,17 +223,6 @@
       b.addEventListener("click", function () { openPacket(+b.dataset.p); });
     });
   }
-  function renderBook(newId) {
-    var got = ALL.filter(function (a) { return book[a.id]; });
-    $(".ss-count").textContent = "(" + got.length + " of " + TOTAL + ")";
-    $(".ss-list").innerHTML = ALL.map(function (a) {
-      var b = book[a.id];
-      if (!b) return '<li class="is-empty" aria-label="Not collected yet"></li>';
-      return '<li data-id="' + a.id + '" class="' + (b.holo ? "ss-holo" : "") + (a.id === newId ? " is-new" : "") + '" style="--m:url(' + src(a.id) + ')">' +
-        img(a.id) + (b.n > 1 ? '<span class="ss-dup">x' + b.n + "</span>" : "") + "</li>";
-    }).join("");
-  }
-
   // ---------- coins ----------
   function mechAt(x, y) {
     for (var i = 0; i < mechEls.length; i++) {
@@ -365,8 +338,7 @@
     packet.classList.remove("is-open"); stickBtn.hidden = true;
     $(".ss-ser", overlay).textContent = SERIES[current.series].name;
     $(".ss-pname", overlay).textContent = (current.holo ? "Holo " : "") + current.name;
-    $(".ss-pnote", overlay).textContent = book[current.id] ? "A double! Keep it anyway." :
-      current.holo ? "Shiny! These are rare." : "One of " + TOTAL + " to collect.";
+    $(".ss-pnote", overlay).textContent = current.holo ? "Shiny! These are rare." : "One of " + TOTAL + " in the machine.";
     var stk = $(".ss-stk", overlay);
     stk.className = "ss-stk" + (current.holo ? " ss-holo" : "");
     stk.style.setProperty("--m", "url(" + src(current.id) + ")");
@@ -389,37 +361,10 @@
     if (e.key === "Escape" && current && !packet.classList.contains("is-open")) { pending.unshift(current); current = null; closeOverlay(); renderChute(); }
   });
   stickBtn.addEventListener("click", function () {
-    var c = current; if (!c) return;
-    var from = $(".ss-stk", overlay).getBoundingClientRect();
-    book[c.id] = book[c.id] || { n: 0, holo: false }; book[c.id].n++; if (c.holo) book[c.id].holo = true; save();
-    current = null; overlay.hidden = true;
-    renderBook(c.id);
-    var slot = mount.querySelector('.ss-list li[data-id="' + c.id + '"]');
-    var to = slot.getBoundingClientRect();
-    var done = function () {
-      slot.style.visibility = ""; sfx.pop();
-      var got = ALL.filter(function (a) { return book[a.id]; }).length;
-      if (got === TOTAL) say("Full set! Thanks for stopping by");
-      else if (pending.length) say("Another packet is waiting");
-      else say(coins ? "Want another? Drag a coin onto a slider" : "Out of coins. Grab 3 more");
-      if (lastFocus && document.contains(lastFocus)) lastFocus.focus();
-    };
-    if (reduce || !slot.animate) { done(); return; }
-    var fly = document.createElement("div");
-    fly.className = "ss-flyer" + (c.holo ? " ss-holo" : "");
-    fly.style.cssText = "left:" + from.left + "px;top:" + from.top + "px;width:" + from.width + "px;height:" + from.height + "px;--m:url(" + src(c.id) + ")";
-    fly.innerHTML = img(c.id);
-    document.body.appendChild(fly);
-    slot.style.visibility = "hidden";
-    var k = to.width / from.width;
-    var anim = fly.animate([
-      { transform: "translate(0,0) rotate(-4deg) scale(1)" },
-      { transform: "translate(" + (to.left - from.left) / 2 + "px," + ((to.top - from.top) / 2 - 60) + "px) rotate(8deg) scale(" + (k + 1) / 2 + ")", offset: 0.5 },
-      { transform: "translate(" + (to.left - from.left + (to.width - from.width) / 2) + "px," + (to.top - from.top + (to.height - from.height) / 2) + "px) scale(" + k + ")" }
-    ], { duration: 700, easing: "cubic-bezier(.5,0,.3,1)", fill: "forwards" });
-    var fin = function () { fly.remove(); done(); };
-    anim.onfinish = fin; anim.oncancel = fin;
+    current = null; sfx.pop(); closeOverlay();
+    if (pending.length) say("Another packet is waiting");
+    else say(coins ? "Want another? Drag a coin onto a slider" : "Out of coins. Grab 3 more");
   });
 
-  renderCoins(); renderChute(); renderBook();
+  renderCoins(); renderChute();
 })();
