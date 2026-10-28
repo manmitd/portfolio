@@ -142,3 +142,36 @@
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(fix); else window.addEventListener("load", fix);
   window.addEventListener("resize", later);
 })();
+
+// Analytics: name the clicks that matter for a portfolio so they're easy to find in Google Analytics.
+(function () {
+  if (typeof window.gtag !== "function") return;
+  var projects = { "accenture": "Wildlight", "sewjo-merchant-dashboard": "Merchant Dashboard", "sewjo-challenges": "Challenges", "sewjo": "StitchLog" };
+  function where(a) {
+    if (a.closest(".site-header")) return "header";
+    if (a.closest(".site-footer")) return "footer";
+    if (a.closest(".mat")) return "hero";
+    if (a.closest(".badge")) return "badge";
+    return "page";
+  }
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest("a[href]");
+    if (!a) return;
+    var href = a.getAttribute("href") || "";
+    var page = location.pathname;
+    if (/Resume\.pdf$/i.test(href)) {
+      gtag("event", "resume_click", { link_location: where(a), page_path: page });
+    } else if (/linkedin\.com\/in\//i.test(href)) {
+      gtag("event", "linkedin_click", { link_location: where(a), page_path: page });
+    } else if (/^mailto:/i.test(href)) {
+      gtag("event", "email_click", { link_location: where(a), page_path: page });
+    } else if (a.classList.contains("project") || a.classList.contains("cs2-next")) {
+      var slug = (href.match(/([a-z-]+)\/(index\.html)?$/) || [])[1];
+      gtag("event", "case_study_open", {
+        project: projects[slug] || slug || href,
+        opened_from: a.classList.contains("cs2-next") ? "next_project" : "homepage",
+        page_path: page
+      });
+    }
+  });
+})();
