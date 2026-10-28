@@ -220,7 +220,7 @@
   }
 
   // Count-up: animate the leading number in stat tiles, the 18/20 callout and homepage results.
-  var nums = document.querySelectorAll(".cs2-stats b, .cs2-highlight-n, .project-stat b");
+  var nums = document.querySelectorAll(".cs2-stats b, .cs2-highlight-n");
   var cio = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
       if (!e.isIntersecting) return;
