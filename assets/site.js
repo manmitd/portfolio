@@ -175,3 +175,73 @@
     }
   });
 })();
+
+// Reading progress for case studies: fills the contents rail (desktop) or a thin top bar (smaller screens).
+(function () {
+  var body = document.querySelector(".cs2-body");
+  if (!body) return;
+  var bar = document.createElement("div");
+  bar.className = "cs2-progress"; bar.setAttribute("aria-hidden", "true");
+  document.body.appendChild(bar);
+  var root = document.documentElement, ticking = false;
+  function update() {
+    ticking = false;
+    var r = body.getBoundingClientRect();
+    var total = r.height - window.innerHeight;
+    var p = total > 0 ? Math.min(1, Math.max(0, -r.top / total)) : 1;
+    root.style.setProperty("--read", p.toFixed(4));
+  }
+  function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  update();
+})();
+
+// Gentle reveal as sections scroll into view, and numbers that count up once.
+// Skipped entirely for people who prefer reduced motion.
+(function () {
+  if (!("IntersectionObserver" in window)) return;
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  var targets = document.querySelectorAll(
+    ".cs2-section > *:not(.cs2-label), .cs2-fix-body, .cs2-fix-media, .cs2-band, .cs2-statement, .cs2-intro-row, .cs2-facts, .cs2-after-facts, .cs2-next, .project, .about-intro > div, .experience .role"
+  );
+  if (targets.length) {
+    document.documentElement.classList.add("reveal-on");
+    var vh = window.innerHeight;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); } });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+    targets.forEach(function (el) {
+      el.classList.add("rv");
+      if (el.getBoundingClientRect().top < vh) el.classList.add("is-in"); // already on screen: show right away
+      else io.observe(el);
+    });
+  }
+
+  // Count-up: animate the leading number in stat tiles, the 18/20 callout and homepage results.
+  var nums = document.querySelectorAll(".cs2-stats b, .cs2-highlight-n, .project-stat b");
+  var cio = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      cio.unobserve(e.target);
+      var node = e.target.firstChild;
+      if (!node || node.nodeType !== 3) return;
+      var m = node.nodeValue.match(/^([^\d]*)([\d,]+)(.*)$/);
+      if (!m) return;
+      var prefix = m[1], target = parseInt(m[2].replace(/,/g, ""), 10), suffix = m[3], comma = m[2].indexOf(",") > -1;
+      if (!target || target < 3) return;
+      var start = null, dur = 900;
+      function fmt(n) { return comma ? n.toLocaleString("en-CA") : String(n); }
+      function step(t) {
+        if (!start) start = t;
+        var k = Math.min(1, (t - start) / dur), eased = 1 - Math.pow(1 - k, 3);
+        node.nodeValue = prefix + fmt(Math.round(target * eased)) + suffix;
+        if (k < 1) requestAnimationFrame(step);
+      }
+      node.nodeValue = prefix + fmt(0) + suffix;
+      requestAnimationFrame(step);
+    });
+  }, { threshold: 0.6 });
+  nums.forEach(function (n) { cio.observe(n); });
+})();

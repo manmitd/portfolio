@@ -944,3 +944,41 @@ p { text-wrap: pretty; }
 h1, h2, h3, figcaption, .project-title, .cs2-quote, .cs2-band-text, .cs2-band-sub, .cs2-result { text-wrap: balance; }
 /* Reflection quotes get a little more room */
 .cs2-learned .cs2-quote { max-width: 52rem; margin-inline: auto; }
+
+/* ---------- UX polish: results up front, reading aids, gentle motion ---------- */
+
+/* 1. One key result on each homepage project card */
+.project-stat {
+  display: inline-flex; align-items: baseline; gap: 0.45rem; margin: -0.25rem 0 1.1rem;
+  padding: 0.45rem 0.8rem; border-radius: 10px; background: var(--blue);
+  color: var(--forest-deep); font-size: 0.9375rem; font-weight: 500; line-height: 1.3;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.project-stat b { font-family: var(--font-display); font-weight: 800; font-size: 1.125rem; color: var(--forest); transition: color 0.3s ease; }
+/* 6. Hover: the result lights up as the cover zooms */
+.project:hover .project-stat, .project:focus-visible .project-stat { background: var(--forest); color: #fff; }
+.project:hover .project-stat b, .project:focus-visible .project-stat b { color: #fff; }
+
+/* 2. Read time and a shortcut to the results */
+.cs2-meta { margin: 0.9rem 0 0; font-size: 0.9375rem; color: var(--ink-soft); }
+.cs2-meta a { color: var(--forest); font-weight: 600; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+.cs2-meta a:hover { text-decoration-thickness: 2px; }
+.cs2-meta span[aria-hidden] { margin-inline: 0.25rem; }
+
+/* 3. Reading progress: fills the contents rail on desktop, a thin bar along the top elsewhere */
+.cs2-toc ol { position: relative; }
+.cs2-toc ol::before {
+  content: ""; position: absolute; left: -2px; top: 0; width: 2px; height: calc(var(--read, 0) * 100%);
+  background: var(--forest); opacity: 0.35; pointer-events: none;
+}
+.cs2-progress {
+  position: fixed; top: 0; left: 0; z-index: 20; height: 3px; width: 100%;
+  background: var(--forest); transform-origin: 0 50%; transform: scaleX(var(--read, 0)); pointer-events: none;
+}
+@media (min-width: 1240px) { .cs2-progress { display: none; } }
+
+/* 5. Sections rise gently into view (only when scripts run and motion is welcome) */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal-on .rv { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s cubic-bezier(.2,.7,.2,1); }
+  .reveal-on .rv.is-in { opacity: 1; transform: none; }
+}
