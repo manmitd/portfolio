@@ -245,3 +245,71 @@
   }, { threshold: 0.6 });
   nums.forEach(function (n) { cio.observe(n); });
 })();
+
+// Tap or click a case study image to see it larger. The full-size file only loads when someone opens it.
+(function () {
+  var imgs = Array.prototype.filter.call(
+    document.querySelectorAll(".cs2-body .cs2-media img, .cs2-body .cs2-pair img"),
+    function (img) { return img.alt && !img.closest("a"); }
+  );
+  if (!imgs.length) return;
+
+  function biggest(img) {
+    var best = img.currentSrc || img.src, bw = 0;
+    (img.getAttribute("srcset") || "").split(",").forEach(function (part) {
+      var bits = part.trim().split(/\s+/), w = parseInt(bits[1], 10);
+      if (bits[0] && w > bw) { bw = w; best = new URL(bits[0], location.href).href; }
+    });
+    return best;
+  }
+
+  var box = document.createElement("div");
+  box.className = "lightbox"; box.hidden = true;
+  box.setAttribute("role", "dialog"); box.setAttribute("aria-modal", "true"); box.setAttribute("aria-label", "Enlarged image");
+  box.innerHTML = '<button type="button" class="lightbox-close">Close <span aria-hidden="true">✕</span></button>' +
+    '<div class="lightbox-stage"><img class="lightbox-img" alt=""></div>' +
+    '<p class="lightbox-hint"><span class="hint-mouse">Click the image to see it at full size</span><span class="hint-touch">Tap the image for full size, or pinch to zoom</span></p>';
+  document.body.appendChild(box);
+  var big = box.querySelector(".lightbox-img"), closeBtn = box.querySelector(".lightbox-close"), stage = box.querySelector(".lightbox-stage");
+  var opener = null;
+
+  function open(img) {
+    opener = img;
+    big.src = biggest(img); big.alt = img.alt;
+    box.classList.remove("is-full");
+    box.hidden = false;
+    document.documentElement.classList.add("lightbox-open");
+    requestAnimationFrame(function () { box.classList.add("is-on"); });
+    closeBtn.focus();
+  }
+  function close() {
+    box.classList.remove("is-on", "is-full");
+    box.hidden = true;
+    document.documentElement.classList.remove("lightbox-open");
+    big.removeAttribute("src");
+    if (opener) opener.focus();
+  }
+
+  imgs.forEach(function (img) {
+    img.classList.add("zoomable");
+    img.setAttribute("tabindex", "0");
+    img.setAttribute("role", "button");
+    img.setAttribute("aria-label", "Enlarge image: " + img.alt);
+    img.addEventListener("click", function () { open(img); });
+    img.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(img); }
+    });
+  });
+
+  closeBtn.addEventListener("click", close);
+  box.addEventListener("click", function (e) { if (e.target === box || e.target === stage) close(); });
+  big.addEventListener("click", function () {
+    var full = box.classList.toggle("is-full");
+    if (full) stage.scrollTop = stage.scrollLeft = 0;
+  });
+  document.addEventListener("keydown", function (e) {
+    if (box.hidden) return;
+    if (e.key === "Escape") close();
+    if (e.key === "Tab") { e.preventDefault(); closeBtn.focus(); }
+  });
+})();
