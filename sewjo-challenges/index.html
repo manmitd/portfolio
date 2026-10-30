@@ -77,12 +77,12 @@
 
       <div class="cs2-text cs2-intro cs2-intro-solo">
         <p><strong>Sewjo Challenges was a gamified engagement experience that encouraged users to explore the app, connect with other sewists, and earn rewards through everyday activities.</strong></p>
-        <p>Designed around Sewjo's Frocktails launch campaign, the experience connected in-app participation with weekly themes, community recognition, and prize draws.</p>
-        <p>As the sole product designer on the initiative, I owned the experience from early exploration through launch, working closely with the founder and developer to bring it to life.</p>
+        <p>Designed around Sewjo's Frocktails launch campaign, the experience connected in&#8209;app participation with weekly themes, community recognition, and prize draws.</p>
+        <p>I owned the experience end to end, from early concepts to launch, working closely with the founder and developer.</p>
       </div>
 
       <dl class="cs2-facts cs2-facts-wrap">
-        <div><dt>Role</dt><dd>Lead Product Designer, sole designer</dd></div>
+        <div><dt>Role</dt><dd>Lead Product Designer</dd></div>
         <div><dt>Team</dt><dd>Founder, product manager, developer, marketing</dd></div>
         <div><dt>Timeline</dt><dd>April to August 2025</dd></div>
         <div><dt>Platform</dt><dd>iOS and Android</dd></div>
@@ -141,8 +141,7 @@
         <div class="cs2-text">
           <p>I looked at how products like Duolingo break activities into manageable steps and make progress visible. The challenge was translating those patterns into Sewjo without the experience feeling bolted on.</p>
           <h3>Finding the right way to show progress</h3>
-          <p>Early concepts used circular points indicators and task cards with progress bars. They made individual goals prominent, but I also needed to show where people were in a campaign that changed every week. The final direction gave these two ideas their own space: <strong>points earned</strong>, which tracks participation and raffle entries, and a <strong>weekly timeline</strong> that shows where you are in the campaign.</p>
-          <p>I wanted the challenge to feel like part of Sewjo, not a separate task system. So points came from activities people already did in the app, and the weekly timeline carried campaign progress on its own, giving each element one clear job.</p>
+          <p>Early concepts used circular points indicators and task cards with progress bars. They put individual goals front and centre, but the campaign changed every week, and people also needed to know where they were in it. So I split the two: <strong>points earned</strong> for participation and raffle entries, and a <strong>weekly timeline</strong> for campaign progress. Each had one clear job, and neither felt like a separate task system.</p>
         </div>
       </section>
 
@@ -195,7 +194,7 @@
         </figure>
         <figure class="cs2-media cs2-gap">
           <img src="../assets/img/ch-08-states.webp" srcset="../assets/img/ch-08-states-1000.webp 1000w, ../assets/img/ch-08-states.webp 2000w" sizes="(max-width: 760px) 100vw, 60rem" width="2000" height="1200" loading="lazy" alt="Supporting screens: points history, leave challenge confirmation, loading state, overflow menu and the new feature launch modal">
-          <figcaption>Points history, leave confirmation, loading, overflow menu, and the launch modal.</figcaption>
+          <figcaption>The supporting states that make the system trustworthy: points history, confirmations, and loading.</figcaption>
         </figure>
       </section>
 
@@ -204,7 +203,7 @@
         <p class="cs2-label"><span>Running it</span></p>
         <h2 id="running-h">Supporting the team running the campaign</h2>
         <div class="cs2-text">
-          <p>Behind the scenes, the team needed to manage points, social submissions, participant information, and weekly prizes. I designed the admin experience for these workflows and worked with the developer on how the participant side connected to the processes needed to run the campaign.</p>
+          <p>Behind the scenes, the team needed to manage points, social submissions, participant information, and weekly prizes. I designed the admin experience for these workflows and worked with the developer to connect what participants did in the app to what the team handled each week.</p>
         </div>
         <figure class="cs2-media cs2-gap">
           <img src="../assets/img/ch-07-system.webp" srcset="../assets/img/ch-07-system-1000.webp 1000w, ../assets/img/ch-07-system.webp 2000w" sizes="(max-width: 760px) 100vw, 60rem" width="2000" height="1000" loading="lazy" alt="Diagram in two lanes: what the app did automatically (join, earn points, submit a social link, everything updates) and what the Sewjo team did by hand each week (Thursday cut-off, export points, weighted raffle, announce winners, new theme)">
@@ -214,15 +213,15 @@
       <!-- 07 Collaboration -->
       <section class="cs2-section" id="collaboration" aria-labelledby="collaboration-h">
         <p class="cs2-label"><span>Collaboration</span></p>
-        <h2 id="collaboration-h">Turning feedback into a cohesive experience</h2>
+        <h2 id="collaboration-h">Turning feedback into decisions</h2>
         <div class="cs2-text">
-          <p>The developer was involved from the start, helping us work through how the experience would function. The founder reviewed designs as they evolved. As the sole designer, I evaluated that feedback and worked it into the final experience.</p>
+          <p>I brought the developer in from the start to work through how the experience would function, and reviewed designs with the founder as they evolved. These were the calls that came out of those conversations.</p>
         </div>
         <div class="cs2-findings">
-          <div><h3>Participation rules</h3><p>How to earn points, and whether social was required.</p></div>
-          <div><h3>Participant interactions</h3><p>Making sure people could reach each other's profiles.</p></div>
-          <div><h3>Reward communication</h3><p>How points related to entries and how prizes were given out.</p></div>
-          <div><h3>Visual hierarchy</h3><p>How information was organized on the Challenge page.</p></div>
+          <div><h3>Participation rules</h3><p>Social posts stayed optional but earned the most points, so sharing was rewarded without becoming a barrier to joining.</p></div>
+          <div><h3>Participant interactions</h3><p>Every name on the board opens a profile, so recognition could turn into a real connection.</p></div>
+          <div><h3>Reward communication</h3><p>One point equals one raffle entry. Keeping the rule that simple made prizes easy to explain.</p></div>
+          <div><h3>Visual hierarchy</h3><p>The Challenge page puts your points and weekly progress up top, with the theme and prizes below.</p></div>
         </div>
       </section>
 
@@ -231,7 +230,7 @@
         <p class="cs2-label"><span>Implementation</span></p>
         <h2 id="implementation-h">Testing the experience as a connected system</h2>
         <div class="cs2-text">
-          <p>The same rules we shaped together had to hold up in the build. Points could be earned across many parts of Sewjo, so during QA I checked that what people saw matched what the system recorded. People were participating for rewards. If the app acknowledged an action but didn't reflect the reward, it could undermine trust in the whole experience.</p>
+          <p>Points could be earned across many parts of Sewjo, so during QA I checked that what people saw matched what the system recorded. People were taking part for prizes, so if the app confirmed an action but didn't update their points, it could undermine trust in the whole experience.</p>
         </div>
         <ul class="cs2-list">
           <li><strong>Totals:</strong> A notification confirmed points were earned, but the total didn't update.</li>
