@@ -182,7 +182,9 @@
   if (!body) return;
   var bar = document.createElement("div");
   bar.className = "cs2-progress"; bar.setAttribute("aria-hidden", "true");
-  document.body.appendChild(bar);
+  var clientBar = document.querySelector(".client-bar");
+  (clientBar || document.body).appendChild(bar);
+  var head = document.querySelector(".cs2-head");
   var root = document.documentElement, ticking = false;
   function update() {
     ticking = false;
@@ -190,6 +192,7 @@
     var total = r.height - window.innerHeight;
     var p = total > 0 ? Math.min(1, Math.max(0, -r.top / total)) : 1;
     root.style.setProperty("--read", p.toFixed(4));
+    if (clientBar && head) clientBar.classList.toggle("is-on", head.getBoundingClientRect().bottom < 0);
   }
   function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
   window.addEventListener("scroll", onScroll, { passive: true });

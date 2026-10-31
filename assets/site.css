@@ -1003,3 +1003,17 @@ html.lightbox-open { overflow: hidden; }
 @media (max-width: 760px) {
   .cs2-facts-wrap, .cs2-facts-3 { grid-template-columns: 1fr 1fr; }
 }
+
+/* Client logo bar (Wildlight): slides in once you scroll past the title and stays pinned */
+.client-bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 30;
+  display: flex; align-items: center; justify-content: center; padding: 0.75rem 1rem;
+  background: rgba(253, 253, 251, 0.92); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--rule);
+  transform: translateY(-101%); transition: transform 0.3s ease; pointer-events: none;
+}
+.client-bar.is-on { transform: none; }
+.client-bar img { display: block; height: 20px; width: auto; }
+.client-bar .cs2-progress { position: absolute; top: auto; bottom: -1px; }
+@media (prefers-reduced-motion: reduce) { .client-bar { transition: none; } }
+.cs2-section, .cs2-band, .cs2-fix { scroll-margin-top: 4rem; }
