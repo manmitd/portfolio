@@ -995,3 +995,11 @@ html.lightbox-open { overflow: hidden; }
 .hint-touch { display: none; }
 @media (hover: none) { .hint-mouse { display: none; } .hint-touch { display: inline; } }
 @media (prefers-reduced-motion: reduce) { .lightbox { transition: none; } }
+
+/* Project facts: no box, a navy accent line before each detail */
+.cs2-facts { background: none; border: 0; border-radius: 0; padding-inline: 0; }
+.cs2-facts > div { border-left: 2px solid var(--forest); padding-left: 0.875rem; }
+.cs2-facts-wrap { grid-template-columns: max-content minmax(0, 1fr) max-content max-content; gap: 1rem 2rem; }
+@media (max-width: 760px) {
+  .cs2-facts-wrap, .cs2-facts-3 { grid-template-columns: 1fr 1fr; }
+}
