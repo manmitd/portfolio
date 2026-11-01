@@ -1,38 +1,67 @@
-// "Ask Manmit": a small chat-style panel with preset questions.
-// Every answer is written by Manmit. Nothing here calls an AI.
+// "Ask Manmit": a small chat-style panel with preset questions and answers.
 (function () {
+  // The first five show up front; the rest sit behind "See more questions"
   var QA = [
     {
       q: "What are you working on right now?",
-      a: "I'm the Lead Product Designer at Sewjo, an app for people who sew. I joined as its first dedicated product designer and now lead design across the mobile apps, the Swatchbook marketplace, and internal tools. I also mentor junior designers.",
-      links: [["See the Merchant Dashboard case study", "/sewjo-merchant-dashboard/"]]
+      a: ["I'm currently the Lead Product Designer at Sewjo, where I started as the first product designer and helped build the product from the ground up. These days, I lead design across our mobile apps, web experiences, and internal tools. I also mentor junior designers, which has been a really rewarding part of the role!"],
+      links: [["See the Merchant Dashboard", "/sewjo-merchant-dashboard/"]]
     },
     {
       q: "What kind of role are you looking for?",
-      a: "A full-time product design role where I can own problems end to end, from research through launch and what happens after. I'm based in Vancouver and open to remote. I'm especially drawn to AI products, fintech, and growth work.",
+      a: ["I'm looking for a full-time product design role where I can take ownership, solve interesting problems, and work with people who care about building great products. I love being involved in the whole process, from figuring out what users need to designing, shipping, and improving the experience. I'm based in Vancouver and open to remote opportunities too!"],
       links: [["View my resume", "/s/Manmit-Dhindsa-Resume.pdf"]]
     },
     {
       q: "Which project are you proudest of?",
-      a: "Wildlight, an AI product I designed with Accenture. The AI needed details about a garden that beginners didn't know how to give, so I replaced the intake form with a guided conversation. In testing, 18 of 20 participants completed the core task without help, and it was showcased at Web Summit Vancouver 2026.",
-      links: [["Read the Wildlight case study", "/accenture/"]]
-    },
-    {
-      q: "How do you work with engineers?",
-      a: "I bring developers in early, before designs are final, so we work through how something will actually function together. I walk through decisions and trade-offs every week, and I stay close through implementation and QA. At Sewjo, I also led our move to Storybook so design and code share the same components.",
-      links: [["See how this played out on Challenges", "/sewjo-challenges/"]]
+      a: [
+        "It's hard to pick just one! Sewjo is really special to me because I've been able to shape so much of the product from the beginning and see how people actually use what we've built.",
+        "I'm also really proud of Wildlight, an AI-powered experience I worked on with Accenture. We turned a complicated intake process into a guided conversation, and 18 out of 20 people completed the main task without help during testing. Seeing that improvement was pretty exciting!"
+      ],
+      links: [["Explore StitchLog", "/sewjo/"], ["Explore Wildlight", "/accenture/"]]
     },
     {
       q: "How do you use AI in your work?",
-      a: "Two ways. I design AI products, like Wildlight, where the whole experience is a conversation. And I use AI to move faster: on Wildlight I used Claude Code for front-end interface work so our developers could focus on the back end, and I built this site the same way.",
-      links: []
+      a: [
+        "A little bit of everything! I've designed AI-powered experiences, but I also use tools like Claude and Cursor to prototype ideas, experiment with interactions, and sometimes build working interfaces.",
+        "I love being able to test an idea instead of just describing it. That said, I still rely on research, testing, and my own judgement to figure out what actually makes sense for users."
+      ],
+      links: [["Explore Wildlight", "/accenture/"]]
     },
     {
       q: "How can I reach you?",
-      a: "Email is best: dhindsamanmit@gmail.com. You can also find me on LinkedIn.",
-      links: [["Email me", "mailto:dhindsamanmit@gmail.com"], ["LinkedIn", "https://www.linkedin.com/in/manmit-dhindsa/"]]
+      a: [
+        "Email is probably the easiest! You can reach me at dhindsamanmit@gmail.com or connect with me on LinkedIn.",
+        "I'm always happy to chat about product design, interesting ideas, or potential opportunities!"
+      ],
+      links: [["Email me", "mailto:dhindsamanmit@gmail.com"], ["Connect on LinkedIn", "https://www.linkedin.com/in/manmit-dhindsa/"]]
+    },
+    {
+      q: "How do you work with engineers?",
+      a: [
+        "I like bringing engineers into the conversation early rather than handing over a finished design and hoping everything works out. We talk through ideas, technical constraints, and trade-offs together.",
+        "I'm also pretty hands-on with prototypes and implementation. At Sewjo, I helped build our design system in Storybook, and I regularly work with developers through QA to make sure the final experience feels right."
+      ],
+      links: [["See the project", "/sewjo-challenges/"]]
+    },
+    {
+      q: "How do you approach a new design problem?",
+      a: [
+        "I usually start by asking a lot of questions. What problem are we actually trying to solve? Who's experiencing it? And how do we know it's a problem in the first place?",
+        "From there, I like exploring ideas quickly, testing assumptions, and getting feedback early. I don't think design ends when something ships either. Some of the most interesting improvements happen once real people start using it."
+      ],
+      links: [["See the project", "/sewjo-merchant-dashboard/"]]
+    },
+    {
+      q: "What do you do when you're not designing?",
+      a: [
+        "I'm usually finding some new little hobby to get obsessed with! I love playing pickleball, collecting blind boxes, and finding fun places to explore.",
+        "I also really enjoy making things just for fun, whether that's experimenting with a new tool or working on a random creative idea that popped into my head."
+      ],
+      links: [["More about me", "/about-me/"]]
     }
   ];
+  var VISIBLE = 5;
 
   // Case study links show as a card with the cover image, like the homepage
   var CASES = {
@@ -42,16 +71,20 @@
     "/sewjo/": { title: "Making project tracking feel effortless", where: "Sewjo, StitchLog", img: "/assets/img/sl-cover-card.webp", top: true }
   };
 
+  var INTRO = '<div class="ask-intro"><p><strong>Hey, I\'m Manmit! <span aria-hidden="true">👋</span></strong></p>' +
+    '<p>Curious about my work or what I\'m like beyond the pixels? Pick a question below!</p></div>';
+
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var nav = document.querySelector(".site-nav ul");
   if (!nav) return;
 
+  function track(name, params) { if (typeof window.gtag === "function") window.gtag("event", name, params || {}); }
+
   // Header button
   var li = document.createElement("li");
   li.className = "ask-li";
-  li.innerHTML = '<button type="button" class="ask-open" aria-haspopup="dialog" aria-controls="ask-panel">' +
-    '<span class="ask-spark" aria-hidden="true"></span>' +
-    'Ask Manmit</button>';
+  li.innerHTML = '<button type="button" class="ask-open" aria-haspopup="dialog" aria-controls="ask-panel" aria-expanded="false">' +
+    '<span class="ask-spark" aria-hidden="true"></span>Ask Manmit</button>';
   nav.appendChild(li);
   var openBtn = li.querySelector("button");
 
@@ -66,35 +99,89 @@
         '<button type="button" class="ask-reset" aria-label="Start over" hidden><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M4 10a6 6 0 1 0 1.8-4.3M4 3.5v3.2h3.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>' +
         '<button type="button" class="ask-close" data-close aria-label="Close"><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>' +
       '</header>' +
-      '<div class="ask-log" aria-live="polite">' +
-        '<p class="ask-intro">Hi! Pick a question below. Every answer is written by me, not generated.</p>' +
-      '</div>' +
-      '<div class="ask-chips" role="group" aria-label="Questions"></div>' +
+      '<div class="ask-log">' + INTRO + '</div>' +
+      '<p class="ask-sr" aria-live="polite"></p>' +
+      '<div class="ask-chips" role="group" aria-label="Questions you can ask"></div>' +
     '</section>';
   document.body.appendChild(panel);
 
   var dialog = panel.querySelector(".ask-panel");
   var log = panel.querySelector(".ask-log");
   var chips = panel.querySelector(".ask-chips");
+  var live = panel.querySelector(".ask-sr");
   var resetBtn = panel.querySelector(".ask-reset");
   var asked = [];
+  var expanded = false;
   var busy = false;
+  dialog.inert = true;
 
-  function renderChips() {
+  function remaining() { return QA.map(function (_, i) { return i; }).filter(function (i) { return asked.indexOf(i) < 0; }); }
+
+  function renderChips(focusIndex) {
     chips.innerHTML = "";
-    QA.forEach(function (item, i) {
-      if (asked.indexOf(i) > -1) return;
+    var left = remaining();
+    var collapsible = left.length > VISIBLE;
+    var shown = collapsible && !expanded ? left.slice(0, VISIBLE) : left;
+    shown.forEach(function (i) {
       var b = document.createElement("button");
       b.type = "button";
       b.className = "ask-chip";
-      b.innerHTML = '<span aria-hidden="true">↳</span> ' + item.q;
+      b.dataset.i = i;
+      b.innerHTML = '<span aria-hidden="true">↳</span> ' + QA[i].q;
       b.addEventListener("click", function () { ask(i); });
       chips.appendChild(b);
     });
-    chips.hidden = !chips.children.length;
+    if (collapsible) {
+      var t = document.createElement("button");
+      t.type = "button";
+      t.className = "ask-more";
+      t.setAttribute("aria-expanded", expanded ? "true" : "false");
+      t.textContent = expanded ? "Show fewer questions" : "See more questions";
+      t.addEventListener("click", function () {
+        expanded = !expanded;
+        // Opening: land on the first newly shown question. Closing: stay on the toggle.
+        renderChips(expanded ? left[VISIBLE] : "more");
+      });
+      chips.appendChild(t);
+    }
+    chips.hidden = !left.length;
+    if (focusIndex === "more") { var m = chips.querySelector(".ask-more"); if (m) m.focus({ preventScroll: true }); }
+    else if (typeof focusIndex === "number") { var c = chips.querySelector('[data-i="' + focusIndex + '"]'); if (c) c.focus({ preventScroll: true }); }
   }
 
   function scrollDown() { log.scrollTop = log.scrollHeight; }
+
+  function addLinks(a, item) {
+    var cards = item.links.filter(function (l) { return CASES[l[1]]; });
+    var plain = item.links.filter(function (l) { return !CASES[l[1]]; });
+    if (cards.length) {
+      var grid = document.createElement("div");
+      grid.className = "ask-cases" + (cards.length > 1 ? " is-pair" : "");
+      cards.forEach(function (l) {
+        var cs = CASES[l[1]];
+        var card = document.createElement("a");
+        card.className = "ask-case";
+        card.href = l[1];
+        card.innerHTML = '<img alt="" loading="lazy" src="' + cs.img + '"' + (cs.top ? ' style="object-position:center top"' : '') + '>' +
+          '<span class="ask-case-title">' + cs.title + '</span><span class="ask-case-cta">' + l[0] + ' <span aria-hidden="true">→</span></span>';
+        card.addEventListener("click", function () { track("ask_case_click", { case_study: cs.where }); });
+        grid.appendChild(card);
+      });
+      a.appendChild(grid);
+    }
+    if (plain.length) {
+      var row = document.createElement("p");
+      row.className = "ask-links";
+      plain.forEach(function (l) {
+        var link = document.createElement("a");
+        link.href = l[1];
+        link.textContent = l[0];
+        if (/^https?:|\.pdf$/.test(l[1])) { link.target = "_blank"; link.rel = "noopener"; }
+        row.appendChild(link);
+      });
+      a.appendChild(row);
+    }
+  }
 
   function ask(i) {
     if (busy) return;
@@ -102,104 +189,100 @@
     asked.push(i);
     resetBtn.hidden = false;
     var item = QA[i];
+    track("ask_question", { question: item.q });
+
     var q = document.createElement("p");
     q.className = "ask-q";
     q.textContent = item.q;
     log.appendChild(q);
-    renderChips();
-    if (typeof window.gtag === "function") window.gtag("event", "ask_question", { question: item.q });
 
     var a = document.createElement("div");
     a.className = "ask-a";
-    var p = document.createElement("p");
-    a.appendChild(p);
     log.appendChild(a);
+
+    // Keep keyboard focus in the question list: move to the next question in line
+    var left = remaining();
+    renderChips(left.length ? left[0] : undefined);
+    if (!left.length) dialog.focus({ preventScroll: true });
     scrollDown();
 
+    var paras = item.a.map(function () { var p = document.createElement("p"); return p; });
+
     function finish() {
-      p.textContent = item.a;
-      if (item.links.length) {
-        var row = document.createElement("p");
-        row.className = "ask-links";
-        item.links.forEach(function (l) {
-          var cs = CASES[l[1]];
-          if (cs) {
-            var card = document.createElement("a");
-            card.className = "ask-case";
-            card.href = l[1];
-            card.innerHTML = '<img alt="" loading="lazy" src="' + cs.img + '"' + (cs.top ? ' style="object-position:center top"' : '') + '><span><small>' + cs.where + '</small>' + cs.title + '</span>';
-            a.appendChild(card);
-            if (typeof window.gtag === "function") card.addEventListener("click", function () { window.gtag("event", "ask_case_click", { case_study: cs.where }); });
-            return;
-          }
-          var link = document.createElement("a");
-          link.href = l[1];
-          link.textContent = l[0];
-          if (/^https?:|\.pdf$/.test(l[1])) { link.target = "_blank"; link.rel = "noopener"; }
-          row.appendChild(link);
-        });
-        if (row.children.length) a.appendChild(row);
-      }
+      a.classList.remove("is-typing");
+      a.innerHTML = "";
+      item.a.forEach(function (text, k) { paras[k].textContent = text; a.appendChild(paras[k]); });
+      addLinks(a, item);
+      // Screen readers hear the whole answer once, not word by word
+      live.textContent = item.q + " " + item.a.join(" ");
       busy = false;
       scrollDown();
     }
 
     if (reduce) { finish(); return; }
-    // A short "typing" pause, then the answer writes itself out quickly
+
+    // A short "typing" pause, then the answer writes itself out.
+    // Longer answers reveal more words per step, so every answer takes about the same time.
     a.classList.add("is-typing");
     setTimeout(function () {
       a.classList.remove("is-typing");
-      var words = item.a.split(" "), n = 0;
+      var all = item.a.join(" \n ").split(" ");
+      var step = Math.max(2, Math.ceil(all.length / 40));
+      var n = 0;
       var t = setInterval(function () {
-        n += 2;
-        p.textContent = words.slice(0, n).join(" ");
+        n += step;
+        var shown = all.slice(0, n).join(" ").split(" \n ");
+        a.innerHTML = "";
+        shown.forEach(function (text, k) { paras[k].textContent = text.replace(/\n/g, ""); a.appendChild(paras[k]); });
         scrollDown();
-        if (n >= words.length) { clearInterval(t); finish(); }
+        if (n >= all.length) { clearInterval(t); finish(); }
       }, 35);
     }, 450);
   }
 
   function reset() {
     asked = [];
-    log.innerHTML = '<p class="ask-intro">Hi! Pick a question below. Every answer is written by me, not generated.</p>';
+    expanded = false;
+    log.innerHTML = INTRO;
+    live.textContent = "";
     resetBtn.hidden = true;
-    renderChips();
+    renderChips(0);
   }
 
   // Wide screens: the page slides over and the panel docks beside it, and you can keep reading.
   // Smaller screens: the panel sits on top of the page.
   var DOCK_MIN = 1200;
   var root = document.documentElement;
-  var lastFocus;
   function docked() { return window.innerWidth >= DOCK_MIN; }
   function nudgeLayout() {
-    // Let the badge and text tidy-ups re-measure while the page width changes
+    // Let the badge and text tidy-ups re-measure once the page width settles
     setTimeout(function () { window.dispatchEvent(new Event("resize")); }, 520);
   }
   function setMode() {
-    var isOpen = panel.classList.contains("is-open");
-    var dock = isOpen && docked();
+    var open = isOpen();
+    var dock = open && docked();
     root.classList.toggle("ask-docked", dock);
-    root.classList.toggle("ask-locked", isOpen && !dock);
+    root.classList.toggle("ask-locked", open && !dock);
     dialog.setAttribute("aria-modal", dock ? "false" : "true");
   }
   function isOpen() { return panel.classList.contains("is-open"); }
   function open() {
     if (isOpen()) { close(); return; }
-    lastFocus = document.activeElement;
+    dialog.inert = false;
     panel.classList.add("is-open");
     setMode();
     nudgeLayout();
     openBtn.setAttribute("aria-expanded", "true");
     setTimeout(function () { dialog.focus({ preventScroll: true }); }, 60);
-    if (typeof window.gtag === "function") window.gtag("event", "ask_open");
+    track("ask_open");
   }
   function close() {
     panel.classList.remove("is-open");
+    dialog.inert = true;
     setMode();
     nudgeLayout();
     openBtn.setAttribute("aria-expanded", "false");
-    if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+    openBtn.focus({ preventScroll: true });
   }
   var rt;
   window.addEventListener("resize", function (e) {
@@ -211,13 +294,13 @@
   resetBtn.addEventListener("click", reset);
   panel.addEventListener("click", function (e) { if (e.target.closest("[data-close]")) close(); });
   document.addEventListener("keydown", function (e) {
-    if (!panel.classList.contains("is-open")) return;
+    if (!isOpen()) return;
     if (e.key === "Escape") close();
     if (e.key === "Tab" && !root.classList.contains("ask-docked")) {
       var f = dialog.querySelectorAll("button:not([hidden]), a[href]");
       if (!f.length) return;
       var first = f[0], last = f[f.length - 1];
-      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      if (e.shiftKey && (document.activeElement === first || document.activeElement === dialog)) { e.preventDefault(); last.focus(); }
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     }
   });
