@@ -1056,3 +1056,7 @@ html.lightbox-open { overflow: hidden; }
 .cs2-jump li a:hover, .cs2-jump li a:focus-visible { background: var(--blue); }
 @media (min-width: 1240px) { .cs2-jump { display: none; } }
 @media (prefers-reduced-motion: reduce) { .cs2-jump summary::after { transition: none; } }
+
+
+/* Hero: a hand-drawn navy marker behind "make sense" */
+.hero-mark { background: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20400%20100%27%20preserveAspectRatio%3D%27none%27%3E%3Cpath%20d%3D%27M6%2038%20C%2070%2028%2C%20160%2034%2C%20250%2030%20S%20380%2026%2C%20394%2034%20L%20392%2082%20C%20300%2090%2C%20200%2084%2C%20120%2088%20S%2030%2090%2C%208%2084%20Z%27%20fill%3D%27%23112E4B%27%20fill-opacity%3D%270.55%27/%3E%3C/svg%3E") center / 100% 100% no-repeat; padding: 0 0.08em; margin: 0 -0.04em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
