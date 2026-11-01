@@ -15,7 +15,7 @@
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   // ---- sizes ----
-  var W, H, CLIP, CARD;        // badge width, card height, clip height, clip-top to card-bottom
+  var W, H, CLIP, CARD, S = 1;   // S: badge scale (smaller on phones)        // badge width, card height, clip height, clip-top to card-bottom
   var SEGMENTS = 14, ropeLen, seg;
   var anchor = { x: 0, y: 0 };
   var showPin = false;
@@ -29,9 +29,10 @@
 
     W = badge.offsetWidth;
     CLIP = parseFloat(getComputedStyle(badge).getPropertyValue("--clip")) || 34;
-    CARD = badge.offsetHeight;          // clip + card, measured from where the strap attaches
-    var s = slot.getBoundingClientRect();
     var stacked = window.innerWidth <= 820;
+    S = window.innerWidth <= 600 ? 0.72 : 1;
+    CARD = badge.offsetHeight * S;      // clip + card, measured from where the strap attaches
+    var s = slot.getBoundingClientRect();
 
     anchor.x = s.left - r.left + s.width / 2;
     if (stacked) {
@@ -235,7 +236,7 @@
 
     // place the badge so its clip sits on the end of the strap
     var top = pts[SEGMENTS], a = cardAngle();
-    badge.style.transform = "translate(" + (top.x - W / 2).toFixed(2) + "px," + top.y.toFixed(2) + "px) rotate(" + a.toFixed(4) + "rad)";
+    badge.style.transform = "translate(" + (top.x - W / 2).toFixed(2) + "px," + top.y.toFixed(2) + "px) rotate(" + a.toFixed(4) + "rad)" + (S !== 1 ? " scale(" + S + ")" : "");
     // a slight turn in 3D when it moves sideways, so it reads as a real card
     var vx = bottom.x - bottom.px;
     var turn = Math.max(-14, Math.min(14, vx * 1.4));

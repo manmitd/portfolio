@@ -1017,3 +1017,21 @@ html.lightbox-open { overflow: hidden; }
 .client-bar .cs2-progress { position: absolute; top: auto; bottom: -1px; }
 @media (prefers-reduced-motion: reduce) { .client-bar { transition: none; } }
 .cs2-section, .cs2-band, .cs2-fix { scroll-margin-top: 4rem; }
+
+/* Phones: a smaller badge and a tighter hero, so the first project shows up sooner */
+@media (max-width: 600px) {
+  .badge-slot { height: 450px; }
+  .mat-inner { padding-top: 3.75rem; padding-bottom: 1rem; }
+  .work { padding-top: 3rem; }
+}
+@media (min-width: 821px) {
+  .mat-inner { min-height: 610px; padding-top: clamp(4rem, 7vw, 5.5rem); padding-bottom: clamp(2.75rem, 5vw, 3.75rem); }
+  .work { padding-top: clamp(2.75rem, 5vw, 3.5rem); }
+}
+
+/* End-of-case-study invitation to get in touch */
+.cs2-cta { max-width: var(--col); margin: clamp(3.5rem, 8vw, 5rem) auto 0; padding-top: clamp(2.5rem, 6vw, 3.5rem); border-top: 1px solid var(--rule); text-align: center; }
+.cs2-cta h2 { margin: 0 0 0.5rem; font-family: var(--font-display); font-weight: 700; font-size: clamp(1.5rem, 3vw, 2rem); letter-spacing: -0.02em; line-height: 1.15; }
+.cs2-cta p { margin: 0 auto 1.5rem; color: var(--ink-soft); }
+.cs2-cta .inline-links { justify-content: center; }
+.cs2-cta + .cs2-next { margin-top: clamp(2.5rem, 6vw, 3.5rem); }
