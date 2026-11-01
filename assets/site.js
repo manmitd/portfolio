@@ -120,21 +120,27 @@
   function fix() {
     saved.forEach(function (s) { s.node.nodeValue = s.text; }); saved = [];
     document.querySelectorAll("main p, main li, .site-footer p").forEach(function (p) {
-      if (p.closest(".cs2-stats, .tags, .cs2-toc, .badge, .sticker-mount, .cs2-quote, .cs2-result")) return;
+      if (p.closest(".cs2-highlight, .cs2-stats, .tags, .cs2-toc, .badge, .sticker-mount, .cs2-quote, .cs2-result")) return;
       var rows = lines(p);
       if (rows.length < 2) return;
       var width = Math.max.apply(null, rows.map(function (o) { return o.right - o.left; }));
+      var cs = getComputedStyle(p), box = p.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
       var tail = rows[rows.length - 1];
       if ((tail.right - tail.left) / width >= 0.3) return;
       var node = lastText(p); if (!node) return;
       var original = node.nodeValue; saved.push({ node: node, text: original });
-      for (var k = 2; k <= 6; k++) {
-        var parts = original.replace(/\s+$/, "").split(" ");
-        if (parts.length <= k) break;
-        node.nodeValue = parts.slice(0, parts.length - k).join(" ") + " " + parts.slice(-k).join(NBSP);
-        var r2 = lines(p), t2 = r2[r2.length - 1];
-        if ((t2.right - t2.left) / width >= 0.3) break;
+      // Glue at most 3 words, and never so many that the line above ends up visibly short
+      var parts = original.replace(/\s+$/, "").split(" "), good = original;
+      for (var k = 2; k <= 3; k++) {
+        if (parts.length <= k + 3) break;
+        var tryText = parts.slice(0, parts.length - k).join(" ") + " " + parts.slice(-k).join(NBSP);
+        node.nodeValue = tryText;
+        var r2 = lines(p), t2 = r2[r2.length - 1], above = r2[r2.length - 2];
+        if (above && (above.right - above.left) / box < 0.8) break;
+        good = tryText;
+        if ((t2.right - t2.left) / width >= 0.25) break;
       }
+      node.nodeValue = good;
     });
   }
   var timer;

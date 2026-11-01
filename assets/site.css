@@ -930,8 +930,7 @@ body { background: var(--paper); color: var(--ink); }
 /* StitchLog: the winking bee is a breather, not a hero, so it takes less height */
 .cs2-sl-bee > video { display: block; max-width: 38rem; margin-inline: auto; border-radius: 14px; }
 
-/* Avoid single-word last lines in body copy */
-p { text-wrap: pretty; }
+/* Lonely last words in body copy are handled by site.js, so paragraphs keep full-width lines */
 
 /* Experience descriptions use more of the row so they wrap less */
 .role p:last-child { max-width: 46rem; }
@@ -1072,4 +1071,34 @@ html.lightbox-open { overflow: hidden; }
 @media (max-width: 760px) {
   .project-title { text-wrap: pretty; }
   .project-summary { max-width: none; }
+}
+
+/* Blue boxes: text fills the box instead of balancing into short lines, and the check mark sits centred beside it */
+.cs2-result, .cs2-callout h3 { text-wrap: pretty; }
+.cs2-result { align-items: center; }
+.cs2-result::before { margin-top: 0; }
+/* 18/20: centre the number and sentence as a pair so the box doesn't end in empty space */
+.cs2-highlight { justify-content: center; }
+@media (max-width: 480px) { .cs2-highlight { align-items: center; text-align: center; } }
+/* One-line results hug their text instead of stretching into an empty bar; they line up with the paragraph edge */
+.cs2-result { width: fit-content; }
+.cs2-section > .cs2-result, .cs2-body > .cs2-result { margin-left: max(0px, calc((100% - var(--col)) / 2)); margin-right: auto; }
+.cs2-highlight > p:last-child { flex: 0 1 auto; max-width: 21rem; text-wrap: balance; }
+/* "The problem to solve": a single statement, so it sits centred in its box */
+.cs2-callout:has(.cs2-callout-label) { text-align: center; }
+.cs2-callout:has(.cs2-callout-label) h3 { text-wrap: balance; }
+/* Next project titles split evenly instead of leaving one word behind */
+.cs2-next span { text-wrap: balance; }
+/* All image captions sit centred under their image */
+.cs2-media > figcaption { margin: 0.75rem auto 0; max-width: var(--col); text-align: center; font-size: 0.9375rem; color: var(--ink-soft); }
+/* About: on phones the company drops to its own line instead of wrapping awkwardly at the dot */
+@media (max-width: 600px) {
+  .role h3 .company { display: block; }
+  .role h3 .company-dot { display: none; }
+}
+/* Number tiles on phones: one per row, number beside its label, so long numbers never get cut off */
+@media (max-width: 560px) {
+  .cs2-stats { grid-template-columns: 1fr; }
+  .cs2-stats li { display: flex; align-items: center; gap: 1rem; }
+  .cs2-stats b { flex: none; min-width: 5.5ch; margin-bottom: 0; }
 }
