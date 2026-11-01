@@ -278,6 +278,9 @@
 
   function open(img) {
     opener = img;
+    if (typeof window.gtag === "function") {
+      gtag("event", "image_zoom", { case_study: (document.title.split(" | ")[0] || "").slice(0, 100), image: img.alt.slice(0, 100) });
+    }
     big.src = biggest(img); big.alt = img.alt;
     box.classList.remove("is-full");
     box.hidden = false;
@@ -331,4 +334,47 @@
   meta.insertAdjacentElement("afterend", d);
   d.addEventListener("click", function (e) { if (e.target.closest("a")) d.open = false; });
   document.addEventListener("click", function (e) { if (d.open && !d.contains(e.target)) d.open = false; });
+})();
+
+// Analytics: how far people read. Which case study sections they reach, how far down each page they get,
+// and whether they use the reading shortcuts. Each is logged once per page view.
+(function () {
+  if (typeof window.gtag !== "function") return;
+  var page = (document.title.split(" | ")[0] || location.pathname).slice(0, 100);
+
+  // Scroll milestones
+  var marks = [25, 50, 75], sent = {}, ticking = false;
+  function checkScroll() {
+    ticking = false;
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    if (max <= 0) return;
+    var pct = (window.scrollY / max) * 100;
+    marks.forEach(function (m) {
+      if (pct >= m && !sent[m]) { sent[m] = true; gtag("event", "scroll_depth", { percent: m, page_title_short: page }); }
+    });
+  }
+  window.addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(checkScroll); } }, { passive: true });
+
+  // Case study sections reached (labels come from the contents list)
+  var toc = document.querySelectorAll(".cs2-toc a[href^='#']");
+  if (toc.length && "IntersectionObserver" in window) {
+    var labels = {};
+    toc.forEach(function (a) { labels[a.getAttribute("href").slice(1)] = a.textContent.trim(); });
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        io.unobserve(e.target);
+        gtag("event", "section_reached", { case_study: page, section: labels[e.target.id] || e.target.id });
+      });
+    }, { rootMargin: "0px 0px -40% 0px" });
+    Object.keys(labels).forEach(function (id) { var el = document.getElementById(id); if (el) io.observe(el); });
+  }
+
+  // Reading shortcuts
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest("a[href^='#']");
+    if (!a) return;
+    if (a.closest(".cs2-meta")) gtag("event", "skip_to_results", { case_study: page });
+    else if (a.closest(".cs2-jump")) gtag("event", "jump_to_section", { case_study: page, section: a.textContent.trim().slice(0, 100) });
+  });
 })();
