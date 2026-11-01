@@ -316,3 +316,19 @@
     if (e.key === "Tab") { e.preventDefault(); closeBtn.focus(); }
   });
 })();
+
+// "Jump to section" for case studies on screens where the side contents list is hidden.
+(function () {
+  var toc = document.querySelector(".cs2-toc ol");
+  var meta = document.querySelector(".cs2-head .cs2-meta");
+  if (!toc || !meta) return;
+  var d = document.createElement("details");
+  d.className = "cs2-jump";
+  d.innerHTML = "<summary>Jump to section</summary>";
+  var list = toc.cloneNode(true);
+  list.querySelectorAll("a").forEach(function (a) { a.classList.remove("is-active"); });
+  d.appendChild(list);
+  meta.insertAdjacentElement("afterend", d);
+  d.addEventListener("click", function (e) { if (e.target.closest("a")) d.open = false; });
+  document.addEventListener("click", function (e) { if (d.open && !d.contains(e.target)) d.open = false; });
+})();

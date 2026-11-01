@@ -1035,3 +1035,24 @@ html.lightbox-open { overflow: hidden; }
 .cs2-cta p { margin: 0 auto 1.5rem; color: var(--ink-soft); }
 .cs2-cta .inline-links { justify-content: center; }
 .cs2-cta + .cs2-next { margin-top: clamp(2.5rem, 6vw, 3.5rem); }
+
+/* About: descriptions and case study links under each role */
+.role > p:not(.when) { grid-column: 1 / -1; margin: 0.35rem 0 0; max-width: 46rem; color: var(--ink-soft); }
+.role > p.role-links { margin-top: 0.6rem; font-size: 0.9375rem; }
+.role-links a { color: var(--forest); font-weight: 600; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+.role-links a:hover { text-decoration-thickness: 2px; }
+
+/* Case studies: "Jump to section" menu where the side contents list isn't shown */
+.cs2-jump { max-width: 22rem; margin: 1rem auto 0; text-align: left; font-size: 0.9375rem; }
+.cs2-jump summary {
+  display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; cursor: pointer; list-style: none;
+  padding: 0.6rem 1rem; border: 1px solid var(--rule); border-radius: 999px; background: #fff; color: var(--forest); font-weight: 600;
+}
+.cs2-jump summary::-webkit-details-marker { display: none; }
+.cs2-jump summary::after { content: ""; width: 8px; height: 8px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg) translateY(-2px); transition: transform 0.2s ease; }
+.cs2-jump[open] summary::after { transform: rotate(-135deg) translateY(-2px); }
+.cs2-jump ol { list-style: none; margin: 0.5rem 0 0; padding: 0.4rem; border: 1px solid var(--rule); border-radius: 16px; background: #fff; box-shadow: 0 10px 30px rgba(17,46,75,0.08); }
+.cs2-jump li a { display: block; padding: 0.55rem 0.75rem; border-radius: 10px; color: var(--ink); text-decoration: none; line-height: 1.3; }
+.cs2-jump li a:hover, .cs2-jump li a:focus-visible { background: var(--blue); }
+@media (min-width: 1240px) { .cs2-jump { display: none; } }
+@media (prefers-reduced-motion: reduce) { .cs2-jump summary::after { transition: none; } }
