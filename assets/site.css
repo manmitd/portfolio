@@ -1067,3 +1067,9 @@ html.lightbox-open { overflow: hidden; }
   .hero-mark::before { animation: hero-mark-draw 0.75s cubic-bezier(.45,.05,.25,1) 0.6s both; }
   @keyframes hero-mark-draw { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
 }
+
+/* Homepage cards on phones: use the full width instead of balanced short lines */
+@media (max-width: 760px) {
+  .project-title { text-wrap: pretty; }
+  .project-summary { max-width: none; }
+}
