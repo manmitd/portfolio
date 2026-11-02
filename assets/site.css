@@ -1225,3 +1225,4 @@ html.ask-docked body { box-shadow: none; border-radius: 0 20px 20px 0; }
 .ask-q { border-radius: 14px; }
 .ask-more { color: var(--ink-soft); }
 html.ask-docked .ask-panel { box-shadow: -1px 0 0 #ECECEC; }
+.ask-q { background: #1A1A1A; }
