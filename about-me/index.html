@@ -94,13 +94,6 @@
     </div>
   </section>
 
-  <section class="sticker-section" aria-labelledby="sticker-title">
-    <h2 id="sticker-title">Grab a sticker before you go</h2>
-    <p>I built this little sticker machine for fun. You get three coins. Drop one onto a slider, push it in, pull it back out, and open your packet to see which sticker you got.</p>
-    <div class="sticker-mount" data-sticker-stop data-src="../assets/img/stickers/">
-      <noscript><p>Turn on JavaScript to use the sticker machine.</p></noscript>
-    </div>
-  </section>
 </main>
 
 <footer class="site-footer">
@@ -119,24 +112,5 @@
     </ul>
   </div>
 </footer>
-<script>
-// Load the sticker machine only on larger screens, and only when someone scrolls near it, so it never slows down the page.
-(function () {
-  var m = document.querySelector("[data-sticker-stop]");
-  if (!m) return;
-  var big = window.matchMedia("(min-width: 761px)");
-  var started = false;
-  function load() { var s = document.createElement("script"); s.src = "../assets/sticker-stop.js"; document.body.appendChild(s); }
-  function start() {
-    if (started || !big.matches) return;
-    started = true;
-    if (!("IntersectionObserver" in window)) { load(); return; }
-    var io = new IntersectionObserver(function (e) { if (e[0].isIntersecting) { io.disconnect(); load(); } }, { rootMargin: "400px 0px" });
-    io.observe(m);
-  }
-  start();
-  if (big.addEventListener) big.addEventListener("change", start);
-})();
-</script>
 </body>
 </html>
