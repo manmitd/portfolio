@@ -5,7 +5,7 @@
     {
       q: "What are you working on right now?",
       a: ["I'm currently the Lead Product Designer at Sewjo, where I started as the first product designer and helped build the product from the ground up. These days, I lead design across our mobile apps, web experiences, and internal tools. I also mentor junior designers, which has been a really rewarding part of the role!"],
-      links: [["See the Merchant Dashboard", "/sewjo-merchant-dashboard/"]]
+      links: []
     },
     {
       q: "What kind of role are you looking for?",
@@ -26,7 +26,7 @@
         "A little bit of everything! I've designed AI-powered experiences, but I also use tools like Claude and Cursor to prototype ideas, experiment with interactions, and sometimes build working interfaces.",
         "I love being able to test an idea instead of just describing it. That said, I still rely on research, testing, and my own judgement to figure out what actually makes sense for users."
       ],
-      links: [["Explore Wildlight", "/accenture/"]]
+      links: []
     },
     {
       q: "How can I reach you?",
@@ -42,7 +42,7 @@
         "I like bringing engineers into the conversation early rather than handing over a finished design and hoping everything works out. We talk through ideas, technical constraints, and trade-offs together.",
         "I'm also pretty hands-on with prototypes and implementation. At Sewjo, I helped build our design system in Storybook, and I regularly work with developers through QA to make sure the final experience feels right."
       ],
-      links: [["See the project", "/sewjo-challenges/"]]
+      links: []
     },
     {
       q: "How do you approach a new design problem?",
@@ -50,7 +50,7 @@
         "I usually start by asking a lot of questions. What problem are we actually trying to solve? Who's experiencing it? And how do we know it's a problem in the first place?",
         "From there, I like exploring ideas quickly, testing assumptions, and getting feedback early. I don't think design ends when something ships either. Some of the most interesting improvements happen once real people start using it."
       ],
-      links: [["See the project", "/sewjo-merchant-dashboard/"]]
+      links: []
     },
     {
       q: "What do you do when you're not designing?",
