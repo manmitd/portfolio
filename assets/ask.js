@@ -68,7 +68,7 @@
     "/sewjo/": { title: "Making project tracking feel effortless", where: "Sewjo, StitchLog", img: "/assets/img/sl-cover-card.webp", top: true }
   };
 
-  var INTRO = '<div class="ask-intro"><p><strong>Hey, I\'m Manmit! <span aria-hidden="true">👋</span></strong></p>' +
+  var INTRO = '<div class="ask-intro"><p><strong>Hey, I\'m Manmit! <span class="ask-thought" aria-hidden="true"></span></strong></p>' +
     '<p>Curious about my work or what I\'m like beyond the pixels? Pick a question below!</p></div>';
 
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;

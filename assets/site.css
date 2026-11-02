@@ -1245,3 +1245,5 @@ html.ask-docked .ask-panel { box-shadow: -1px 0 0 #ECECEC; }
   .mat-inner { padding-top: clamp(3rem, 5vw, 4rem); padding-bottom: clamp(2.5rem, 4.5vw, 3.25rem); }
   .mat-inner { min-height: 540px; }
 }
+/* Hand-drawn thought bubble after "Hey, I'm Manmit!" */
+.ask-thought { display: inline-block; width: 1.5em; height: 1.5em; margin-left: 0.2em; vertical-align: -0.45em; background: currentColor; -webkit-mask: url("img/thought.png") center / contain no-repeat; mask: url("img/thought.png") center / contain no-repeat; }
