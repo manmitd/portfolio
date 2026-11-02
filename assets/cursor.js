@@ -19,6 +19,11 @@
   document.documentElement.classList.add("has-cur");
 
   var current = "", timer = null;
+  // "Flip me" is a hint, not a nag: it shows for a couple of seconds each time you reach the badge,
+  // never while you're dragging it, and stops for good once you've flipped it.
+  var badgeFlipped = false, badgeHintTimer = null, badgeHintSpent = false, onBadge = false;
+  var badgeEl = document.querySelector(".badge");
+  if (badgeEl) badgeEl.addEventListener("click", function () { badgeFlipped = true; });
   function typeOut(text) {
     clearInterval(timer);
     current = text;
@@ -39,6 +44,15 @@
     cur.classList.add("is-on");
     var t = e.target, text = "";
     for (var i = 0; i < LABELS.length; i++) if (t.closest(LABELS[i][0])) { text = LABELS[i][1]; break; }
+    var nowOnBadge = !!t.closest(".badge");
+    if (nowOnBadge && !onBadge) {
+      badgeHintSpent = false;
+      clearTimeout(badgeHintTimer);
+      badgeHintTimer = setTimeout(function () { badgeHintSpent = true; if (current === "Flip me") clearLabel(); }, 2200);
+    }
+    if (!nowOnBadge) clearTimeout(badgeHintTimer);
+    onBadge = nowOnBadge;
+    if (text === "Flip me" && (badgeFlipped || badgeHintSpent || (badgeEl && badgeEl.classList.contains("is-dragging")) || e.buttons)) text = "";
     if (text && text !== current) typeOut(text);
     if (!text && current) clearLabel();
     cur.classList.toggle("is-link", !!t.closest(CLICKABLE));
