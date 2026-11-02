@@ -1226,3 +1226,22 @@ html.ask-docked body { box-shadow: none; border-radius: 0 20px 20px 0; }
 .ask-more { color: var(--ink-soft); }
 html.ask-docked .ask-panel { box-shadow: -1px 0 0 #ECECEC; }
 .ask-q { background: #1A1A1A; }
+
+/* Homepage hero without buttons: tighter, so the first project shows sooner */
+.hero-now { margin-bottom: 0; }
+@media (min-width: 821px) {
+  .mat-inner { min-height: 540px; padding-top: clamp(3.5rem, 6vw, 4.75rem); padding-bottom: clamp(3rem, 5vw, 4rem); }
+  .work { padding-top: clamp(2.25rem, 4vw, 3rem); }
+}
+@media (max-width: 820px) { .mat-inner { padding-bottom: 0.5rem; } }
+@media (min-width: 821px) {
+  .hero-title { font-size: clamp(2.6rem, 6.2vw, 5.25rem); }
+  .mat-inner { min-height: 500px; }
+}
+.work-heading { margin-bottom: clamp(1.25rem, 2.5vw, 1.75rem); }
+.work-heading + .project { padding-top: clamp(1.25rem, 2.5vw, 1.75rem); }
+@media (min-width: 821px) {
+  .hero-title { max-width: 19ch; font-size: clamp(2.6rem, 5.6vw, 4.75rem); }
+  .mat-inner { padding-top: clamp(3rem, 5vw, 4rem); padding-bottom: clamp(2.5rem, 4.5vw, 3.25rem); }
+  .mat-inner { min-height: 540px; }
+}

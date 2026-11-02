@@ -30,7 +30,7 @@
     W = badge.offsetWidth;
     CLIP = parseFloat(getComputedStyle(badge).getPropertyValue("--clip")) || 34;
     var stacked = window.innerWidth <= 820;
-    S = window.innerWidth <= 600 ? 0.72 : 1;
+    S = window.innerWidth <= 600 ? 0.72 : 0.86;
     CARD = badge.offsetHeight * S;      // clip + card, measured from where the strap attaches
     var s = slot.getBoundingClientRect();
 
