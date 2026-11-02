@@ -38,10 +38,7 @@
     },
     {
       q: "How do you work with engineers?",
-      a: [
-        "I like bringing engineers into the conversation early rather than handing over a finished design and hoping everything works out. We talk through ideas, technical constraints, and trade-offs together.",
-        "I'm also pretty hands-on with prototypes and implementation. At Sewjo, I helped build our design system in Storybook, and I regularly work with developers through QA to make sure the final experience feels right."
-      ],
+      a: ["I like bringing engineers into the process early so we can work through ideas, technical constraints, and trade-offs together. I try to make things easier by thinking through edge cases, building prototypes, and making sure designs are clear. I also stay involved during development because I think the best results come from working together, not just handing things off."],
       links: []
     },
     {
