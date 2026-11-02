@@ -21,9 +21,11 @@
   var current = "", timer = null;
   // "Flip me" is a hint, not a nag: it shows for a couple of seconds each time you reach the badge,
   // never while you're dragging it, and stops for good once you've flipped it.
-  var badgeFlipped = false, badgeHintTimer = null, badgeHintSpent = false, onBadge = false;
+  // It also comes back if you leave the badge alone for a while.
+  var REST = 20000;
+  var badgeFlipped = false, badgeHintTimer = null, badgeHintSpent = false, onBadge = false, lastTouch = 0;
   var badgeEl = document.querySelector(".badge");
-  if (badgeEl) badgeEl.addEventListener("click", function () { badgeFlipped = true; });
+  if (badgeEl) badgeEl.addEventListener("pointerdown", function () { badgeFlipped = true; lastTouch = Date.now(); });
   function typeOut(text) {
     clearInterval(timer);
     current = text;
@@ -36,7 +38,17 @@
       if (n >= text.length) clearInterval(timer);
     }, 22);
   }
-  function clearLabel() { clearInterval(timer); current = ""; label.textContent = ""; }
+  // Hiding "un-types" the text quickly, so it never just vanishes
+  function clearLabel() {
+    clearInterval(timer);
+    current = "";
+    if (reduce) { label.textContent = ""; return; }
+    timer = setInterval(function () {
+      var t = label.textContent;
+      label.textContent = t.slice(0, Math.max(0, t.length - 2));
+      if (!label.textContent) clearInterval(timer);
+    }, 16);
+  }
 
   document.addEventListener("pointermove", function (e) {
     if (e.pointerType && e.pointerType !== "mouse") return;
@@ -47,10 +59,12 @@
     var nowOnBadge = !!t.closest(".badge");
     if (nowOnBadge && !onBadge) {
       badgeHintSpent = false;
+      if (badgeFlipped && Date.now() - lastTouch > REST) badgeFlipped = false;
       clearTimeout(badgeHintTimer);
       badgeHintTimer = setTimeout(function () { badgeHintSpent = true; if (current === "Flip me") clearLabel(); }, 2200);
     }
     if (!nowOnBadge) clearTimeout(badgeHintTimer);
+    if (onBadge && !nowOnBadge) lastTouch = Math.max(lastTouch, Date.now() - (badgeFlipped ? 0 : REST));
     onBadge = nowOnBadge;
     if (text === "Flip me" && (badgeFlipped || badgeHintSpent || (badgeEl && badgeEl.classList.contains("is-dragging")) || e.buttons)) text = "";
     if (text && text !== current) typeOut(text);
