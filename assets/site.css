@@ -1248,25 +1248,6 @@ html.ask-docked .ask-panel { box-shadow: -1px 0 0 #ECECEC; }
 /* Hand-drawn thought bubble after "Hey, I'm Manmit!" */
 .ask-thought { display: inline-block; width: 1.5em; height: 1.5em; margin-left: 0.2em; vertical-align: -0.45em; background: currentColor; -webkit-mask: url("img/thought.png") center / contain no-repeat; mask: url("img/thought.png") center / contain no-repeat; }
 
-/* ---------- Trailing cursor (assets/cursor.js) ---------- */
-.cur { position: fixed; top: 0; left: 0; z-index: 200; pointer-events: none; opacity: 0; transition: opacity 0.2s ease; will-change: transform; }
-.cur.is-on { opacity: 1; }
-.cur::before {
-  content: ""; position: absolute; left: 14px; top: 14px; width: 11px; height: 11px; border-radius: 3px;
-  background: #5277A0; transform: rotate(-12deg);
-  transition: transform 0.35s cubic-bezier(.32,.72,0,1), width 0.3s cubic-bezier(.32,.72,0,1), height 0.3s cubic-bezier(.32,.72,0,1), opacity 0.2s, background 0.2s;
-}
-.cur.is-link::before { width: 16px; height: 16px; transform: rotate(8deg); }
-.cur.is-down::before { transform: rotate(-12deg) scale(0.7); }
-.cur.on-blue::before { background: #fff; }
-.cur-label {
-  position: absolute; left: 12px; top: 12px; display: block; white-space: nowrap;
-  padding: 0.4rem 0.8rem; border-radius: 999px; background: #5277A0; color: #fff;
-  font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.005em;
-  opacity: 0; transform: rotate(-4deg) scale(0.4); transform-origin: 0 0;
-  transition: opacity 0.2s ease, transform 0.35s cubic-bezier(.32,.72,0,1);
-}
-.cur.is-label .cur-label { opacity: 1; transform: rotate(-4deg) scale(1); }
-.cur.is-label::before { opacity: 0; transform: rotate(-12deg) scale(0.4); }
-.cur.on-blue .cur-label { background: #fff; color: #112E4B; }
-@media (prefers-reduced-motion: reduce) { .cur::before, .cur-label { transition: opacity 0.2s; } }
+/* Cursor: a small tilted dusty blue square, cursor-sized. The white edge keeps it visible on the blue hero. */
+html, body { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect x='5' y='5' width='14' height='14' rx='3.5' transform='rotate(-12 12 12)' fill='%235277A0' stroke='%23fff' stroke-width='1.5'/%3E%3C/svg%3E") 12 12, auto; }
+a, button, [role="button"], summary, label, .zoomable, .badge { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect x='5' y='5' width='14' height='14' rx='3.5' transform='rotate(8 12 12)' fill='%235277A0' stroke='%23fff' stroke-width='1.5'/%3E%3C/svg%3E") 12 12, pointer !important; }
