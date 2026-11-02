@@ -4,7 +4,7 @@
   if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var LABELS = [
-    [".project, .cs2-next, .ask-case", "View case study"],
+    [".project-media, .cs2-next img, .ask-case img", "View case study"],
     [".badge", "Flip me"]
   ];
   var el = document.createElement("div");
