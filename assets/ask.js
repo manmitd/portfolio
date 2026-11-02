@@ -128,7 +128,7 @@
       b.className = "ask-chip";
       b.dataset.i = i;
       b.innerHTML = '<span aria-hidden="true">↳</span> ' + QA[i].q;
-      b.addEventListener("click", function () { ask(i); });
+      b.addEventListener("click", function (e) { ask(i, e.detail === 0); });
       chips.appendChild(b);
     });
     if (collapsible) {
@@ -183,7 +183,7 @@
     }
   }
 
-  function ask(i) {
+  function ask(i, viaKeys) {
     if (busy) return;
     busy = true;
     asked.push(i);
@@ -202,8 +202,9 @@
 
     // Keep keyboard focus in the question list: move to the next question in line
     var left = remaining();
-    renderChips(left.length ? left[0] : undefined);
-    if (!left.length) dialog.focus({ preventScroll: true });
+    // Keyboard users land on the next question; mouse users don't get a focus ring
+    renderChips(viaKeys && left.length ? left[0] : undefined);
+    if (viaKeys && !left.length) dialog.focus({ preventScroll: true });
     scrollDown();
 
     var paras = item.a.map(function () { var p = document.createElement("p"); return p; });

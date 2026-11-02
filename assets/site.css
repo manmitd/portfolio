@@ -1209,3 +1209,19 @@ html.ask-docked .mat-inner { gap: 0; }
 /* Long questions wrap under their own text, not under the arrow */
 .ask-chip { display: flex; gap: 0.45rem; align-items: baseline; }
 .ask-chip span { flex: none; margin-right: 0; }
+
+/* Ask Manmit, cleaner: white panel, no divider lines, neutral grey gap instead of blue-grey */
+html.ask-docked { background: #F2F2F2; }
+.ask-panel, html.ask-docked .ask-panel { background: #fff; }
+html.ask-docked body { box-shadow: none; border-radius: 0 20px 20px 0; }
+.ask-head { border-bottom: 0; padding: 1.25rem 1rem 0.5rem 1.5rem; }
+.ask-head h2 { font-family: var(--font); font-weight: 600; font-size: 1.0625rem; letter-spacing: 0; color: var(--ink); }
+.ask-head button { color: var(--ink-soft); }
+.ask-head button:hover { background: #F2F2F2; color: var(--ink); }
+.ask-chips { border-top: 0; padding-top: 0.25rem; }
+.ask-chip:hover, .ask-chip:focus-visible { background: #F4F4F4; }
+.ask-chip span { color: #9AA0A6; }
+.ask-intro strong { color: var(--ink); }
+.ask-q { border-radius: 14px; }
+.ask-more { color: var(--ink-soft); }
+html.ask-docked .ask-panel { box-shadow: -1px 0 0 #ECECEC; }
