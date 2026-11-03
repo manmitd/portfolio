@@ -1415,3 +1415,27 @@ body { background-image: none; background-attachment: scroll; }
 
 /* Case studies keep their original type: Inter for text, Inter Tight for headings */
 body:has(main.cs2) { --font: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif; --font-display: "Inter Tight", "Inter", system-ui, sans-serif; }
+
+/* Phone dock: on Home and About only, and it holds still while the page changes underneath */
+@media (max-width: 760px) {
+  body:has(.dock) .site-nav { display: none; }
+  body:has(.dock) .work-panel, body:has(.dock) main { padding-bottom: 5rem; }
+  .dock { view-transition-name: dock; }
+  .dock .on { view-transition-name: dock-pill; }
+  .dock a, .dock button { transition: background 0.25s ease, color 0.25s ease; }
+}
+::view-transition-group(dock), ::view-transition-group(dock-pill) { animation-duration: 0.45s; animation-timing-function: cubic-bezier(.32,.72,0,1); }
+
+/* Phone hero: name, then the sand, then the headline and details underneath */
+@media (max-width: 900px) {
+  .sand-inner { display: flex; flex-direction: column; align-items: center; gap: 0; padding-top: 2rem; padding-bottom: 3rem; }
+  .sand-left, .sand-right { display: contents; }
+  .sand-hi { order: 1; margin-bottom: 1rem; }
+  .sand-stage { order: 2; margin-bottom: 1.25rem; }
+  .sand-left .sand-big { order: 3; }
+  .sand-right .sand-big { order: 4; }
+  .sand-left .sand-sub { order: 5; margin-top: 1.25rem; }
+  .sand-right .sand-sub { order: 6; margin-top: 0.35rem; }
+  .sand-big br { display: none; }
+  .sand-big { white-space: normal; text-align: center; font-size: clamp(2.4rem, 11vw, 3.4rem); line-height: 1.02; }
+}
