@@ -31,13 +31,17 @@
   var links = document.querySelectorAll(".cs2-toc a[href^='#']");
   if (!links.length || !("IntersectionObserver" in window)) return;
   var map = {};
-  links.forEach(function (a) { var el = document.getElementById(a.getAttribute("href").slice(1)); if (el) map[el.id] = a; });
-  var current = null;
+  // Each side panel item can cover several sections (data-sections), so any of them lights it up
+  links.forEach(function (a) {
+    var ids = (a.getAttribute("data-sections") || a.getAttribute("href").slice(1)).split(" ");
+    ids.forEach(function (id) { if (document.getElementById(id)) map[id] = a; });
+  });
+  var current = links[0]; current.classList.add("is-active");   // start on the first item at the top of the page
   var io = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
       if (e.isIntersecting) {
         if (current) current.classList.remove("is-active");
-        current = map[e.target.id]; current.classList.add("is-active");
+        if (current) current.classList.remove("is-active"); current = map[e.target.id]; current.classList.add("is-active");
       }
     });
   }, { rootMargin: "-30% 0px -60% 0px" });

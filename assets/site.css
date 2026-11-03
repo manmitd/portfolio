@@ -1439,3 +1439,7 @@ body:has(main.cs2) { --font: "Inter", system-ui, -apple-system, "Segoe UI", sans
   .sand-big br { display: none; }
   .sand-big { white-space: normal; text-align: center; font-size: clamp(2.4rem, 11vw, 3.4rem); line-height: 1.02; }
 }
+
+/* Case study side panel: the same six labels on every case study, in the mono label style */
+.cs2-toc ol a { font-family: var(--f-mono); font-size: 0.8125rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.cs2-toc ol a.is-active { color: var(--dusty); }
