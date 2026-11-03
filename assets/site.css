@@ -1272,3 +1272,4 @@ html.has-cur, html.has-cur * { cursor: none !important; }
 .project-media::after { content: ""; position: absolute; inset: 0; background: rgba(255, 255, 255, 0.62); opacity: 0; transition: opacity 0.3s ease; pointer-events: none; }
 .project:hover .project-media::after { opacity: 1; }
 .project:hover .project-media img { transform: none; }
+.badge, .badge-tilt { will-change: transform; }

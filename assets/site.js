@@ -75,7 +75,7 @@
   var css = document.querySelector('link[rel="stylesheet"][href*="site.css"]');
   if (!css) return;
   var base = css.getAttribute("href").replace("site.css", "");           // "assets/" or "../assets/"
-  var covers = { "accenture": "img/wl-cover.webp", "sewjo-challenges": "img/ch-cover.webp", "sewjo-merchant-dashboard": "img/sb-cover.webp", "sewjo/": "img/sl-cover.webp" };
+  var covers = { "accenture": "img/wl-cover-v3.webp", "sewjo-challenges": "img/ch-cover-v2.webp", "sewjo-merchant-dashboard": "img/sb-cover-v2.webp", "sewjo/": "img/sl-cover.webp" };
   var done = {};
   function warm(href) {
     if (!href || done[href]) return; done[href] = true;
