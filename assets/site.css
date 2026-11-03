@@ -1273,3 +1273,86 @@ html.has-cur, html.has-cur * { cursor: none !important; }
 .project:hover .project-media::after { opacity: 1; }
 .project:hover .project-media img { transform: none; }
 .badge, .badge-tilt { will-change: transform; }
+
+/* ---------- Homepage: drafting-paper hero with sand (assets/sand.js) ---------- */
+@font-face { font-family: "Instrument Sans"; src: url("fonts/instrument-sans-latin-wght-normal.woff2") format("woff2"); font-weight: 400 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Instrument Serif"; src: url("fonts/instrument-serif-latin-400-italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: "DM Mono"; src: url("fonts/dm-mono-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "DM Mono"; src: url("fonts/dm-mono-latin-500-normal.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+:root {
+  --paper-grid: #F6F7F9; --grid-line: rgba(82, 119, 160, 0.055); --grid-line-strong: rgba(82, 119, 160, 0.11);
+  --navy: #112E4B; --dusty: #5277A0; --mono-label: #6E7F91;
+  --f-sans: "Instrument Sans", "Inter", system-ui, sans-serif;
+  --f-serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+  --f-mono: "DM Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.hero-stick { position: sticky; top: 0; z-index: 0; }
+.hero {
+  position: relative; min-height: min(92vh, 860px); display: flex; flex-direction: column;
+  background-color: var(--paper-grid);
+  background-image:
+    linear-gradient(var(--grid-line-strong) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line-strong) 1px, transparent 1px),
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px;
+  background-position: -1px -1px;
+  transform-origin: 50% 0;
+}
+/* a whisper of grain over the paper */
+.hero::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: 0.5; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.07 0 0 0 0 0.18 0 0 0 0 0.29 0 0 0 0.09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+.sand-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+.hero > .site-header, .hero > .sand-inner { position: relative; z-index: 2; }
+.hero .site-header { padding-block: 1.5rem; }
+.hero .site-header .wrap { max-width: none; padding-inline: clamp(1.25rem, 3vw, 2.5rem); }
+.hero .wordmark { font-family: var(--f-mono); font-weight: 500; font-size: 0.9375rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--navy); }
+.hero .site-nav a, .hero .ask-open { font-family: var(--f-mono); font-size: 0.8125rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--navy); }
+.hero .ask-open:hover, .hero .ask-open[aria-expanded="true"] { color: var(--dusty); }
+
+.sand-inner { flex: 1; width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: clamp(0.75rem, 2vw, 2.5rem); padding: 1rem clamp(1.25rem, 4vw, 4rem) 4.5rem; }
+.sand-side { min-width: 0; color: var(--navy); }
+.sand-left { justify-self: end; }
+.sand-right { justify-self: start; }
+.sand-hi, .sand-sub { margin: 0; font-family: var(--f-mono); font-size: 0.9375rem; letter-spacing: 0.02em; color: var(--mono-label); }
+.sand-hi { margin-bottom: 0.9rem; color: var(--navy); }
+.sand-sub { margin-top: 1rem; }
+.sand-sub a { color: var(--dusty); text-decoration: none; }
+.sand-sub a:hover { text-decoration: underline; }
+.sand-big { margin: 0; font-family: var(--f-sans); font-weight: 450; font-size: clamp(2.6rem, 6vw, 6.25rem); line-height: 0.98; letter-spacing: -0.035em; white-space: nowrap; text-wrap: nowrap; }
+.sand-big em { font-family: var(--f-serif); font-style: italic; font-weight: 400; letter-spacing: -0.01em; color: var(--dusty); }
+.sand-stage { width: clamp(260px, 28vw, 420px); aspect-ratio: 1; }
+
+/* The work list slides up over the hero */
+.work-panel { position: relative; z-index: 2; background: var(--paper); border-radius: 28px 28px 0 0; box-shadow: 0 -16px 40px rgba(17, 46, 75, 0.07); }
+.work-panel .work { padding-top: clamp(2.75rem, 5vw, 3.75rem); }
+
+/* Phones: stacked hero, bottom dock instead of the top links */
+.dock { display: none; }
+@media (max-width: 900px) {
+  .sand-inner { grid-template-columns: 1fr; justify-items: center; text-align: center; padding-top: 1.5rem; }
+  .sand-left, .sand-right { justify-self: center; }
+  .sand-stage { width: min(76vw, 340px); }
+}
+@media (max-width: 760px) {
+  .hero-stick { position: relative; }
+  .hero { min-height: 0; }
+  .hero .site-nav { display: none; }
+  .work-panel { border-radius: 0; box-shadow: none; padding-bottom: 4.5rem; }
+  .dock { display: flex; position: fixed; z-index: 50; left: 50%; transform: translateX(-50%); bottom: calc(14px + env(safe-area-inset-bottom, 0px)); gap: 0.2rem; padding: 0.35rem; border-radius: 999px; background: rgba(255, 255, 255, 0.94); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); box-shadow: 0 8px 28px rgba(17, 46, 75, 0.16); }
+  .dock a, .dock button { padding: 0.55rem 0.8rem; border: 0; border-radius: 999px; background: none; font-family: var(--f-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--navy); text-decoration: none; cursor: pointer; }
+  .dock .on { background: var(--navy); color: #fff; }
+}
+
+/* About: the work badge hangs where the photo used to be */
+.about-intro { position: relative; grid-template-columns: 300px minmax(0, 1fr); min-height: 600px; align-items: center; }
+.about-intro .badge-slot { align-self: stretch; min-height: 560px; }
+.about-intro .badge-stage { position: absolute; inset: -5rem 0 0 0; z-index: 2; pointer-events: none; }
+@media (max-width: 820px) {
+  .about-intro { grid-template-columns: 1fr; min-height: 0; }
+  .about-intro .badge-slot { min-height: 0; height: 520px; }
+  .about-intro .badge-stage { inset: 0; }
+}
+@media (max-width: 600px) { .about-intro .badge-slot { height: 450px; } }

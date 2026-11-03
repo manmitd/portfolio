@@ -39,7 +39,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicon-192.png">
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 <link rel="stylesheet" href="assets/site.css">
-<script src="assets/badge.js" defer></script>
+<script src="assets/sand.js" defer></script>
 <script src="assets/ask.js" defer></script>
 <script src="assets/cursor.js" defer></script>
 <script src="assets/site.js" defer></script>
@@ -47,78 +47,39 @@
 <body>
 <a class="skip" href="#main">Skip to content</a>
 
-<header class="site-header">
-  <div class="wrap">
-    <a class="wordmark" href="./">Manmit Dhindsa</a>
-    <nav class="site-nav" aria-label="Main">
-      <ul>
-        <li><a href="about-me/">About</a></li>
-        <li><a href="#work">Work</a></li>
-        <li><a href="s/Manmit-Dhindsa-Resume.pdf" target="_blank" rel="noopener">Resume</a></li>
-        <li><a href="https://www.linkedin.com/in/manmit-dhindsa/">LinkedIn</a></li>
-      </ul>
-    </nav>
-  </div>
-</header>
-
 <main id="main">
-  <section class="mat" aria-labelledby="hero-title">
-    <div class="ruler ruler-top" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span></div>
-    <div class="ruler ruler-left" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
-
-    <div class="mat-inner">
-      <div>
-        <h1 class="hero-title" id="hero-title">Turning complex problems into products that <span class="hero-mark">make sense</span>.</h1>
-        <p class="hero-lede">I'm a product designer with 5+ years of experience across B2C apps, B2B SaaS platforms, and AI&#8209;powered experiences.</p>
-        <p class="hero-now">Currently leading product design at <a href="https://apps.apple.com/app/id6737978613">Sewjo</a>, shaping the product from its earliest stages through launch and growth.</p>
+  <div class="hero-stick">
+    <section class="hero" aria-labelledby="hero-title">
+      <canvas class="sand-canvas" data-sand aria-hidden="true"></canvas>
+      <header class="site-header">
+        <div class="wrap">
+          <a class="wordmark" href="./">Manmit Dhindsa</a>
+          <nav class="site-nav" aria-label="Main">
+            <ul>
+              <li><a href="about-me/">About</a></li>
+              <li><a href="#work">Work</a></li>
+              <li><a href="s/Manmit-Dhindsa-Resume.pdf" target="_blank" rel="noopener">Resume</a></li>
+              <li><a href="https://www.linkedin.com/in/manmit-dhindsa/">LinkedIn</a></li>
+            </ul>
+          </nav>
+        </div>
+      </header>
+      <div class="sand-inner">
+        <div class="sand-side sand-left">
+          <p class="sand-hi">hi, i'm manmit,</p>
+          <h1 class="sand-big" id="hero-title">Complex<br>problems,<span class="visually-hidden"> made simple.</span></h1>
+          <p class="sand-sub">product designer</p>
+        </div>
+        <div class="sand-stage" aria-hidden="true"></div>
+        <div class="sand-side sand-right" aria-hidden="true">
+          <p class="sand-big">made<br><em>simple.</em></p>
+          <p class="sand-sub">currently: lead designer <a href="https://apps.apple.com/app/id6737978613" tabindex="-1">@sewjo</a></p>
+        </div>
       </div>
-      <div class="badge-slot" aria-hidden="true"></div>
-    </div>
+    </section>
+  </div>
 
-    <div class="badge-stage" data-badge-stage>
-      <canvas class="lanyard" aria-hidden="true"></canvas>
-      <div class="badge" role="button" tabindex="0" aria-pressed="false" aria-label="Manmit's work badge. Press to flip it and read more about me.">
-        <span class="badge-clip" aria-hidden="true"><span></span></span>
-        <span class="badge-tilt">
-          <span class="badge-flipper">
-
-            <span class="badge-face badge-front">
-              <span class="badge-band">
-                <span class="badge-hole" aria-hidden="true"></span>
-                <span class="badge-brand">manmitdhindsa.ca</span>
-              </span>
-              <img class="badge-photo" draggable="false" src="assets/img/headshot.webp" width="640" height="640" alt="Headshot of Manmit, smiling, with long dark hair">
-              <span class="badge-name">Manmit Dhindsa</span>
-              <span class="badge-role">Product Designer</span>
-              <span class="badge-meta">
-                <span><small>Based in</small>Vancouver, BC</span>
-                <span><small>Designing since</small>2021</span>
-              </span>
-              <span class="badge-foot">
-                <svg class="barcode" viewBox="0 0 121 28" preserveAspectRatio="none" aria-hidden="true"><rect x="0" width="2" height="28"/><rect x="4" width="2" height="28"/><rect x="7" width="1" height="28"/><rect x="9" width="2" height="28"/><rect x="12" width="3" height="28"/><rect x="17" width="1" height="28"/><rect x="19" width="2" height="28"/><rect x="24" width="1" height="28"/><rect x="27" width="1" height="28"/><rect x="31" width="1" height="28"/><rect x="33" width="1" height="28"/><rect x="35" width="3" height="28"/><rect x="41" width="1" height="28"/><rect x="44" width="1" height="28"/><rect x="47" width="2" height="28"/><rect x="52" width="1" height="28"/><rect x="54" width="3" height="28"/><rect x="59" width="3" height="28"/><rect x="64" width="1" height="28"/><rect x="67" width="2" height="28"/><rect x="70" width="3" height="28"/><rect x="74" width="3" height="28"/><rect x="78" width="3" height="28"/><rect x="83" width="2" height="28"/><rect x="88" width="2" height="28"/><rect x="93" width="3" height="28"/><rect x="99" width="2" height="28"/><rect x="103" width="1" height="28"/><rect x="106" width="4" height="28"/><rect x="112" width="1" height="28"/><rect x="115" width="3" height="28"/></svg>
-              </span>
-            </span>
-
-            <span class="badge-face badge-back">
-              <span class="badge-hole" aria-hidden="true"></span>
-              <span class="badge-art"><img draggable="false" src="assets/img/illustration.webp" width="640" height="571" alt="Illustration of Manmit in round glasses, clicking away on a laptop"></span>
-              <span class="badge-facts">
-                <span><small>Current tab count</small>Don't ask</span>
-                <span><small>Current side quests</small>Pickleball and ice skating</span>
-                <span><small>Currently obsessed with</small>Blind boxes</span>
-              </span>
-              <span class="badge-links">
-                <a href="https://www.linkedin.com/in/manmit-dhindsa/" tabindex="-1">LinkedIn</a>
-                <a href="mailto:dhindsamanmit@gmail.com" tabindex="-1">Email</a>
-              </span>
-            </span>
-
-          </span>
-        </span>
-      </div>
-    </div>
-  </section>
-
+  <div class="work-panel">
   <section class="work wrap" id="work" aria-labelledby="work-heading">
     <h2 class="work-heading" id="work-heading">Selected projects</h2>
 
@@ -170,7 +131,15 @@
       </div>
     </a>
   </section>
+  </div>
 </main>
+
+<nav class="dock" aria-label="Quick links">
+  <a class="on" href="#work">Work</a>
+  <a href="about-me/">About</a>
+  <a href="s/Manmit-Dhindsa-Resume.pdf" target="_blank" rel="noopener">Resume</a>
+  <button type="button" data-ask-open>Ask</button>
+</nav>
 
 <footer class="site-footer">
   <div class="wrap">

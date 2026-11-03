@@ -384,3 +384,23 @@
     else if (a.closest(".cs2-jump")) gtag("event", "jump_to_section", { case_study: page, section: a.textContent.trim().slice(0, 100) });
   });
 })();
+
+// Homepage: the hero eases back as the work list slides over it, the sand pauses once covered,
+// and the phone dock's Ask button opens Ask Manmit.
+(function () {
+  var hero = document.querySelector(".hero"), panel = document.querySelector(".work-panel");
+  var askBtn = document.querySelector("[data-ask-open]");
+  if (askBtn) askBtn.addEventListener("click", function () { var b = document.querySelector(".ask-open"); if (b) b.click(); });
+  if (!hero || !panel) return;
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches, phone = window.matchMedia("(max-width: 760px)");
+  var ticking = false;
+  function update() {
+    ticking = false;
+    if (window.sandCovered) window.sandCovered(panel.getBoundingClientRect().top <= 0);
+    if (phone.matches || reduce) { hero.style.transform = ""; return; }
+    var p = Math.min(1, Math.max(0, window.scrollY / hero.offsetHeight));
+    hero.style.transform = p ? "scale(" + (1 - p * 0.05).toFixed(4) + ")" : "";
+  }
+  window.addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+  update();
+})();
