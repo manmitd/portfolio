@@ -1349,10 +1349,49 @@ html.has-cur, html.has-cur * { cursor: none !important; }
 /* About: the work badge hangs where the photo used to be */
 .about-intro { position: relative; grid-template-columns: 300px minmax(0, 1fr); min-height: 600px; align-items: center; }
 .about-intro .badge-slot { align-self: stretch; min-height: 560px; }
-.about-intro .badge-stage { position: absolute; inset: -5rem 0 0 0; z-index: 2; pointer-events: none; }
+.about-intro .badge-stage { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
 @media (max-width: 820px) {
   .about-intro { grid-template-columns: 1fr; min-height: 0; }
   .about-intro .badge-slot { min-height: 0; height: 520px; }
   .about-intro .badge-stage { inset: 0; }
 }
 @media (max-width: 600px) { .about-intro .badge-slot { height: 450px; } }
+
+/* ---------- One look everywhere: warm drafting paper, one sans, mono for labels and nav ---------- */
+:root {
+  --paper: #F5F5F2; --paper-grid: #F5F5F2;
+  --grid-line: rgba(30, 40, 50, 0.035); --grid-line-strong: rgba(30, 40, 50, 0.065);
+  --font: "Instrument Sans", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Instrument Sans", "Inter", system-ui, sans-serif;
+}
+body {
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(var(--grid-line-strong) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line-strong) 1px, transparent 1px),
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px;
+  background-position: -1px -1px;
+  background-attachment: fixed;
+}
+/* the hero and the sliding work sheet use the same paper, lined up with the page */
+.hero { background: none; }
+.work-panel { background-color: var(--paper); background-image: inherit; background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px; background-position: -1px -1px; background-attachment: fixed; }
+.work-panel { background-image:
+    linear-gradient(var(--grid-line-strong) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line-strong) 1px, transparent 1px),
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px); }
+
+/* Nav on every page matches the homepage */
+.site-header .wordmark { font-family: var(--f-mono); font-weight: 500; font-size: 0.9375rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--navy); }
+.site-nav a, .ask-open { font-family: var(--f-mono); font-size: 0.8125rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--navy); }
+.ask-open:hover, .ask-open[aria-expanded="true"] { color: var(--dusty); }
+.site-header .wrap { max-width: none; padding-inline: clamp(1.25rem, 3vw, 2.5rem); }
+@media (max-width: 760px) { .site-nav a, .ask-open { font-size: 0.75rem; letter-spacing: 0.06em; } }
+
+/* An italic serif word for emphasis in big titles, like "simple." on the homepage */
+h1 em, h2 em { font-family: var(--f-serif); font-style: italic; font-weight: 400; letter-spacing: -0.01em; color: var(--dusty); }
+/* Headings in the same lighter, tighter style as the homepage title */
+h1, h2, .page-title, .work-heading, .project-title, .cs2-head h1, .cs2-section > h2 { font-weight: 500; letter-spacing: -0.03em; }
