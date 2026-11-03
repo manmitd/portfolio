@@ -1454,3 +1454,5 @@ body:has(main.cs2) { --font: "Inter", system-ui, -apple-system, "Segoe UI", sans
   .site-nav ul { flex-wrap: wrap; gap: 0.35rem 0.85rem; }
   .site-nav a, .ask-open { font-size: 0.6875rem; letter-spacing: 0.05em; }
 }
+/* keep the line height steady while the word retypes */
+.sand-right .sand-big em { display: inline-block; min-height: 1em; min-width: 0.3em; }

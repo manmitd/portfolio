@@ -49,9 +49,11 @@
     return out;
   }
   var shapes = SHAPES.map(sample);
+  var names = SHAPES.map(function (f) { return f.name; });
+  function announce() { window.dispatchEvent(new CustomEvent("sandshape", { detail: names[current] })); }
   // The fourth shape is Manmit's own hand-drawn sparkle, joined in once the image has loaded
   var spark = new Image();
-  spark.onload = function () { shapes.push(sample(function (g) { g.drawImage(spark, 30, 30, 340, 340); })); };
+  spark.onload = function () { shapes.push(sample(function (g) { g.drawImage(spark, 30, 30, 340, 340); })); names.push("sparkle"); };
   spark.src = "assets/img/sparkle-shape.png";
 
   // ---- grains ----
@@ -77,6 +79,7 @@
 
   // Grains start above the hero and pour down into the first shape, a few at a time
   function init() {
+    current = Math.max(0, names.indexOf("smiley"));   // open on the smiley: "made simple."
     measure(); place(current);
     for (var i = 0; i < N; i++) {
       var t = Math.random();
@@ -94,6 +97,7 @@
 
   function morph(next) {
     current = next == null ? (current + 1) % shapes.length : next;
+    announce();
     var s = shapes[current];
     if (reduce) { place(current); for (var k = 0; k < N; k++) { x[k] = tx[k]; y[k] = ty[k]; } draw(); return; }
     for (var i = 0; i < N; i++) {

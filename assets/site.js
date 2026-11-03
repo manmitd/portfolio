@@ -408,3 +408,24 @@
   window.addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
   update();
 })();
+
+// Homepage: the word after "made" follows the sand shape, erasing and retyping like the cursor labels
+(function () {
+  var em = document.querySelector(".sand-right .sand-big em");
+  if (!em) return;
+  var WORDS = { cursor: "intuitive.", folder: "scalable.", smiley: "simple.", sparkle: "smarter." };
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var timer;
+  window.addEventListener("sandshape", function (e) {
+    var word = WORDS[e.detail];
+    if (!word || word === em.textContent) return;
+    clearInterval(timer);
+    if (reduce) { em.textContent = word; return; }
+    var phase = "erase";
+    timer = setInterval(function () {
+      var t = em.textContent;
+      if (phase === "erase") { em.textContent = t.slice(0, -1); if (!em.textContent) phase = "type"; }
+      else { em.textContent = word.slice(0, t.length + 1); if (em.textContent === word) clearInterval(timer); }
+    }, 55);
+  });
+})();
