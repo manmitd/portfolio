@@ -1394,6 +1394,24 @@ body {
 /* An italic serif word for emphasis in big titles, like "simple." on the homepage */
 h1 em, h2 em { font-family: var(--f-serif); font-style: italic; font-weight: 400; letter-spacing: -0.01em; color: var(--dusty); }
 /* Headings in the same lighter, tighter style as the homepage title */
-h1, h2, .page-title, .work-heading, .project-title, .cs2-head h1, .cs2-section > h2 { font-weight: 500; letter-spacing: -0.03em; }
+body:not(:has(main.cs2)) :is(h1, h2, .page-title, .work-heading, .project-title) { font-weight: 500; letter-spacing: -0.03em; }
 /* Case studies: plain paper, no grid */
 body:has(main.cs2) { background-image: none; }
+
+/* Grid paper only where it belongs: the homepage top and About. Everything else is plain paper. */
+:root { --grid-line: rgba(30, 40, 50, 0.025); --grid-line-strong: rgba(30, 40, 50, 0.045); }
+body { background-image: none; background-attachment: scroll; }
+.work-panel { background-image: none; background-attachment: scroll; }
+.hero, body:has(.about-intro) {
+  background-image:
+    linear-gradient(var(--grid-line-strong) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line-strong) 1px, transparent 1px),
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px;
+  background-position: -1px -1px;
+}
+.hero { background-color: var(--paper); }
+
+/* Case studies keep their original type: Inter for text, Inter Tight for headings */
+body:has(main.cs2) { --font: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif; --font-display: "Inter Tight", "Inter", system-ui, sans-serif; }
