@@ -1443,3 +1443,14 @@ body:has(main.cs2) { --font: "Inter", system-ui, -apple-system, "Segoe UI", sans
 /* Case study side panel: the same six labels on every case study, in the mono label style */
 .cs2-toc ol a { font-family: var(--f-mono); font-size: 0.8125rem; letter-spacing: 0.08em; text-transform: uppercase; }
 .cs2-toc ol a.is-active { color: var(--dusty); }
+
+/* Project status on the homepage cards: a small "Shipped" (or "Concept") chip next to the company */
+.project-where { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem 0.75rem; }
+.status { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.2rem 0.6rem; border: 1px solid #E2E2DD; border-radius: 999px; background: #FBFBF9;
+  font-family: var(--f-mono); font-size: 0.6875rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); }
+.status-dot { width: 7px; height: 7px; border-radius: 50%; background: #4CAF6E; }
+.status.is-concept .status-dot { background: #E0B23A; }
+@media (max-width: 600px) {
+  .site-nav ul { flex-wrap: wrap; gap: 0.35rem 0.85rem; }
+  .site-nav a, .ask-open { font-size: 0.6875rem; letter-spacing: 0.05em; }
+}
