@@ -1395,3 +1395,5 @@ body {
 h1 em, h2 em { font-family: var(--f-serif); font-style: italic; font-weight: 400; letter-spacing: -0.01em; color: var(--dusty); }
 /* Headings in the same lighter, tighter style as the homepage title */
 h1, h2, .page-title, .work-heading, .project-title, .cs2-head h1, .cs2-section > h2 { font-weight: 500; letter-spacing: -0.03em; }
+/* Case studies: plain paper, no grid */
+body:has(main.cs2) { background-image: none; }
