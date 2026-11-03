@@ -16,22 +16,15 @@
 
   // ---- shapes, drawn as thick strokes on a 400 x 400 sheet, then sampled into points ----
   var SHAPES = [
-    function computer(g) {
-      g.beginPath(); g.roundRect(62, 58, 276, 206, 26); g.stroke();
-      g.beginPath(); g.roundRect(100, 94, 200, 134, 12); g.stroke();
-      g.beginPath(); g.moveTo(128, 196); g.lineTo(166, 196); g.stroke();
-      g.beginPath(); g.moveTo(176, 266); g.lineTo(166, 312); g.moveTo(224, 266); g.lineTo(234, 312); g.stroke();
-      g.beginPath(); g.moveTo(118, 322); g.lineTo(282, 322); g.stroke();
-    },
-    function file(g) {
-      g.beginPath(); g.moveTo(112, 52); g.lineTo(240, 52); g.lineTo(296, 108); g.lineTo(296, 348); g.lineTo(112, 348); g.closePath(); g.stroke();
-      g.beginPath(); g.moveTo(240, 52); g.lineTo(240, 108); g.lineTo(296, 108); g.stroke();
-      g.beginPath(); g.moveTo(148, 182); g.lineTo(260, 182); g.moveTo(148, 232); g.lineTo(260, 232); g.moveTo(148, 282); g.lineTo(220, 282); g.stroke();
-    },
     function cursor(g) {
       g.beginPath();
       g.moveTo(132, 56); g.lineTo(132, 318); g.lineTo(190, 262); g.lineTo(232, 350);
       g.lineTo(270, 332); g.lineTo(228, 246); g.lineTo(308, 246); g.closePath(); g.stroke();
+    },
+    function folder(g) {             // a classic desktop folder: tab on the back, front panel on top
+      g.beginPath(); g.moveTo(96, 150); g.lineTo(96, 104); g.lineTo(112, 88); g.lineTo(196, 88); g.lineTo(212, 104); g.lineTo(220, 118);
+      g.lineTo(300, 118); g.lineTo(314, 132); g.lineTo(314, 296); g.stroke();
+      g.beginPath(); g.moveTo(72, 150); g.lineTo(298, 150); g.lineTo(298, 314); g.lineTo(88, 314); g.lineTo(72, 298); g.closePath(); g.stroke();
     },
     function smiley(g) {
       g.beginPath(); g.arc(200, 200, 142, 0, Math.PI * 2); g.stroke();
@@ -56,6 +49,10 @@
     return out;
   }
   var shapes = SHAPES.map(sample);
+  // The fourth shape is Manmit's own hand-drawn sparkle, joined in once the image has loaded
+  var spark = new Image();
+  spark.onload = function () { shapes.push(sample(function (g) { g.drawImage(spark, 30, 30, 340, 340); })); };
+  spark.src = "assets/img/sparkle-shape.png";
 
   // ---- grains ----
   var x = new Float32Array(N), y = new Float32Array(N), vx = new Float32Array(N), vy = new Float32Array(N);
