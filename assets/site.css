@@ -1457,3 +1457,14 @@ body:has(main.cs2) { --font: "Inter", system-ui, -apple-system, "Segoe UI", sans
 /* keep the line height steady while the word retypes */
 .sand-right .sand-big em { display: inline-block; min-height: 1em; min-width: 0.3em; }
 @media (max-width: 760px) { p { text-wrap: pretty; } }
+
+/* Bottom of the page: one divider (the footer's), no stacked gaps */
+.work .project:last-child { border-bottom: 0; }
+.work-panel .work { padding-bottom: 0; }
+.site-footer { margin-top: clamp(2rem, 5vw, 3.5rem); }
+@media (max-width: 760px) {
+  body:has(.dock) .work-panel, body:has(.dock) main { padding-bottom: 0; }
+  /* room for the dock under the footer links, so it never covers them */
+  body:has(.dock) .site-footer .wrap { padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px)); }
+}
+.experience .role:last-child { border-bottom: 0; }
