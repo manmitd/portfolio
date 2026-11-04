@@ -10,7 +10,7 @@
   var ctx = canvas.getContext("2d");
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var small = window.matchMedia("(max-width: 760px)").matches;
-  var N = small ? 2400 : 4200;
+  var N = small ? 1900 : 4200;
   var DRIFT = small ? 40 : 90;
   var W = 0, H = 0, dpr = 1;
 
@@ -48,12 +48,12 @@
     }
     return out;
   }
-  var shapes = SHAPES.map(sample);
-  var names = SHAPES.map(function (f) { return f.name; });
+  var shapes = [], names = SHAPES.map(function (f) { return f.name; }), ready = false;
   function announce() { window.dispatchEvent(new CustomEvent("sandshape", { detail: names[current] })); }
   // The fourth shape is Manmit's own hand-drawn sparkle, joined in once the image has loaded
   var spark = new Image();
-  spark.onload = function () { shapes.push(sample(function (g) { g.drawImage(spark, 30, 30, 340, 340); })); names.push("sparkle"); };
+  function addSpark() { shapes.push(sample(function (g) { g.drawImage(spark, 30, 30, 340, 340); })); names.push("sparkle"); }
+  spark.onload = function () { if (ready) addSpark(); };
   spark.src = "assets/img/sparkle-shape.png";
 
   // ---- grains ----
@@ -165,6 +165,7 @@
   var running = false, onScreen = true, covered = false;
   function frame() { if (!running) return; step(); draw(); requestAnimationFrame(frame); }
   function update() {
+    if (!ready) return;
     var should = onScreen && !covered && !document.hidden && !reduce;
     if (should && !running) { running = true; requestAnimationFrame(frame); }
     if (!should) running = false;
@@ -177,12 +178,18 @@
   window.sandCovered = function (v) { if (covered !== v) { covered = v; update(); } };
   var rt; window.addEventListener("resize", function () {
     clearTimeout(rt); rt = setTimeout(function () {
+      if (!ready) return;
       measure(); var s = shapes[current];
       for (var i = 0; i < N; i++) { tx[i] = ntx[i] = ox + s[i * 2] * scale; ty[i] = nty[i] = oy + s[i * 2 + 1] * scale; if (reduce) { x[i] = tx[i]; y[i] = ty[i]; } }
       if (reduce) draw();
     }, 150);
   });
 
-  function start() { init(); draw(); update(); restartTimer(); }
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(start); else start();
+  function start() {
+    shapes = SHAPES.map(sample); ready = true;
+    if (spark.complete && spark.naturalWidth) addSpark();
+    init(); draw(); update(); restartTimer(); }
+  // Start once the page has drawn, so the sand never delays the headline
+  function later() { if ("requestIdleCallback" in window) requestIdleCallback(start, { timeout: 600 }); else setTimeout(start, 200); }
+  if (document.readyState === "complete") later(); else window.addEventListener("load", later);
 })();

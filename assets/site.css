@@ -1456,3 +1456,4 @@ body:has(main.cs2) { --font: "Inter", system-ui, -apple-system, "Segoe UI", sans
 }
 /* keep the line height steady while the word retypes */
 .sand-right .sand-big em { display: inline-block; min-height: 1em; min-width: 0.3em; }
+@media (max-width: 760px) { p { text-wrap: pretty; } }

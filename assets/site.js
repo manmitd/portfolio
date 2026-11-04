@@ -79,7 +79,11 @@
   var css = document.querySelector('link[rel="stylesheet"][href*="site.css"]');
   if (!css) return;
   var base = css.getAttribute("href").replace("site.css", "");           // "assets/" or "../assets/"
-  var covers = { "accenture": "img/wl-cover-v3.webp", "sewjo-challenges": "img/ch-cover-v2.webp", "sewjo-merchant-dashboard": "img/sb-cover-v2.webp", "sewjo/": "img/sl-cover.webp" };
+  // Phones warm the small cover; larger screens the medium one. Data-saver or slow connections skip it.
+  var conn = navigator.connection || {};
+  if (conn.saveData || /2g/.test(conn.effectiveType || "")) return;
+  var sz = window.innerWidth <= 760 ? "-1000" : "-1600";
+  var covers = { "accenture": "img/wl-cover-v3" + sz + ".webp", "sewjo-challenges": "img/ch-cover-v2" + sz + ".webp", "sewjo-merchant-dashboard": "img/sb-cover-v2" + sz + ".webp", "sewjo/": "img/sl-cover.webp" };
   var done = {};
   function warm(href) {
     if (!href || done[href]) return; done[href] = true;
@@ -122,6 +126,7 @@
     return last;
   }
   function fix() {
+    if (window.innerWidth <= 760) return;   // phones: CSS text-wrap handles short last lines, saving a lot of layout work
     saved.forEach(function (s) { s.node.nodeValue = s.text; }); saved = [];
     document.querySelectorAll("main p, main li, .site-footer p").forEach(function (p) {
       if (p.closest(".cs2-highlight, .cs2-stats, .tags, .cs2-toc, .badge, .sticker-mount, .cs2-quote, .cs2-result")) return;
