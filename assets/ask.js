@@ -4,27 +4,27 @@
   var QA = [
     {
       q: "What are you working on right now?",
-      a: ["I'm currently the Lead Product Designer at Sewjo, where I started as the first product designer and helped build the product from the ground up. These days, I lead design across our mobile apps, web experiences, and internal tools. I also mentor junior designers, which has been a really rewarding part of the role!"],
+      a: ["I'm currently the Lead Product Designer at Sewjo, where I've been involved in building and shaping the product from the ground up. I lead design across our mobile apps, web platform, and internal tools, working closely with product and engineering throughout the process. I also mentor junior designers, which has been one of the more rewarding parts of my role!"],
       links: []
     },
     {
-      q: "What kind of role are you looking for?",
-      a: ["I'm looking for a full-time product design role where I can take ownership, solve interesting problems, and work with people who care about building great products. I love being involved in the whole process, from figuring out what users need to designing, shipping, and improving the experience. I'm based in Vancouver and open to remote opportunities too!"],
+      q: "What kind of opportunities interest you?",
+      a: ["I'm really drawn to product design roles where I can take ownership, tackle interesting problems, and work with people who genuinely care about what they're building. I love being involved from the early ideas all the way through to launch and beyond. I'm based in Vancouver, but I'm always open to connecting with teams doing interesting work!"],
       links: [["View my resume", "/s/Manmit-Dhindsa-Resume.pdf"]]
     },
     {
       q: "Which project are you proudest of?",
       a: [
-        "It's hard to pick just one! Sewjo is really special to me because I've been able to shape so much of the product from the beginning and see how people actually use what we've built.",
-        "I'm also really proud of Wildlight, an AI-powered experience I worked on with Accenture. We turned a complicated intake process into a guided conversation, and 18 out of 20 people completed the main task without help during testing. Seeing that improvement was pretty exciting!"
+        "It's hard to pick just one! Sewjo will always be special to me because I've had the opportunity to help shape the product from the beginning and watch it grow.",
+        "I'm also really proud of Wildlight, an AI-powered experience I worked on with Accenture. We took something that felt complicated and made it much easier for people to navigate, which was really rewarding to see!"
       ],
       links: [["Explore StitchLog", "/sewjo/"], ["Explore Wildlight", "/accenture/"]]
     },
     {
       q: "How do you use AI in your work?",
       a: [
-        "A little bit of everything! I've designed AI-powered experiences, but I also use tools like Claude and Cursor to prototype ideas, experiment with interactions, and sometimes build working interfaces.",
-        "I love being able to test an idea instead of just describing it. That said, I still rely on research, testing, and my own judgement to figure out what actually makes sense for users."
+        "A little bit of everything! I've worked on designing AI-powered experiences, but I also use tools like Claude and Cursor to explore ideas, build prototypes, and experiment with interactions.",
+        "I love being able to actually try something out instead of just imagining how it might work. Of course, AI doesn't replace the research, testing, or design decisions that go into making something genuinely useful!"
       ],
       links: []
     },
