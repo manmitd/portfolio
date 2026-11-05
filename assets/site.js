@@ -389,7 +389,7 @@
   document.addEventListener("click", function (e) {
     var a = e.target.closest && e.target.closest("a[href^='#']");
     if (!a) return;
-    if (a.closest(".cs2-meta")) gtag("event", "skip_to_results", { case_study: page });
+    if (a.closest(".cs2-meta")) gtag("event", "skip_to_results", { case_study: page });   // event name kept so past data stays comparable
     else if (a.closest(".cs2-jump")) gtag("event", "jump_to_section", { case_study: page, section: a.textContent.trim().slice(0, 100) });
   });
 })();

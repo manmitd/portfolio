@@ -62,10 +62,10 @@
 
   // Case study links show as a card with the cover image, like the homepage
   var CASES = {
-    "/accenture/": { title: "Assessing a garden the AI can't see", where: "Accenture, Wildlight", img: "/assets/img/wl-cover-v3-1000.webp" },
-    "/sewjo-merchant-dashboard/": { title: "Proving value without seeing the sale", where: "Sewjo, Merchant Dashboard", img: "/assets/img/sb-cover-v2-1000.webp" },
-    "/sewjo-challenges/": { title: "Turning everyday product interactions into reasons to come back", where: "Sewjo, Challenges", img: "/assets/img/ch-cover-v2-1000.webp" },
-    "/sewjo/": { title: "Making project tracking feel effortless", where: "Sewjo, StitchLog", img: "/assets/img/sl-cover-card.webp", top: true }
+    "/accenture/": { title: "Assessing a garden the AI can't see", where: "Accenture — Wildlight", img: "/assets/img/wl-cover-v3-1000.webp" },
+    "/sewjo-merchant-dashboard/": { title: "Proving value without seeing the sale", where: "Sewjo — Merchant Dashboard", img: "/assets/img/sb-cover-v2-1000.webp" },
+    "/sewjo-challenges/": { title: "Turning a launch campaign into reasons to come back", where: "Sewjo — Challenges", img: "/assets/img/ch-cover-v2-1000.webp" },
+    "/sewjo/": { title: "Making project tracking feel effortless", where: "Sewjo — StitchLog", img: "/assets/img/sl-cover-card.webp", top: true }
   };
 
   var INTRO = '<div class="ask-intro"><p><strong>Hey, I\'m Manmit! <span class="ask-thought" aria-hidden="true"></span></strong></p>' +

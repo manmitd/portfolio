@@ -1468,3 +1468,13 @@ body:has(main.cs2) { --font: "Inter", system-ui, -apple-system, "Segoe UI", sans
   body:has(.dock) .site-footer .wrap { padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px)); }
 }
 .experience .role:last-child { border-bottom: 0; }
+
+/* Side panel: one marker for the current section (the separate reading-progress fill overlapped it mid-scroll) */
+.cs2-toc ol::before { display: none; }
+/* Jumping to a section always lands below the pinned logo bar */
+main.cs2 [id] { scroll-margin-top: 4.5rem; }
+/* The phone dock steps aside while Ask Manmit is open */
+html.ask-locked .dock, html.ask-docked .dock { display: none; }
+
+/* Homepage cards: one line of evidence under the summary */
+.project-proof { margin: -0.5rem 0 1rem; font-family: var(--f-mono); font-size: 0.8125rem; letter-spacing: 0.01em; line-height: 1.5; color: var(--ink-soft); }
