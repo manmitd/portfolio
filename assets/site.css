@@ -1478,3 +1478,14 @@ html.ask-locked .dock, html.ask-docked .dock { display: none; }
 
 /* Homepage cards: one line of evidence under the summary */
 .project-proof { margin: -0.5rem 0 1rem; font-family: var(--f-mono); font-size: 0.8125rem; letter-spacing: 0.01em; line-height: 1.5; color: var(--ink-soft); }
+
+/* Case study header: status and focus pills under the title */
+.cs2-pills { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; list-style: none; margin: 1.1rem 0 0; padding: 0; }
+.cs2-pills li { display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.3rem 0.8rem; border: 1px solid #E2E2DD; border-radius: 999px; background: #FBFBF9;
+  font-family: var(--f-mono); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); }
+.cs2-pills .status { color: var(--ink); }
+
+/* TL;DR block, before the background */
+.cs2-tldr { max-width: var(--col); margin: clamp(2rem, 5vw, 3rem) auto 0; }
+.cs2-tldr-label { margin: 0 0 0.75rem; font-family: var(--f-mono); font-size: 0.875rem; font-weight: 500; letter-spacing: 0.08em; color: var(--dusty); }
+.cs2-tldr p:not(.cs2-tldr-label) { margin: 0 0 1em; font-size: 1.0625rem; line-height: 1.65; }
