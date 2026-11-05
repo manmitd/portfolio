@@ -52,7 +52,13 @@
   function announce() { window.dispatchEvent(new CustomEvent("sandshape", { detail: names[current] })); }
   // The fourth shape is Manmit's own hand-drawn sparkle, joined in once the image has loaded
   var spark = new Image();
-  function addSpark() { shapes.push(sample(function (g) { g.drawImage(spark, 30, 30, 340, 340); })); names.push("sparkle"); }
+  // The sparkle slots in just before the smiley, so the loop ends on "made simple."
+  function addSpark() {
+    var at = names.indexOf("smiley"); if (at < 0) at = names.length;
+    shapes.splice(at, 0, sample(function (g) { g.drawImage(spark, 30, 30, 340, 340); }));
+    names.splice(at, 0, "sparkle");
+    if (current >= at && ready) current++;
+  }
   spark.onload = function () { if (ready) addSpark(); };
   spark.src = "assets/img/sparkle-shape.png";
 
@@ -79,7 +85,7 @@
 
   // Grains start above the hero and pour down into the first shape, a few at a time
   function init() {
-    current = Math.max(0, names.indexOf("smiley"));   // open on the smiley: "made simple."
+    current = 0;   // open on the cursor: "made intuitive."
     measure(); place(current);
     for (var i = 0; i < N; i++) {
       var t = Math.random();
@@ -190,6 +196,12 @@
     if (spark.complete && spark.naturalWidth) addSpark();
     init(); draw(); update(); restartTimer(); }
   // Start once the page has drawn, so the sand never delays the headline
-  function later() { if ("requestIdleCallback" in window) requestIdleCallback(start, { timeout: 600 }); else setTimeout(start, 200); }
+  // Wait for the sparkle image too (up to 1.5s), so all four shapes are there from the first loop
+  function whenSpark(fn) {
+    if (spark.complete && spark.naturalWidth) return fn();
+    var done = false; function go() { if (!done) { done = true; fn(); } }
+    spark.addEventListener("load", go); spark.addEventListener("error", go); setTimeout(go, 1500);
+  }
+  function later() { whenSpark(function () { if ("requestIdleCallback" in window) requestIdleCallback(start, { timeout: 600 }); else setTimeout(start, 200); }); }
   if (document.readyState === "complete") later(); else window.addEventListener("load", later);
 })();
