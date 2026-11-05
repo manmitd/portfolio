@@ -4,7 +4,7 @@
   var QA = [
     {
       q: "What are you working on right now?",
-      a: ["I'm currently the Lead Product Designer at Sewjo, where I've been involved in building and shaping the product from the ground up. I lead design across our mobile apps, web platform, and internal tools, working closely with product and engineering throughout the process. I also mentor junior designers, which has been one of the more rewarding parts of my role!"],
+      a: ["I'm currently the Lead Product Designer at Sewjo, where I've been involved in building and shaping the product from the ground up. I lead design across our mobile apps, web platform, and internal tools, working closely with product and engineering throughout the process."],
       links: []
     },
     {
