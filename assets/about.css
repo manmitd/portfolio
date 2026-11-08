@@ -130,7 +130,7 @@ main.wrap { max-width: 84rem; }
 .ab-print[role="button"] { cursor: pointer; outline: none; }
 .ab-print[role="button"]:focus-visible { box-shadow: 0 0 0 3px var(--paper), 0 0 0 5px var(--dusty); }
 @media (hover: hover) {
-  .ab-cards .ab-print:hover, .ab-pair .ab-print:hover, .ab-bye-photo:hover { transform: rotate(-0.6deg) translateY(-6px); box-shadow: 0 1px 2px rgba(17, 46, 75, 0.08), 0 22px 36px -16px rgba(17, 46, 75, 0.3); }
+  .ab-cards .ab-print:hover { transform: rotate(-0.6deg) translateY(-6px); box-shadow: 0 1px 2px rgba(17, 46, 75, 0.08), 0 22px 36px -16px rgba(17, 46, 75, 0.3); }
   .ab-print img { transition: filter 0.4s ease; }
   .ab-print[role="button"]:hover img { filter: saturate(1.08) brightness(1.03); }
   .ab-tilt-l::before, .ab-tilt-r::before { transition: transform 0.5s cubic-bezier(.32,.72,0,1); }
