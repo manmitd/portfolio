@@ -52,6 +52,20 @@
 .ab-cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1.25rem, 2.6vw, 2.25rem); }
 .ab-cards p { margin: 1rem 0 0; max-width: 24rem; font-size: 1rem; line-height: 1.45; color: var(--ink); text-wrap: pretty; }
 
+/* Small labels and captions added in the copy pass */
+.ab-tag { display: inline-block; margin-left: 0.6rem; padding: 0.2rem 0.55rem; border: 1px solid #CBD6E2; border-radius: 999px; vertical-align: 0.15em;
+  font-family: var(--f-mono); font-size: 0.625rem; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dusty); white-space: nowrap; }
+.ab-cards h3 { margin: 1.1rem 0 0.35rem; font-size: 1rem; font-weight: 600; color: var(--navy); }
+.ab-cards h3 + p { margin-top: 0; color: var(--ink-soft); font-size: 0.9375rem; }
+.ab-sheet .ab-print figcaption { justify-content: flex-start; gap: 0.6rem; text-transform: none; letter-spacing: 0.01em; font-size: 0.75rem; line-height: 1.35; }
+.ab-life .ab-home { margin-top: clamp(1rem, 3vw, 2.5rem); }
+.ab-life .ab-pair { max-width: 36rem; }
+.ab-life .ab-note { font-size: clamp(1.15rem, 2vw, 1.375rem); }
+.ab-bye-line { margin: 0.9rem 0 0; max-width: 28rem; color: var(--ink-soft); font-size: 1.0625rem; line-height: 1.5; text-wrap: pretty; }
+.ab-doodle-me { left: 72%; top: 45%; flex-direction: column; align-items: flex-start; gap: 0; }
+.ab-doodle-me em { margin-left: 1.5rem; color: #fff; text-shadow: 0 1px 8px rgba(0,0,0,0.55); }
+.ab-doodle-me .ab-arrow { width: 34px; stroke: #fff; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5)); }
+
 /* Toolkit under Experience */
 .ab-toolkit { margin-top: clamp(2.5rem, 5vw, 3.5rem); }
 .ab-tools { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.75rem; }
@@ -93,4 +107,15 @@
   .ab-js .ab-sheet li, .ab-js .ab-cards li, .ab-js .ab-pair .ab-print { opacity: 1; translate: none; transition: none; }
   .ab-route-reveal { stroke-dashoffset: 0; }
   .ab-plane { opacity: 1; }
+}
+
+/* Hero copy: three calm paragraphs so the text doesn't outweigh the badge */
+.about-intro .lead { font-size: 1.125rem; }
+.about-intro p + p { margin-top: 0.9rem; }
+@media (max-width: 760px) {
+  .ab-tag { display: block; width: fit-content; margin: 0.5rem 0 0.15rem; }
+  .ab-sheet .ab-print figcaption { font-size: 0.6875rem; gap: 0.4rem; }
+  .ab-bye-line { margin-inline: auto; }
+  .ab-doodle-me em { font-size: 1.15rem; text-shadow: 0 1px 6px rgba(0,0,0,0.75); }
+  .ab-doodle-me .ab-arrow { width: 26px; }
 }
