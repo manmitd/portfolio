@@ -1537,7 +1537,10 @@ html.ask-locked .dock, html.ask-docked .dock { display: none; }
 @keyframes mt-sip { 50% { transform: translateY(2.5px); } }
 
 /* 12. "copied!" typed next to the footer Email link */
-.copy-note { margin-left: 0.4rem; font-family: var(--f-mono); font-size: 0.8125rem; color: var(--dusty, #5277A0); white-space: nowrap; }
+a.has-copy-note { position: relative; }
+.copy-note { position: absolute; left: 50%; top: calc(100% + 0.35rem); transform: translateX(-50%); z-index: 5; pointer-events: none;
+  font-family: var(--f-mono); font-size: 0.75rem; font-weight: 400; letter-spacing: 0.04em; text-transform: none; color: var(--dusty, #5277A0); white-space: nowrap; text-decoration: none; }
+.copy-note:empty { display: none; }
 
 @media (prefers-reduced-motion: reduce) {
   .project-media img, .project > div:last-child, .footer-doodle .mt-level { transition: none; }

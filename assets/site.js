@@ -504,34 +504,59 @@
   });
 })();
 
-// Footer Email: clicking also copies the address, and "copied!" types out beside the link
+// Email links everywhere (header, footer, About, case studies, Ask): clicking copies the address instead of opening a mail app,
+// and "copied!" types out under the link. If copying isn't possible, the link opens the mail app as a fallback.
 (function () {
-  var links = document.querySelectorAll(".site-footer a[href^='mailto:']");
-  if (!links.length) return;
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  [].forEach.call(links, function (a) {
-    var note = null, timer = null, hide = null;
-    a.addEventListener("click", function () {
-      var addr = a.getAttribute("href").replace("mailto:", "").split("?")[0];
-      try {
-        if (!navigator.clipboard || !navigator.clipboard.writeText) return;
-        navigator.clipboard.writeText(addr).then(show, function () {});
-      } catch (err) {}
-    });
-    function show() {
-      if (!note) {
-        note = document.createElement("span");
-        note.className = "copy-note"; note.setAttribute("role", "status");
-        a.parentNode.appendChild(note);
+  var live = document.createElement("span");
+  live.className = "sr-only"; live.setAttribute("aria-live", "polite");
+  live.style.cssText = "position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap";
+  document.body.appendChild(live);
+
+  function legacyCopy(text) {
+    try {
+      var t = document.createElement("textarea");
+      t.value = text; t.setAttribute("readonly", ""); t.style.cssText = "position:fixed;top:-100px;opacity:0";
+      document.body.appendChild(t); t.select();
+      var ok = document.execCommand("copy");
+      document.body.removeChild(t);
+      return ok;
+    } catch (e) { return false; }
+  }
+  function copy(text) {
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext) {
+        return navigator.clipboard.writeText(text).then(function () { return true; }, function () { return legacyCopy(text); });
       }
-      clearInterval(timer); clearTimeout(hide);
-      var text = "copied!", n = 0;
-      if (reduce) note.textContent = text;
-      else { note.textContent = ""; timer = setInterval(function () { note.textContent = text.slice(0, ++n); if (n >= text.length) clearInterval(timer); }, 45); }
-      hide = setTimeout(function () {
-        if (reduce) { note.textContent = ""; return; }
-        timer = setInterval(function () { note.textContent = note.textContent.slice(0, -1); if (!note.textContent) clearInterval(timer); }, 30);
-      }, 2200);
+    } catch (e) {}
+    return Promise.resolve(legacyCopy(text));
+  }
+  function show(a) {
+    var note = a.querySelector(".copy-note");
+    if (!note) {
+      note = document.createElement("span");
+      note.className = "copy-note"; note.setAttribute("aria-hidden", "true");
+      a.appendChild(note);
+      a.classList.add("has-copy-note");
     }
+    clearInterval(note._t); clearTimeout(note._h);
+    var text = "copied!", n = 0;
+    if (reduce) note.textContent = text;
+    else { note.textContent = ""; note._t = setInterval(function () { note.textContent = text.slice(0, ++n); if (n >= text.length) clearInterval(note._t); }, 45); }
+    live.textContent = ""; setTimeout(function () { live.textContent = "Email address copied"; }, 30);
+    note._h = setTimeout(function () {
+      if (reduce) { note.textContent = ""; return; }
+      note._t = setInterval(function () { note.textContent = note.textContent.slice(0, -1); if (!note.textContent) clearInterval(note._t); }, 30);
+    }, 2200);
+  }
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest("a[href^='mailto:']");
+    if (!a || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    e.preventDefault();
+    var href = a.getAttribute("href"), addr = href.replace(/^mailto:/i, "").split("?")[0];
+    copy(addr).then(function (ok) { if (ok) show(a); else location.href = href; });
+  });
+  [].forEach.call(document.querySelectorAll("a[href^='mailto:']"), function (a) {
+    if (!a.getAttribute("title")) a.setAttribute("title", "Copy email address");
   });
 })();
