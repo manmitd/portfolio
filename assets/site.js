@@ -560,3 +560,46 @@
     if (!a.getAttribute("title")) a.setAttribute("title", "Copy email address");
   });
 })();
+
+// Floating nav pill (desktop): once the page header scrolls away, a pill with the same links slides in and stays at the top
+(function () {
+  var header = document.querySelector(".site-header"), nav = header && header.querySelector(".site-nav ul");
+  if (!nav || document.querySelector("main.cs2")) return;   // not on case studies
+  function build() {
+    var pill = document.createElement("nav");
+    pill.className = "nav-pill"; pill.setAttribute("aria-label", "Main");
+    var word = header.querySelector(".wordmark");
+    var home = document.createElement("a");
+    home.className = "wordmark"; home.href = word ? word.getAttribute("href") : "/"; home.textContent = "Manmit Dhindsa";
+    var ul = document.createElement("ul");
+    [].forEach.call(nav.children, function (li) {
+      var a = li.querySelector("a"), ask = li.querySelector(".ask-open"), item = document.createElement("li");
+      if (a) {
+        var c = a.cloneNode(true); c.removeAttribute("id"); item.appendChild(c);
+      } else if (ask) {
+        var b = document.createElement("button"); b.type = "button"; b.innerHTML = ask.innerHTML;
+        b.addEventListener("click", function () { ask.click(); });
+        item.appendChild(b);
+      } else return;
+      ul.appendChild(item);
+    });
+    pill.appendChild(home); pill.appendChild(ul);
+    pill.inert = true; pill.setAttribute("aria-hidden", "true");
+    document.body.appendChild(pill);
+    var on = false, ticking = false;
+    function check() {
+      ticking = false;
+      var past = header.getBoundingClientRect().bottom < -10 || window.scrollY > Math.max(120, header.offsetHeight + 40);
+      if (past === on) return;
+      on = past;
+      pill.classList.toggle("is-on", on);
+      pill.inert = !on;
+      if (on) pill.removeAttribute("aria-hidden"); else pill.setAttribute("aria-hidden", "true");
+    }
+    window.addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(check); } }, { passive: true });
+    check();
+  }
+  // wait a beat so the Ask button has been added to the nav first
+  if (document.readyState === "complete") setTimeout(build, 0);
+  else window.addEventListener("load", function () { setTimeout(build, 0); });
+})();

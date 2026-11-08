@@ -1548,3 +1548,23 @@ a.has-copy-note { position: relative; }
   .is-live .status-dot::after, .footer-doodle.is-sipping .mt-straw { animation: none; }
   .ink-mark::before { transition: none; clip-path: inset(0 0 0 0); }
 }
+
+/* Floating nav pill: once you scroll past the top, the nav shrinks into a pill that stays put (desktop) */
+.nav-pill { position: fixed; z-index: 55; top: 14px; left: 50%; display: flex; align-items: center; gap: 1.5rem; padding: 0.45rem 0.55rem 0.45rem 1.25rem;
+  border: 1px solid rgba(17, 46, 75, 0.08); border-radius: 999px; background: rgba(255, 255, 255, 0.86); -webkit-backdrop-filter: blur(14px) saturate(1.2); backdrop-filter: blur(14px) saturate(1.2);
+  box-shadow: 0 8px 28px -10px rgba(17, 46, 75, 0.22); opacity: 0; transform: translate(-50%, -14px) scale(0.97); pointer-events: none; visibility: hidden;
+  transition: opacity 0.3s ease, transform 0.45s cubic-bezier(.32,.72,0,1), visibility 0s linear 0.45s; }
+.nav-pill.is-on { opacity: 1; transform: translate(-50%, 0) scale(1); pointer-events: auto; visibility: visible; transition: opacity 0.3s ease, transform 0.45s cubic-bezier(.32,.72,0,1), visibility 0s; }
+.nav-pill .wordmark { font-family: var(--f-mono); font-weight: 500; font-size: 0.8125rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--navy); text-decoration: none; white-space: nowrap; }
+.nav-pill ul { display: flex; align-items: center; gap: 0.15rem; margin: 0; padding: 0; list-style: none; }
+.nav-pill a:not(.wordmark), .nav-pill button { display: inline-block; padding: 0.45rem 0.75rem; border: 0; border-radius: 999px; background: none; cursor: pointer; white-space: nowrap;
+  font-family: var(--f-mono); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--navy); text-decoration: none; transition: background 0.2s ease, color 0.2s ease; }
+.nav-pill a:not(.wordmark):hover, .nav-pill button:hover { background: rgba(82, 119, 160, 0.12); }
+.nav-pill a[aria-current="page"] { background: var(--navy); color: #fff; }
+.nav-pill a:focus-visible, .nav-pill button:focus-visible { outline: 2px solid var(--dusty); outline-offset: 2px; }
+.nav-pill .copy-note { top: calc(100% + 0.6rem); }
+html.lightbox-open .nav-pill, html.ab-viewing .nav-pill, html.ask-locked .nav-pill { opacity: 0; pointer-events: none; }
+@media (max-width: 760px) { .nav-pill { display: none; } }
+@media (prefers-reduced-motion: reduce) { .nav-pill, .nav-pill.is-on { transition: none; } }
+/* Case studies already have the logo bar, side panel and "All work", so no pill there */
+body:has(main.cs2) .nav-pill { display: none; }
