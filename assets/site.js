@@ -587,9 +587,12 @@
     pill.inert = true; pill.setAttribute("aria-hidden", "true");
     document.body.appendChild(pill);
     var on = false, ticking = false;
+    var workHead = document.querySelector(".work-panel .work h2, .work-panel h2");
     function check() {
       ticking = false;
-      var past = header.getBoundingClientRect().bottom < -10 || window.scrollY > Math.max(120, header.offsetHeight + 40);
+      var past;
+      if (workHead) past = workHead.getBoundingClientRect().bottom < 72;   // homepage: only once "Selected projects" has scrolled up under the pill's spot
+      else past = header.getBoundingClientRect().bottom < -10 || window.scrollY > Math.max(120, header.offsetHeight + 40);
       if (past === on) return;
       on = past;
       pill.classList.toggle("is-on", on);
