@@ -270,3 +270,27 @@ html.ab-viewing { overflow: hidden; }
   .ab-sheet li:nth-child(odd) .ab-flip:hover { transform: rotate(-1deg) translateY(-4px); }
   .ab-sheet li:nth-child(even) .ab-flip:hover { transform: rotate(1.2deg) translateY(6px); }
 }
+
+/* ---------- In the room: same flip, landscape backs ---------- */
+.ab-cards li { position: relative; }
+.ab-cards .ab-flip { padding: 0; background: none; box-shadow: none; perspective: 1400px; }
+.ab-cards .ab-flip .ab-face { padding: 8px; }
+.ab-front { position: relative; }
+.ab-cards .ab-back { padding: clamp(0.9rem, 1.6vw, 1.25rem) clamp(1rem, 1.8vw, 1.4rem); }
+.ab-cards .ab-back-title { margin-top: auto !important; font-size: 1rem; }
+.ab-cards .ab-back-note { margin: 0.35rem 0 auto !important; font-size: clamp(1rem, 1.25vw, 1.125rem); line-height: 1.3; }
+@media (hover: hover) {
+  .ab-cards .ab-flip:hover { box-shadow: none; transform: translateY(-4px); }
+  .ab-cards .ab-flip:hover .ab-face { box-shadow: 0 1px 2px rgba(17, 46, 75, 0.08), 0 22px 36px -16px rgba(17, 46, 75, 0.3); }
+}
+.ab-cards .ab-flip:focus-visible { box-shadow: none; }
+.ab-cards .ab-flip:focus-visible .ab-face { box-shadow: 0 0 0 3px var(--paper), 0 0 0 5px var(--dusty); }
+.ab-room .ab-head { position: relative; display: flex; align-items: flex-end; gap: 1rem; }
+@media (max-width: 760px) {
+  .ab-cards .ab-back-note { font-size: 1.0625rem; }
+}
+.ab-cards .ab-flip .ab-back { padding: clamp(0.9rem, 1.6vw, 1.25rem) clamp(1rem, 1.8vw, 1.4rem); }
+.ab-cards .ab-back p { max-width: none; margin: 0; }
+.ab-cards .ab-back .ab-back-label { font-size: 0.6875rem; color: var(--ink-soft); }
+.ab-cards .ab-back .ab-back-title { margin-top: auto; font-size: 1rem; color: var(--navy); }
+.ab-cards .ab-back .ab-back-note { margin: 0.35rem 0 auto; color: var(--navy); }
