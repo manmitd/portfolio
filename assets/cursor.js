@@ -55,7 +55,9 @@
     cur.style.transform = "translate(" + e.clientX + "px," + e.clientY + "px)";
     cur.classList.add("is-on");
     var t = e.target, text = "";
-    for (var i = 0; i < LABELS.length; i++) if (t.closest(LABELS[i][0])) { text = LABELS[i][1]; break; }
+    var own = t.closest && t.closest("[data-cur]");
+    if (own) text = own.getAttribute("data-cur");
+    else for (var i = 0; i < LABELS.length; i++) if (t.closest(LABELS[i][0])) { text = LABELS[i][1]; break; }
     var nowOnBadge = !!t.closest(".badge");
     if (nowOnBadge && !onBadge) {
       badgeHintSpent = false;

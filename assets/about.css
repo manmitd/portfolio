@@ -1,0 +1,96 @@
+/* About page: photos as little prints on the drafting paper, with doodles in the same line as the footer matcha */
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.ab-sec { padding-block: clamp(3rem, 7vw, 5.5rem); border-top: 1px solid var(--rule); }
+.ab-head { margin-bottom: clamp(2rem, 4vw, 3rem); }
+.ab-head h2, .ab-bye h2 { margin: 0; font-family: var(--font-display); font-size: clamp(1.75rem, 3.4vw, 2.5rem); line-height: 1.1; }
+.ab-kicker { margin: 0 0 1.25rem; font-family: var(--f-mono); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); }
+
+/* A print: white border, a bit thicker at the bottom, with the label in mono */
+.ab-print { position: relative; margin: 0; padding: 8px 8px 0; background: #fff; border-radius: 3px;
+  box-shadow: 0 1px 2px rgba(17, 46, 75, 0.08), 0 10px 24px -12px rgba(17, 46, 75, 0.22);
+  transition: transform 0.5s cubic-bezier(.32,.72,0,1), box-shadow 0.5s cubic-bezier(.32,.72,0,1); }
+.ab-print img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 1px; background: #E9EDF1; }
+.ab-print.ab-wide img { aspect-ratio: 3 / 2; }
+.ab-print.ab-wide { padding-bottom: 8px; }
+.ab-print figcaption { display: flex; justify-content: space-between; gap: 0.5rem; padding: 0.6rem 0.15rem 0.7rem;
+  font-family: var(--f-mono); font-size: 0.6875rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--navy); }
+.ab-print figcaption span { color: var(--dusty); }
+.ab-tilt-l { transform: rotate(-2.5deg); }
+.ab-tilt-r { transform: rotate(2deg); }
+
+/* Washi tape on the prints that have a tilt */
+.ab-tilt-l::before, .ab-tilt-r::before { content: ""; position: absolute; z-index: 2; top: -11px; left: 50%; width: 74px; height: 22px; margin-left: -37px;
+  background: rgba(184, 216, 232, 0.72); transform: rotate(-4deg); border-radius: 1px; }
+.ab-tilt-r::before { transform: rotate(5deg); background: rgba(232, 222, 196, 0.8); }
+
+/* Home: two prints with a doodle plane flying between them */
+.ab-pair { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.25rem, 9vw, 8rem); max-width: 46rem; margin-inline: auto; padding-top: clamp(4rem, 9vw, 6.5rem); }
+.ab-route { position: absolute; z-index: 3; top: 0; left: 0; width: 100%; height: auto; overflow: visible; pointer-events: none; }
+.ab-route-line { fill: none; stroke: var(--dusty); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 2 9; }
+.ab-route-reveal { fill: none; stroke: #fff; stroke-width: 12; stroke-dasharray: 1; stroke-dashoffset: 1; }
+.ab-plane path { fill: #fff; stroke: var(--navy); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.ab-plane { opacity: 0; }
+.ab-note { margin: clamp(1.75rem, 4vw, 2.5rem) auto 0; text-align: center; font-family: var(--f-serif); font-style: italic; font-size: clamp(1.25rem, 2.2vw, 1.5rem); color: var(--navy); }
+
+/* Off the clock: a contact sheet of four */
+.ab-sheet { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(1rem, 2.4vw, 2rem); }
+.ab-sheet li { position: relative; }
+.ab-sheet li:nth-child(odd) .ab-print { transform: rotate(-1deg); }
+.ab-sheet li:nth-child(even) .ab-print { transform: rotate(1.2deg) translateY(10px); }
+@media (hover: hover) {
+  .ab-sheet .ab-print:hover { transform: rotate(0deg) translateY(-6px); box-shadow: 0 1px 2px rgba(17, 46, 75, 0.08), 0 22px 36px -16px rgba(17, 46, 75, 0.3); }
+}
+.ab-doodle { position: absolute; display: flex; align-items: flex-end; gap: 0.2rem; pointer-events: none; color: var(--navy); }
+.ab-doodle em { font-family: var(--f-serif); font-size: 1.25rem; line-height: 1; white-space: nowrap; }
+.ab-arrow { width: 56px; height: auto; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.ab-doodle-forest { left: 54%; top: 47%; flex-direction: column; align-items: flex-start; gap: 0; }
+.ab-doodle-forest em { margin-left: 1.4rem; color: #fff; text-shadow: 0 1px 8px rgba(0,0,0,0.45); }
+.ab-doodle-forest .ab-arrow { width: 40px; stroke: #fff; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.4)); }
+
+/* In the room: three moments with a plain caption */
+.ab-cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1.25rem, 2.6vw, 2.25rem); }
+.ab-cards p { margin: 1rem 0 0; max-width: 24rem; font-size: 1rem; line-height: 1.45; color: var(--ink); text-wrap: pretty; }
+
+/* Toolkit under Experience */
+.ab-toolkit { margin-top: clamp(2.5rem, 5vw, 3.5rem); }
+.ab-tools { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.ab-tools li { display: grid; place-items: center; width: 64px; height: 64px; border: 1px solid var(--rule); border-radius: 14px; background: rgba(255,255,255,0.7); color: var(--navy);
+  transition: transform 0.4s cubic-bezier(.32,.72,0,1), color 0.3s ease, border-color 0.3s ease; }
+.ab-tools svg { width: 26px; height: 26px; fill: currentColor; }
+@media (hover: hover) { .ab-tools li:hover { transform: translateY(-3px) rotate(-3deg); color: var(--dusty); border-color: #CBD6E2; } }
+
+/* Goodbye */
+.ab-bye { display: grid; grid-template-columns: minmax(0, 260px) minmax(0, 1fr); gap: clamp(2rem, 6vw, 5rem); align-items: center; }
+.ab-bye-photo img { aspect-ratio: 640 / 767; }
+.ab-bye-photo { padding-bottom: 8px; }
+.ab-links { margin: 1.25rem 0 0; font-family: var(--f-mono); font-size: 0.8125rem; letter-spacing: 0.1em; text-transform: uppercase; }
+.ab-links a { color: var(--navy); text-decoration: underline; text-underline-offset: 0.3em; text-decoration-thickness: 1px; }
+.ab-links a:hover { color: var(--dusty); }
+.ab-links span { color: var(--ink-soft); margin-inline: 0.4rem; }
+
+/* Gentle reveal as each section scrolls in */
+.ab-js .ab-sheet li, .ab-js .ab-cards li, .ab-js .ab-pair .ab-print { opacity: 0; translate: 0 18px; transition: opacity 0.7s ease, translate 0.7s cubic-bezier(.2,.7,.2,1); }
+.ab-js .is-in .ab-sheet li, .ab-js .is-in .ab-cards li, .ab-js .is-in.ab-pair .ab-print { opacity: 1; translate: 0 0; }
+.ab-js .is-in .ab-sheet li:nth-child(2), .ab-js .is-in .ab-cards li:nth-child(2), .ab-js .is-in.ab-pair .ab-print:nth-of-type(2) { transition-delay: 0.08s; }
+.ab-js .is-in .ab-sheet li:nth-child(3), .ab-js .is-in .ab-cards li:nth-child(3) { transition-delay: 0.16s; }
+.ab-js .is-in .ab-sheet li:nth-child(4) { transition-delay: 0.24s; }
+
+@media (max-width: 900px) {
+  .ab-sheet { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 2rem; }
+  .ab-cards { grid-template-columns: 1fr; max-width: 30rem; }
+}
+@media (max-width: 760px) {
+  .ab-pair { gap: 1.25rem; padding-top: 3.5rem; }
+  .ab-print figcaption { font-size: 0.625rem; letter-spacing: 0.06em; }
+  .ab-bye { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+  .ab-bye-photo { width: min(240px, 70%); }
+  .ab-tools li { width: 56px; height: 56px; }
+  .ab-doodle em { font-size: 1.05rem; }
+  .ab-doodle .ab-arrow { width: 40px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ab-js .ab-sheet li, .ab-js .ab-cards li, .ab-js .ab-pair .ab-print { opacity: 1; translate: none; transition: none; }
+  .ab-route-reveal { stroke-dashoffset: 0; }
+  .ab-plane { opacity: 1; }
+}
