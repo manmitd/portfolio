@@ -68,7 +68,8 @@
     "/sewjo/": { title: "Making project tracking feel effortless", where: "Sewjo — StitchLog", img: "/assets/img/sl-cover-card.webp", top: true }
   };
 
-  var INTRO = '<div class="ask-intro"><p><strong>Hey, I\'m Manmit! <span class="ask-thought" aria-hidden="true"></span></strong></p>' +
+  var INTRO = '<div class="ask-art" aria-hidden="true"><img src="/assets/img/ask-spill.webp" width="560" height="276" alt=""></div>' +
+    '<div class="ask-intro"><p><strong>Hey, I\'m Manmit! <span class="ask-thought" aria-hidden="true"></span></strong></p>' +
     '<p>Curious about my work or what I\'m like beyond the pixels? Pick a question below!</p></div>';
 
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -187,6 +188,18 @@
     resetBtn.hidden = false;
     var item = QA[i];
     track("ask_question", { question: item.q });
+
+    // the illustration fades out and folds away once the first question is asked
+    var art = log.querySelector(".ask-art:not(.is-leaving)");
+    if (art) {
+      if (reduce) art.remove();
+      else {
+        art.style.height = art.offsetHeight + "px";
+        art.classList.add("is-leaving");
+        requestAnimationFrame(function () { requestAnimationFrame(function () { art.style.height = "0px"; }); });
+        setTimeout(function () { art.remove(); }, 600);
+      }
+    }
 
     var q = document.createElement("p");
     q.className = "ask-q";
