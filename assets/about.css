@@ -62,7 +62,7 @@
 .ab-life .ab-pair { max-width: 36rem; }
 .ab-life .ab-note { font-size: clamp(1.15rem, 2vw, 1.375rem); }
 .ab-bye-line { margin: 0.9rem 0 0; max-width: 28rem; color: var(--ink-soft); font-size: 1.0625rem; line-height: 1.5; text-wrap: pretty; }
-.ab-doodle-me { left: 72%; top: 45%; flex-direction: column; align-items: flex-start; gap: 0; }
+.ab-doodle-me { left: calc(8px + (100% - 16px) * 0.80); top: calc(8px + (100% - 16px) * 0.615); transform: translate(-6px, calc(-100% + 5px)); flex-direction: column; align-items: flex-start; gap: 0; }
 .ab-doodle-me em { margin-left: 1.5rem; color: #fff; text-shadow: 0 1px 8px rgba(0,0,0,0.55); }
 .ab-doodle-me .ab-arrow { width: 34px; stroke: #fff; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5)); }
 
@@ -118,4 +118,69 @@
   .ab-bye-line { margin-inline: auto; }
   .ab-doodle-me em { font-size: 1.15rem; text-shadow: 0 1px 6px rgba(0,0,0,0.75); }
   .ab-doodle-me .ab-arrow { width: 26px; }
+  .ab-doodle-me { transform: translate(-5px, calc(-100% + 4px)); }
+}
+
+/* Bigger photos: this page runs a little wider than the rest of the site */
+main.wrap { max-width: 84rem; }
+.ab-life .ab-pair { max-width: 44rem; }
+.ab-bye { grid-template-columns: minmax(0, 300px) minmax(0, 1fr); }
+
+/* Every print can be picked up: hover lifts it, click opens it */
+.ab-print[role="button"] { cursor: pointer; outline: none; }
+.ab-print[role="button"]:focus-visible { box-shadow: 0 0 0 3px var(--paper), 0 0 0 5px var(--dusty); }
+@media (hover: hover) {
+  .ab-cards .ab-print:hover, .ab-pair .ab-print:hover, .ab-bye-photo:hover { transform: rotate(-0.6deg) translateY(-6px); box-shadow: 0 1px 2px rgba(17, 46, 75, 0.08), 0 22px 36px -16px rgba(17, 46, 75, 0.3); }
+  .ab-print img { transition: filter 0.4s ease; }
+  .ab-print[role="button"]:hover img { filter: saturate(1.08) brightness(1.03); }
+  .ab-tilt-l::before, .ab-tilt-r::before { transition: transform 0.5s cubic-bezier(.32,.72,0,1); }
+  .ab-print:hover::before { transform: rotate(-1deg) translateY(-3px); }
+}
+.ab-swipe { display: none; }
+
+/* Viewer: the photo comes forward like you picked it up */
+html.ab-viewing { overflow: hidden; }
+.ab-viewer { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: 1.25rem; background: rgba(17, 46, 75, 0.55);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); opacity: 0; transition: opacity 0.3s ease; }
+.ab-viewer[hidden] { display: none; }
+.ab-viewer.is-on { opacity: 1; }
+.ab-viewer-card { position: relative; margin: 0; padding: 12px 12px 0; background: #fff; border-radius: 4px; box-shadow: 0 30px 80px -20px rgba(0,0,0,0.45);
+  max-width: min(92vw, 1000px); transform: translateY(18px) rotate(-2deg) scale(0.94); transition: transform 0.5s cubic-bezier(.32,.72,0,1); }
+.ab-viewer.is-on .ab-viewer-card { transform: none; }
+.ab-viewer-card img { display: block; max-width: 100%; max-height: min(72vh, 820px); width: auto; height: auto; margin-inline: auto; border-radius: 2px; }
+.ab-viewer-card figcaption { display: flex; align-items: baseline; gap: 1rem; justify-content: space-between; padding: 0.9rem 0.25rem 1rem; }
+.ab-viewer-text { margin: 0; max-width: 36rem; font-size: 0.9375rem; line-height: 1.45; color: var(--ink); }
+.ab-viewer-text strong { display: block; margin-bottom: 0.15rem; color: var(--navy); font-weight: 600; }
+.ab-viewer-count { flex: none; font-family: var(--f-mono); font-size: 0.75rem; letter-spacing: 0.08em; color: var(--dusty); }
+.ab-viewer-btn { position: fixed; z-index: 2; display: grid; place-items: center; width: 48px; height: 48px; border: 0; border-radius: 50%; background: #fff; color: var(--navy);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2); cursor: pointer; font-size: 1.15rem; transition: transform 0.25s ease; }
+.ab-viewer-btn:hover { transform: scale(1.06); }
+.ab-viewer-btn:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+.ab-viewer-prev { left: clamp(0.75rem, 3vw, 2rem); top: 50%; margin-top: -24px; }
+.ab-viewer-next { right: clamp(0.75rem, 3vw, 2rem); top: 50%; margin-top: -24px; }
+.ab-viewer-close { top: 1rem; right: 1rem; width: auto; display: inline-flex; gap: 0.5rem; white-space: nowrap; padding: 0 1rem; border-radius: 999px; font-family: var(--f-mono); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; }
+
+@media (max-width: 900px) {
+  .ab-bye { grid-template-columns: minmax(0, 240px) minmax(0, 1fr); }
+}
+@media (max-width: 760px) {
+  /* On phones, the hobby prints become a row you swipe through, so each one can be big */
+  .ab-sheet { display: flex; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory; margin-inline: calc(-1 * var(--gutter)); padding: 0.75rem var(--gutter) 1.5rem; scrollbar-width: none; }
+  .ab-sheet::-webkit-scrollbar { display: none; }
+  .ab-sheet li { flex: 0 0 74%; scroll-snap-align: center; }
+  .ab-sheet li:nth-child(even) .ab-print { transform: rotate(1deg); }
+  .ab-swipe { display: block; margin: 0.25rem 0 0; text-align: right; font-family: var(--f-mono); font-size: 0.6875rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); }
+  .ab-sheet .ab-print figcaption { font-size: 0.75rem; }
+  .ab-bye { grid-template-columns: 1fr; }
+  .ab-bye-photo { width: min(280px, 78%); }
+  .ab-viewer { padding: 0.75rem; }
+  .ab-viewer-card { padding: 8px 8px 0; }
+  .ab-viewer-card img { max-height: 64vh; }
+  .ab-viewer-prev, .ab-viewer-next { top: auto; bottom: 1rem; margin-top: 0; width: 44px; height: 44px; }
+  .ab-viewer-prev { left: calc(50% - 56px); }
+  .ab-viewer-next { right: calc(50% - 56px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ab-viewer, .ab-viewer-card { transition: none; }
+  .ab-viewer-card { transform: none; }
 }
