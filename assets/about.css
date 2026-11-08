@@ -184,3 +184,9 @@ html.ab-viewing { overflow: hidden; }
   .ab-viewer, .ab-viewer-card { transition: none; }
   .ab-viewer-card { transform: none; }
 }
+
+/* Doodle labels sit on a little white sticker so they read on any photo; the arrow gets a navy edge */
+.ab-doodle em { display: inline-block; padding: 0.05rem 0.5rem 0.15rem; border-radius: 999px; background: #fff; color: var(--navy) !important; text-shadow: none !important;
+  box-shadow: 0 2px 8px rgba(17, 46, 75, 0.25); transform: rotate(-4deg); }
+.ab-doodle .ab-arrow { stroke: #fff !important; stroke-width: 3.4; filter: drop-shadow(0 0 1.2px rgba(17, 46, 75, 0.95)) drop-shadow(0 1px 3px rgba(17, 46, 75, 0.4)) !important; }
+.ab-doodle-forest em, .ab-doodle-me em { margin-left: 1.1rem; }
