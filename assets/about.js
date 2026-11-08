@@ -140,3 +140,53 @@
     if (e.key === "Escape" && current) { var b = current; hide(); b.focus(); }
   });
 })();
+
+// Flip sound: a soft paper swish when a photo turns over, made in code (no audio file). Can be switched off, and the choice is remembered.
+(function () {
+  var btn = document.querySelector(".ab-sound");
+  var AC = window.AudioContext || window.webkitAudioContext;
+  if (!btn || !AC) return;
+  var on = true, ctx = null, noise = null;
+  try { on = localStorage.getItem("ab-sound") !== "off"; } catch (e) {}
+  function render() {
+    btn.setAttribute("aria-pressed", on ? "true" : "false");
+    btn.querySelector("span").textContent = on ? "Sound on" : "Sound off";
+    btn.setAttribute("aria-label", on ? "Flip sound is on. Turn it off" : "Flip sound is off. Turn it on");
+  }
+  btn.hidden = false; render();
+  btn.addEventListener("click", function () {
+    on = !on; render();
+    try { localStorage.setItem("ab-sound", on ? "on" : "off"); } catch (e) {}
+  });
+
+  function burst(t, dur, type, f0, f1, q, vol) {
+    var src = ctx.createBufferSource(); src.buffer = noise;
+    var f = ctx.createBiquadFilter(); f.type = type; f.Q.value = q;
+    f.frequency.setValueAtTime(f0, t); f.frequency.exponentialRampToValueAtTime(f1, t + dur);
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + Math.min(0.03, dur * 0.25));
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    src.connect(f); f.connect(g); g.connect(ctx.destination);
+    src.start(t, Math.random() * 0.5); src.stop(t + dur + 0.02);
+  }
+  function play() {
+    if (!on) return;
+    try {
+      if (!ctx) {
+        ctx = new AC();
+        noise = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
+        var d = noise.getChannelData(0);
+        for (var i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+      }
+      if (ctx.state === "suspended") ctx.resume();
+      var t = ctx.currentTime + 0.01, k = 0.9 + Math.random() * 0.2;
+      burst(t, 0.22, "bandpass", 3200 * k, 900 * k, 0.9, 0.16);          // the swish of the card turning
+      burst(t + 0.2, 0.05, "lowpass", 900, 300, 0.7, 0.12);               // a soft tap as it lands
+    } catch (e) {}
+  }
+  [].forEach.call(document.querySelectorAll(".ab-flip"), function (fig) {
+    fig.addEventListener("click", play);
+    fig.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") play(); });
+  });
+})();
