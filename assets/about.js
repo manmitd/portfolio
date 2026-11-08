@@ -141,3 +141,56 @@
   });
 })();
 
+
+// Page flip sound: a short real page-turn recording (about 6 KB), only fetched once the photos are close,
+// played when a photo turns over. Visitors can switch it off and the choice is remembered.
+(function () {
+  var btn = document.querySelector(".ab-sound");
+  var AC = window.AudioContext || window.webkitAudioContext;
+  var flips = document.querySelectorAll(".ab-flip");
+  if (!btn || !AC || !flips.length || !window.fetch) return;
+  var SRC = "../assets/audio/page-flip.mp3";
+  var on = true, ctx = null, buf = null, loading = null;
+  try { on = localStorage.getItem("ab-sound") !== "off"; } catch (e) {}
+  function render() {
+    btn.setAttribute("aria-pressed", on ? "true" : "false");
+    btn.querySelector("span").textContent = on ? "Sound on" : "Sound off";
+    btn.setAttribute("aria-label", on ? "Flip sound is on. Turn it off" : "Flip sound is off. Turn it on");
+  }
+  btn.hidden = false; render();
+  btn.addEventListener("click", function () {
+    on = !on; render();
+    try { localStorage.setItem("ab-sound", on ? "on" : "off"); } catch (e) {}
+    if (on) load();
+  });
+
+  function load() {
+    if (loading || !on) return loading;
+    try { ctx = ctx || new AC(); } catch (e) { return null; }
+    loading = fetch(SRC).then(function (r) { return r.arrayBuffer(); })
+      .then(function (data) { return new Promise(function (ok, no) { ctx.decodeAudioData(data, ok, no); }); })
+      .then(function (b) { buf = b; }).catch(function () {});
+    return loading;
+  }
+  function play() {
+    if (!on) return;
+    load();
+    if (!ctx || !buf) return;
+    try {
+      if (ctx.state === "suspended") ctx.resume();
+      var s = ctx.createBufferSource(), g = ctx.createGain();
+      s.buffer = buf; s.playbackRate.value = 0.95 + Math.random() * 0.12;   // tiny variation so repeats don't sound copied
+      g.gain.value = 0.7;
+      s.connect(g); g.connect(ctx.destination); s.start();
+    } catch (e) {}
+  }
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (es) { if (es.some(function (e) { return e.isIntersecting; })) { load(); io.disconnect(); } }, { rootMargin: "400px 0px" });
+    [].forEach.call(flips, function (f) { io.observe(f); });
+  }
+  [].forEach.call(flips, function (fig) {
+    fig.addEventListener("pointerdown", load, { passive: true });
+    fig.addEventListener("click", play);
+    fig.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") play(); });
+  });
+})();
