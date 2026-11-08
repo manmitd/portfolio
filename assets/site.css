@@ -1492,3 +1492,56 @@ html.ask-locked .dock, html.ask-docked .dock { display: none; }
 /* The line under a big statement leads into what follows, so it reads clearly at a skim */
 .cs2-band-sub { margin-top: 1.25rem; font-size: clamp(1.125rem, 2vw, 1.375rem); font-weight: 600; line-height: 1.4; color: var(--navy); }
 .cs2-band-sub span { color: var(--dusty); }
+
+/* ---------- Micro-interactions (Nov 2026). All of them sit still for people who prefer reduced motion. ---------- */
+
+/* 4. Project cards: the cover grows a touch inside its frame and the text lifts, like pulling a card out of a folder */
+.project-media img { transition: transform 0.6s cubic-bezier(.32,.72,0,1); }
+.project:hover .project-media img { transform: scale(1.035); }
+.project > div:last-child { transition: transform 0.45s cubic-bezier(.32,.72,0,1); }
+.project:hover > div:last-child { transform: translateY(-4px); }
+.project:hover .project-title { text-decoration: none; }
+
+/* 5. The SHIPPED dot sends out one soft ring the first time its card scrolls into view */
+.status-dot { position: relative; }
+.status-dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: #4CAF6E; opacity: 0; }
+.is-live .status-dot::after { animation: live-ring 1.4s cubic-bezier(.2,.7,.2,1) 0.2s 1 both; }
+@keyframes live-ring { 0% { opacity: 0.55; transform: scale(1); } 100% { opacity: 0; transform: scale(3.2); } }
+
+/* 6. A hand-drawn marker that draws in behind a word when it scrolls into view */
+.ink-mark { position: relative; z-index: 0; white-space: nowrap; }
+.ink-mark::before { content: ""; position: absolute; z-index: -1; left: -0.1em; right: -0.1em; top: 0.12em; bottom: -0.04em;
+  background: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20400%20100%27%20preserveAspectRatio%3D%27none%27%3E%3Cpath%20d%3D%27M6%2038%20C%2070%2028%2C%20160%2034%2C%20250%2030%20S%20380%2026%2C%20394%2034%20L%20392%2082%20C%20300%2090%2C%20200%2084%2C%20120%2088%20S%2030%2090%2C%208%2084%20Z%27%20fill%3D%27%23B8D8E8%27/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  clip-path: inset(0 100% 0 0); transition: clip-path 0.8s cubic-bezier(.45,.05,.25,1) 0.15s; }
+.ink-mark.is-in::before { clip-path: inset(0 0 0 0); }
+
+/* 7. Before / after slider */
+.ba { position: relative; max-width: var(--media, 60rem); margin: 1.75rem auto 0; border-radius: 14px; overflow: hidden; user-select: none; -webkit-user-select: none; touch-action: pan-y; background: #1d3325; }
+.ba img { display: block; width: 100%; height: auto; pointer-events: none; }
+.ba-after { position: absolute; inset: 0; clip-path: inset(0 0 0 var(--split, 50%)); }
+.ba-after img { width: 100%; height: 100%; object-fit: cover; }
+.ba-line { position: absolute; top: 0; bottom: 0; left: var(--split, 50%); width: 2px; margin-left: -1px; background: #fff; box-shadow: 0 0 0 1px rgba(17,46,75,0.15); pointer-events: none; }
+.ba-handle { position: absolute; top: 50%; left: var(--split, 50%); width: 44px; height: 44px; margin: -22px 0 0 -22px; border: 0; border-radius: 50%; background: #fff; color: var(--navy, #112E4B);
+  box-shadow: 0 6px 18px rgba(17,46,75,0.25); display: grid; place-items: center; cursor: ew-resize; touch-action: none; }
+.ba-handle:focus-visible { outline: 3px solid var(--dusty, #5277A0); outline-offset: 3px; }
+.ba-tag { position: absolute; top: 12px; padding: 0.25rem 0.6rem; border-radius: 999px; background: rgba(255,255,255,0.92); color: var(--navy, #112E4B);
+  font-family: var(--f-mono); font-size: 0.6875rem; letter-spacing: 0.1em; text-transform: uppercase; pointer-events: none; }
+.ba-tag-before { left: 12px; } .ba-tag-after { right: 12px; }
+.ba + figcaption, .ba-cap { margin: 0.75rem auto 0; max-width: var(--col); text-align: center; font-size: 0.9375rem; color: var(--ink-soft); }
+
+/* 9. The footer matcha: the straw dips and the drink level drops a little with each hover */
+.footer-doodle.is-svg { width: auto; aspect-ratio: 64 / 80; overflow: visible; display: inline-block; }
+.footer-doodle .mt-level { transition: transform 0.6s cubic-bezier(.32,.72,0,1); }
+.footer-doodle .mt-straw { transform-box: fill-box; transform-origin: 50% 100%; }
+.footer-doodle.is-sipping .mt-straw { animation: mt-sip 0.6s ease-in-out 1; }
+@keyframes mt-sip { 50% { transform: translateY(2.5px); } }
+
+/* 12. "copied!" typed next to the footer Email link */
+.copy-note { margin-left: 0.4rem; font-family: var(--f-mono); font-size: 0.8125rem; color: var(--dusty, #5277A0); white-space: nowrap; }
+
+@media (prefers-reduced-motion: reduce) {
+  .project-media img, .project > div:last-child, .footer-doodle .mt-level { transition: none; }
+  .project:hover .project-media img, .project:hover > div:last-child { transform: none; }
+  .is-live .status-dot::after, .footer-doodle.is-sipping .mt-straw { animation: none; }
+  .ink-mark::before { transition: none; clip-path: inset(0 0 0 0); }
+}

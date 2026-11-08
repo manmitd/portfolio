@@ -434,3 +434,104 @@
     }, 55);
   });
 })();
+
+// Micro-interactions: the SHIPPED dot pulses once, and the marker draws in under a word, the first time each scrolls into view
+(function () {
+  var items = [].slice.call(document.querySelectorAll(".project, .ink-mark"));
+  if (!items.length) return;
+  function on(el) { el.classList.add(el.classList.contains("project") ? "is-live" : "is-in"); }
+  if (!("IntersectionObserver" in window)) { items.forEach(on); return; }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { on(e.target); io.unobserve(e.target); } });
+  }, { rootMargin: "0px 0px -18% 0px" });
+  items.forEach(function (el) { io.observe(el); });
+})();
+
+// Before / after slider: drag the handle (or anywhere on the image), or use the arrow keys on the handle
+(function () {
+  [].forEach.call(document.querySelectorAll("[data-ba]"), function (ba) {
+    var handle = ba.querySelector(".ba-handle"), dragging = false;
+    function set(p) {
+      p = Math.max(0, Math.min(100, p));
+      ba.style.setProperty("--split", p + "%");
+      handle.setAttribute("aria-valuenow", Math.round(p));
+    }
+    function fromEvent(e) { var r = ba.getBoundingClientRect(); set((e.clientX - r.left) / r.width * 100); }
+    ba.addEventListener("pointerdown", function (e) {
+      dragging = true; fromEvent(e);
+      try { ba.setPointerCapture(e.pointerId); } catch (err) {}
+    });
+    ba.addEventListener("pointermove", function (e) { if (dragging) fromEvent(e); });
+    ["pointerup", "pointercancel"].forEach(function (t) { ba.addEventListener(t, function () { dragging = false; }); });
+    handle.addEventListener("keydown", function (e) {
+      var now = +handle.getAttribute("aria-valuenow"), step = e.shiftKey ? 10 : 4;
+      if (e.key === "ArrowLeft" || e.key === "ArrowDown") { set(now - step); e.preventDefault(); }
+      else if (e.key === "ArrowRight" || e.key === "ArrowUp") { set(now + step); e.preventDefault(); }
+      else if (e.key === "Home") { set(0); e.preventDefault(); }
+      else if (e.key === "End") { set(100); e.preventDefault(); }
+    });
+    set(50);
+  });
+})();
+
+// Footer matcha: each hover takes a sip, so the drink level drops a little. It refills on reload.
+(function () {
+  var imgs = document.querySelectorAll("img.footer-doodle");
+  if (!imgs.length) return;
+  var CUP = "M14 22.5 L19.2 72.5 C27 74.6 37 74.4 44.8 72.3 L50.3 22.8";
+  var SVG = '<svg class="footer-doodle is-svg" viewBox="0 0 64 80" width="64" height="80" fill="none" stroke="#112E4B" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' +
+    '<defs><clipPath id="mt-cup"><path d="' + CUP + ' Z"/></clipPath></defs>' +
+    '<g class="mt-straw"><path d="M40 4.5 L35.5 22"/><path d="M42.5 6 L38.2 22.5"/></g>' +
+    '<path d="M12.5 21.5 C25 19.8 39 20.2 51.8 21.8"/>' +
+    '<path d="' + CUP + '"/>' +
+    '<g clip-path="url(#mt-cup)"><path class="mt-level" d="M16.4 42 C22 39.6 26.5 44.4 32 42 C37.5 39.6 42 44.2 47.8 41.6"/></g>' +
+    '<g class="mt-level mt-ice"><path d="M22 28.5 l6.5 -1.2 1.2 6.4 -6.4 1.3 z"/><path d="M33.5 30 l6 1.4 -1.3 6.2 -6.1 -1.3 z"/></g>' +
+    '<path d="M21.5 55 C25 56.5 26 59.5 24.5 62"/><path d="M38 52.5 C41 54.5 41.6 57.5 40 60.5"/><path d="M30 61 C32 62.5 32.6 65 31.6 67"/></svg>';
+  var MAX = 4, DROP = 2.5;
+  [].forEach.call(imgs, function (img, i) {
+    var wrap = document.createElement("span");
+    wrap.innerHTML = SVG.replace(/mt-cup/g, "mt-cup-" + i);
+    var svg = wrap.firstChild;
+    img.parentNode.replaceChild(svg, img);
+    var levels = svg.querySelectorAll(".mt-level"), sips = 0, busy = false;
+    svg.addEventListener("pointerenter", function () {
+      if (busy || sips >= MAX) return;
+      busy = true; sips++;
+      svg.classList.remove("is-sipping"); void svg.getBoundingClientRect(); svg.classList.add("is-sipping");
+      [].forEach.call(levels, function (l) { l.style.transform = "translateY(" + sips * DROP + "px)"; });
+      setTimeout(function () { busy = false; svg.classList.remove("is-sipping"); }, 650);
+    });
+  });
+})();
+
+// Footer Email: clicking also copies the address, and "copied!" types out beside the link
+(function () {
+  var links = document.querySelectorAll(".site-footer a[href^='mailto:']");
+  if (!links.length) return;
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  [].forEach.call(links, function (a) {
+    var note = null, timer = null, hide = null;
+    a.addEventListener("click", function () {
+      var addr = a.getAttribute("href").replace("mailto:", "").split("?")[0];
+      try {
+        if (!navigator.clipboard || !navigator.clipboard.writeText) return;
+        navigator.clipboard.writeText(addr).then(show, function () {});
+      } catch (err) {}
+    });
+    function show() {
+      if (!note) {
+        note = document.createElement("span");
+        note.className = "copy-note"; note.setAttribute("role", "status");
+        a.parentNode.appendChild(note);
+      }
+      clearInterval(timer); clearTimeout(hide);
+      var text = "copied!", n = 0;
+      if (reduce) note.textContent = text;
+      else { note.textContent = ""; timer = setInterval(function () { note.textContent = text.slice(0, ++n); if (n >= text.length) clearInterval(timer); }, 45); }
+      hide = setTimeout(function () {
+        if (reduce) { note.textContent = ""; return; }
+        timer = setInterval(function () { note.textContent = note.textContent.slice(0, -1); if (!note.textContent) clearInterval(timer); }, 30);
+      }, 2200);
+    }
+  });
+})();
