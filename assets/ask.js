@@ -65,7 +65,7 @@
     "/accenture/": { title: "Assessing a garden the AI can't see", where: "Accenture — Wildlight", img: "/assets/img/wl-cover-v3-1000.webp" },
     "/sewjo-merchant-dashboard/": { title: "Proving value without seeing the sale", where: "Sewjo — Merchant Dashboard", img: "/assets/img/sb-cover-v2-1000.webp" },
     "/sewjo-challenges/": { title: "Turning a launch campaign into reasons to come back", where: "Sewjo — Challenges", img: "/assets/img/ch-cover-v2-1000.webp" },
-    "/sewjo/": { title: "Making project tracking feel effortless", where: "Sewjo — StitchLog", img: "/assets/img/sl-cover-card.webp", top: true }
+    "/sewjo/": { title: "Making project tracking feel effortless", where: "Sewjo — StitchLog", img: "/assets/img/sl-cover-card-640.webp", top: true }
   };
 
   var INTRO = '<div class="ask-art" aria-hidden="true"><img src="/assets/img/ask-md.webp" width="640" height="277" alt=""></div>' +
