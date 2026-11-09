@@ -1572,6 +1572,7 @@ body:has(main.cs2) .nav-pill { display: none; }
 /* Ask Manmit: a little spilled-cup doodle fills the empty space until the first question */
 .ask-art { flex: 1 0 auto; display: grid; place-items: end center; min-height: 0; overflow: hidden; padding: 1rem 0 2.25rem; }
 .ask-art img { display: block; width: min(62%, 240px); height: auto; transform: rotate(-3deg); }
-.ask-art.is-leaving { flex: 0 0 auto; opacity: 0; padding-block: 0; transition: opacity 0.25s ease, height 0.5s cubic-bezier(.32,.72,0,1), padding 0.5s cubic-bezier(.32,.72,0,1); }
+.ask-art img { transition: opacity 0.22s ease, transform 0.3s cubic-bezier(.32,.72,0,1), filter 0.22s ease; }
+.ask-art.is-leaving img { opacity: 0; transform: rotate(-3deg) translateY(-10px) scale(0.92); filter: blur(2px); }
 .ask-art + .ask-intro { margin-top: 0; }
 @media (max-height: 640px) { .ask-art img { width: min(45%, 170px); } }

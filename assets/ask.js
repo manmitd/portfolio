@@ -189,15 +189,15 @@
     var item = QA[i];
     track("ask_question", { question: item.q });
 
-    // the illustration fades out and folds away once the first question is asked
+    // the illustration fades away when the first question is asked
     var art = log.querySelector(".ask-art:not(.is-leaving)");
     if (art) {
       if (reduce) art.remove();
       else {
-        art.style.height = art.offsetHeight + "px";
+        // the doodle only fills spare space above the intro, so once it has faded it can simply go:
+        // the intro stays anchored to the bottom and nothing jumps
         art.classList.add("is-leaving");
-        requestAnimationFrame(function () { requestAnimationFrame(function () { art.style.height = "0px"; }); });
-        setTimeout(function () { art.remove(); }, 600);
+        setTimeout(function () { art.remove(); }, 260);
       }
     }
 

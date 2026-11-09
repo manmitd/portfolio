@@ -66,6 +66,15 @@
     // Start with the badge hanging straight, just above where it will rest, then let it fall.
     // The lanyard is a little elastic, so it catches the badge with a soft bounce.
     pts = [];
+    if (showPin) {
+      // Phones: the badge starts just above its resting spot, straight under the pin, and settles in with a small bounce
+      // (a long fall on a short strap made it whip around and look like it was turning over).
+      for (var n = 0; n <= SEGMENTS; n++) pts.push(P(anchor.x, anchor.y + n * seg * 0.45, n === 0 ? 0 : 1));
+      pts[SEGMENTS].inv = 0.25;
+      var t0 = pts[SEGMENTS];
+      bottom = P(t0.x, t0.y + CARD, 0.25);
+      return;
+    }
     var lift = Math.max(ropeLen + CARD * 0.6, anchor.y + CARD + 40);
     for (var i = 0; i <= SEGMENTS; i++) pts.push(P(anchor.x, anchor.y + i * seg * 0.3 - lift, i === 0 ? 0 : 1));
     pts[0].x = pts[0].px = anchor.x; pts[0].y = pts[0].py = anchor.y;
@@ -148,7 +157,7 @@
   });
 
   // ---- physics step ----
-  var GRAVITY = 2200, DAMP = 0.978, t = 0;
+  var GRAVITY = 2200, DAMP = 0.978, t = 0, settleUntil = 0;
 
   function constrain(a, b, len, stiff, slack) {
     var dx = b.x - a.x, dy = b.y - a.y, d = Math.sqrt(dx * dx + dy * dy) || 0.0001;
@@ -169,6 +178,8 @@
       p.px = p.x; p.py = p.y;
       p.x += vx; p.y += vy + GRAVITY * dt * dt;
     }
+    // phones: extra damping for the first moment so the drop settles cleanly instead of swinging
+    if (t < settleUntil) all.forEach(function (p) { if (p.inv) { p.px += (p.x - p.px) * 0.018; } });
     // a soft breeze so it keeps gently swaying
     if (hovering && !drag) {
       // settle quickly and stop the breeze while someone is pointing at the card
@@ -239,7 +250,8 @@
     badge.style.transform = "translate(" + (top.x - W / 2).toFixed(2) + "px," + top.y.toFixed(2) + "px) rotate(" + a.toFixed(4) + "rad)" + (S !== 1 ? " scale(" + S + ")" : "");
     // a slight turn in 3D when it moves sideways, so it reads as a real card
     var vx = bottom.x - bottom.px;
-    var turn = Math.max(-14, Math.min(14, vx * 1.4));
+    var maxTurn = showPin ? 6 : 14;
+    var turn = Math.max(-maxTurn, Math.min(maxTurn, vx * 1.4));
     tilt.style.transform = "perspective(900px) rotateY(" + turn.toFixed(2) + "deg)";
   }
 
@@ -263,7 +275,9 @@
   function start() {
     measure();
     if (reduce) { restPose(); draw(); badge.classList.add("is-ready"); return; }
-    dropPose(); draw(); badge.classList.add("is-ready"); wake();
+    dropPose(); draw(); badge.classList.add("is-ready");
+    settleUntil = t + (showPin ? 1.6 : 0);
+    wake();
   }
 
   if ("IntersectionObserver" in window) {
