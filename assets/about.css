@@ -315,3 +315,8 @@ html.ab-viewing { overflow: hidden; }
   .ab-back .ab-back-note { font-size: 1.55rem; }
   .ab-cards .ab-back .ab-back-note { font-size: 1.4rem; }
 }
+
+/* Goodbye block sits in the middle of the page on wider screens */
+@media (min-width: 761px) {
+  .ab-bye { grid-template-columns: 260px minmax(0, 30rem); justify-content: center; gap: clamp(2.5rem, 5vw, 4rem); }
+}
