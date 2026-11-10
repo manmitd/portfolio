@@ -337,3 +337,9 @@ html.ab-viewing { overflow: hidden; }
   .ab-peek .ab-flip-hint em, .ab-flip-inner.is-peeking { animation: none; }
 }
 .ab-flip-item.is-peeking .ab-doodle { opacity: 0; }
+
+/* The grid paper already gives this page its lines, so the extra divider rules (which sat a few pixels
+   off the grid and looked doubled) are removed here; spacing separates the sections instead. */
+.ab-sec, main .experience { border-top: 0; }
+main .experience .role { border-top: 0; border-bottom: 0; padding-block: 1.25rem; }
+main .experience .role + .role { margin-top: 0.5rem; }
