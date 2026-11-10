@@ -194,3 +194,33 @@
     fig.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") play(); });
   });
 })();
+
+// Peek: the first time each flip section is seen, the hint flips and the first photo turns over and back,
+// so people notice the photos can be flipped. Skipped if they've already flipped one, or prefer less motion.
+(function () {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) return;
+  var touched = false;
+  document.addEventListener("click", function (e) { if (e.target.closest && e.target.closest(".ab-flip")) touched = true; }, true);
+  [].forEach.call(document.querySelectorAll(".ab-room, .ab-life"), function (sec) {
+    var first = sec.querySelector(".ab-flip:not(.is-flipped) .ab-flip-inner");
+    if (!first) return;
+    var io = new IntersectionObserver(function (es) {
+      if (!es[0].isIntersecting) return;
+      io.disconnect();
+      setTimeout(function () {
+        if (touched) return;
+        sec.classList.add("ab-peek");
+        if (first.closest(".ab-flip").classList.contains("is-flipped")) return;
+        var item = first.closest(".ab-flip-item");
+        first.classList.add("is-peeking"); item.classList.add("is-peeking");
+        first.addEventListener("animationend", function () { first.classList.remove("is-peeking"); item.classList.remove("is-peeking"); }, { once: true });
+      }, 700);
+    }, { threshold: 0.55 });
+    io.observe(sec.querySelector(".ab-cards, .ab-sheet") || sec);
+  });
+  // a click mid-peek takes over straight away
+  document.addEventListener("click", function (e) {
+    var f = e.target.closest && e.target.closest(".ab-flip"); if (!f) return;
+    var inner = f.querySelector(".is-peeking"); if (inner) { inner.classList.remove("is-peeking"); f.parentNode.classList.remove("is-peeking"); }
+  }, true);
+})();
