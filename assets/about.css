@@ -343,3 +343,14 @@ html.ab-viewing { overflow: hidden; }
 .ab-sec, main .experience { border-top: 0; }
 main .experience .role { border-top: 0; border-bottom: 0; padding-block: 1.25rem; }
 main .experience .role + .role { margin-top: 0.5rem; }
+
+/* Same safeguard for the flip photos on iPhone Safari: the side facing away is hidden outright */
+.ab-flip .ab-back { visibility: hidden; transition: visibility 0s linear 0.2s; }
+.ab-flip .ab-front { visibility: visible; transition: visibility 0s linear 0.2s; }
+.ab-flip.is-flipped .ab-back { visibility: visible; }
+.ab-flip.is-flipped .ab-front { visibility: hidden; }
+.ab-flip-inner.is-peeking .ab-back { animation: peek-back 2.4s linear 1 both; }
+.ab-flip-inner.is-peeking .ab-front { animation: peek-front 2.4s linear 1 both; }
+@keyframes peek-back { 0%, 9% { visibility: hidden; } 10%, 88% { visibility: visible; } 89%, 100% { visibility: hidden; } }
+@keyframes peek-front { 0%, 9% { visibility: visible; } 10%, 88% { visibility: hidden; } 89%, 100% { visibility: visible; } }
+@media (prefers-reduced-motion: reduce) { .ab-flip .ab-back, .ab-flip .ab-front { transition: none; } }

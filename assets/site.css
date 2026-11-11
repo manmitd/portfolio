@@ -1576,3 +1576,11 @@ body:has(main.cs2) .nav-pill { display: none; }
 .ask-art.is-leaving img { opacity: 0; transform: rotate(-3deg) translateY(-10px) scale(0.92); filter: blur(2px); }
 .ask-art + .ask-intro { margin-top: 0; }
 @media (max-height: 700px) { .ask-art img { width: min(60%, 230px); } }
+
+/* iPhone Safari sometimes ignores backface-visibility, which showed the badge's back (mirrored) before it was flipped.
+   So the hidden side is also switched off with visibility, swapping halfway through the flip. */
+.badge-back { visibility: hidden; transition: visibility 0s linear 0.14s; }
+.badge-front { visibility: visible; transition: visibility 0s linear 0.14s; }
+.badge[aria-pressed="true"] .badge-back { visibility: visible; }
+.badge[aria-pressed="true"] .badge-front { visibility: hidden; }
+@media (prefers-reduced-motion: reduce) { .badge-back, .badge-front { transition: none; } }
