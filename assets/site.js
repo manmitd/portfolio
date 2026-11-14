@@ -606,3 +606,15 @@
   if (document.readyState === "complete") setTimeout(build, 0);
   else window.addEventListener("load", function () { setTimeout(build, 0); });
 })();
+
+// Arriving on the homepage at #work (from the phone dock): jump straight there instead of scrolling down from the top,
+// then turn smooth scrolling back on for in-page links.
+(function () {
+  if (!location.hash || !document.documentElement.style.scrollBehavior) return;
+  var t = document.getElementById(location.hash.slice(1));
+  if (t) t.scrollIntoView({ behavior: "instant", block: "start" });
+  window.addEventListener("load", function () {
+    if (t) t.scrollIntoView({ behavior: "instant", block: "start" });
+    setTimeout(function () { document.documentElement.style.scrollBehavior = ""; }, 50);
+  });
+})();

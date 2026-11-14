@@ -1584,3 +1584,13 @@ body:has(main.cs2) .nav-pill { display: none; }
 .badge[aria-pressed="true"] .badge-back { visibility: visible; }
 .badge[aria-pressed="true"] .badge-front { visibility: hidden; }
 @media (prefers-reduced-motion: reduce) { .badge-back, .badge-front { transition: none; } }
+
+/* Page switches: the old page fades out quickly before the new one fades up, so the two never show
+   on top of each other (that overlap looked messy, especially on phones). The dock pill still glides across. */
+::view-transition-old(root) { animation: 0.14s ease both vt-out; }
+::view-transition-new(root) { animation: 0.32s cubic-bezier(.2,.8,.2,1) 0.1s both vt-in; }
+@keyframes vt-out { to { opacity: 0; } }
+@keyframes vt-in { from { opacity: 0; transform: translateY(10px); } }
+@media (max-width: 760px) {
+  ::view-transition-group(dock), ::view-transition-group(dock-pill) { animation-duration: 0.38s; animation-timing-function: cubic-bezier(.2,.8,.2,1); }
+}
