@@ -354,3 +354,6 @@ main .experience .role + .role { margin-top: 0.5rem; }
 @keyframes peek-back { 0%, 9% { visibility: hidden; } 10%, 88% { visibility: visible; } 89%, 100% { visibility: hidden; } }
 @keyframes peek-front { 0%, 9% { visibility: visible; } 10%, 88% { visibility: hidden; } 89%, 100% { visibility: visible; } }
 @media (prefers-reduced-motion: reduce) { .ab-flip .ab-back, .ab-flip .ab-front { transition: none; } }
+
+/* "Toronto raised me. Vancouver won me over." a little bigger */
+.ab-life .ab-note { font-size: clamp(1.6rem, 3vw, 2.125rem); line-height: 1.2; text-wrap: balance; }
