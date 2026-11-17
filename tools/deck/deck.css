@@ -123,6 +123,21 @@ body.idle, body.idle * { cursor: none !important; }
 .l-fix .media.r-map { aspect-ratio: 1120 / 784; }
 .l-fix.portrait .media { aspect-ratio: 620 / 720; max-height: 700px; }
 
+/* ---------- Layout: loop ---------- */
+.l-loop { display: grid; grid-template-columns: 1fr 560px; gap: 80px; align-items: center; }
+.l-loop .headline { font-size: 68px; }
+.l-loop .points li { max-width: 26ch; }
+.cycle { position: relative; width: 560px; height: 560px; }
+.cycle ol { list-style: none; margin: 0; padding: 0; }
+.cycle li { position: absolute; width: 216px; height: 216px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px;
+  border-radius: 50%; background: #fff; border: 1px solid var(--rule); box-shadow: 0 16px 36px -18px rgba(17, 46, 75, 0.35);
+  font-family: var(--f-sans); font-weight: 500; font-size: 30px; line-height: 1.12; letter-spacing: -0.015em; color: var(--navy); }
+.cycle li span { margin-bottom: 8px; font-family: var(--f-mono); font-size: 18px; letter-spacing: 0.1em; color: var(--label); }
+.cycle .n0 { left: 12px; top: 12px; } .cycle .n1 { right: 12px; top: 12px; } .cycle .n2 { right: 12px; bottom: 12px; } .cycle .n3 { left: 12px; bottom: 12px; }
+.cycle .n0 { background: var(--navy); color: #fff; border-color: var(--navy); } .cycle .n0 span { color: #B9CCE0; }
+.cycle svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.cycle .again { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); margin: 0; font-family: var(--f-serif); font-style: italic; font-size: 40px; color: var(--dusty); white-space: nowrap; }
+
 /* ---------- Layout: big stat ---------- */
 .l-bigstat { justify-content: center; align-items: center; text-align: center; }
 .l-bigstat .big { margin: 0; font-family: var(--f-sans); font-weight: 500; font-size: 260px; line-height: 0.9; letter-spacing: -0.05em; color: var(--navy); }
