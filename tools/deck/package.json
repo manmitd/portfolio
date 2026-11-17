@@ -1,0 +1,15 @@
+{
+  "name": "deck",
+  "version": "1.0.0",
+  "description": "Private slide decks for manmitdhindsa.ca/present/<company>/",
+  "scripts": {
+    "new": "node build.mjs new",
+    "preview": "node build.mjs preview",
+    "encrypt": "node build.mjs encrypt",
+    "check": "node build.mjs check"
+  },
+  "devDependencies": {
+    "staticrypt": "^3.5.4"
+  },
+  "private": true
+}

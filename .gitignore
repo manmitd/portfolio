@@ -1,0 +1,3 @@
+# Private slide decks: plain source stays local (backed up to the private portfolio-decks repo)
+/decks/
+tools/deck/node_modules/
