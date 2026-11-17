@@ -77,10 +77,10 @@
       var c = (s.cycle || []).slice(0, 4);
       var nodes = c.map(function (t, i) { return '<li class="n' + i + '"><span>0' + (i + 1) + "</span>" + esc(t) + "</li>"; }).join("");
       return "<div>" + kicker(s) + '<h2 class="headline">' + marked(s.headline, s.mark) + "</h2>" + list(s.points, "points") + "</div>" +
-        '<div class="cycle" role="img" aria-label="' + esc(c.join(", then ") + ", then repeat") + '"><ol aria-hidden="true">' + nodes + "</ol>" +
+        '<div class="cycle" role="img" aria-label="' + esc(c.join(", then ") + ", then " + (s.centre || "repeat").toLowerCase()) + '"><ol aria-hidden="true">' + nodes + "</ol>" +
         '<svg viewBox="0 0 560 560" aria-hidden="true"><defs><marker id="ah" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#5277A0"/></marker></defs>' +
         '' + ['M228 120H332','M440 228V332','M332 440H228','M120 332V228'].map(function (d) { return '<path d="' + d + '" stroke="#5277A0" stroke-width="3" fill="none" marker-end="url(#ah)"/>'; }).join('') + '</svg>' +
-        '<p class="again">and again</p></div>';
+        '<p class="again">' + esc(s.centre || "Repeat") + '</p></div>';
     },
     bigstat: function (s) {
       var big = esc(s.stat).replace(/ of /, " <em>of</em> ");
