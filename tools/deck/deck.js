@@ -57,8 +57,9 @@
       return "<div>" + kicker(s) + '<h2 class="headline">' + marked(s.headline, s.mark) + "</h2>" + list(s.points, "points") + "</div>" + mediaHtml(s.media);
     },
     quote: function (s) {
-      return kicker(s) + '<h2 class="headline">' + marked(s.headline, s.mark) + "</h2>" +
+      var body = kicker(s) + '<h2 class="headline">' + marked(s.headline, s.mark) + "</h2>" +
         (s.points && s.points.length ? '<p class="sub">' + esc(s.points.join(" ")) + "</p>" : "");
+      return s.media ? "<div>" + body + "</div>" + mediaHtml(s.media) : body;
     },
     steps: function (s) {
       return kicker(s) + '<h2 class="headline">' + marked(s.headline, s.mark) + "</h2>" + list(s.points, "steps") + mediaHtml(s.media);
