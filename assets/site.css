@@ -1479,6 +1479,7 @@ html.ask-locked .dock, html.ask-docked .dock { display: none; }
 
 /* Homepage cards: one line of evidence under the summary */
 .project-proof { margin: -0.5rem 0 1rem; font-family: var(--f-mono); font-size: 0.8125rem; letter-spacing: 0.01em; line-height: 1.5; color: var(--ink-soft); }
+.project-proof-note { display: block; margin-top: 0.15rem; font-size: 0.75rem; color: var(--mono-label, #6E7F91); }
 
 /* Case study header: status and focus pills under the title */
 .cs2-pills { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; list-style: none; margin: 1.1rem 0 0; padding: 0; }
