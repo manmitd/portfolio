@@ -99,7 +99,7 @@
 
       <section class="cs2-tldr" id="tldr" aria-labelledby="tldr-h">
         <p class="cs2-tldr-label" id="tldr-h">TL;DR</p>
-        <p>Beginners didn't know the garden details the AI needed, so recommendations were built on guesses. I replaced the intake form with a guided conversation that helps people describe their garden, with a map&#8209;based tool for measuring it.</p>
+        <p>Beginners didn't know the garden details the AI needed. In testing, they guessed, or left to Google the answer and sometimes never came back. I replaced the intake form with a guided conversation that teaches as it asks, and added visuals and a map&#8209;based measuring tool where text wasn't enough.</p>
         <p>I led design across the conversational assessment, onboarding and educational moments. When we retested the revised build, 18 of 20 participants completed the core task without assistance. Accenture shipped it and showcased it at Web Summit Vancouver 2026.</p>
       </section>
 
@@ -135,7 +135,8 @@
         </div>
         <div class="cs2-callout">
           <h3>The form was failing before the AI ever spoke.</h3>
-          <p>In testing the original flow, people stalled early. Sunlight hours, soil type, drainage. They guessed their way through, and every recommendation downstream was built on those guesses.</p>
+          <p>When we tested the original flow, people stalled early on sunlight hours, soil type and drainage. Some guessed their way through, so every recommendation downstream was built on those guesses. Others left to Google the answer, and some never came back.</p>
+          <p>The form&#8209;first direction already had stakeholder support. Instead of debating it, I proposed we test it, and those results moved the team to AI&#8209;first.</p>
         </div>
       </section>
 
@@ -159,8 +160,10 @@
             <h3>Why we committed to AI&#8209;first</h3>
             <p>The original experience assumed users already knew their garden: sunlight, soil, drainage, and site size.</p>
             <p>But beginners open a gardening app <em>because</em> they don't know those answers yet. <strong>A form can't teach. A conversation can.</strong></p>
+            <p>We did consider keeping the form and adding help text. But help text only answers the question in front of you. If someone has a follow&#8209;up, there's nowhere to go. Our subject matter expert was clear that the goal was to teach people, not just collect answers, and a conversation can keep explaining until they understand.</p>
+            <p>The redesign had three goals: collect information reliable enough to build a useful plan, help beginners understand the questions instead of guessing, and keep people in the flow instead of sending them off to search.</p>
             <h3>So we replaced it with a conversation.</h3>
-            <p>One question at a time, each one shaped by the last.</p>
+            <p>One question at a time, each one adapting to the answer before it.</p>
           </div>
           <img class="cs2-why-flower" src="../assets/img/wl-flower-b.webp" width="294" height="420" loading="lazy" alt="">
         </div>
@@ -189,6 +192,7 @@
         </figure>
         <div class="cs2-text">
           <p>Each response shaped what the AI asked next. It explained unfamiliar concepts, remembered previous answers, and knew when it had enough to build the plan.</p>
+          <p>Before recommending anything, the AI plays back what it learned and the user confirms it. That step builds trust, and gives people a chance to correct anything before it shapes their plan.</p>
         </div>
       </section>
 
@@ -202,7 +206,7 @@
           <li><b>3</b> Core insights</li>
         </ul>
         <div class="cs2-text">
-          <p>We ran moderated, think&#8209;aloud sessions with 20 participants to see how they navigated the conversation.</p>
+          <p>We ran moderated, think&#8209;aloud sessions with 20 participants to see how they navigated the conversation. This was the first of two rounds with real users, with internal testing between rounds.</p>
           <p>By observing where people hesitated, got confused, or needed help, we identified the interactions that needed another look.</p>
         </div>
       </section>
@@ -212,7 +216,7 @@
         <img src="../assets/img/wl-flower-c.webp" width="376" height="420" loading="lazy" alt="">
         <div>
           <p class="cs2-band-text">The flow was right.<br>The <span class="ink-mark">details</span> weren't.</p>
-          <p class="cs2-band-sub">Three problems surfaced. Here's how I solved each. <span aria-hidden="true">↓</span></p>
+          <p class="cs2-band-sub">Three problems surfaced, each one a place where conversation alone wasn't the right tool. Here's how I solved each. <span aria-hidden="true">↓</span></p>
         </div>
         <img src="../assets/img/wl-flower-d.webp" width="266" height="420" loading="lazy" alt="">
       </section>
@@ -223,7 +227,7 @@
           <h2 id="fix1">Plant cards that actually tell you something</h2>
           <div class="cs2-split">
             <div class="cs2-text">
-              <p><strong>Testing made one thing clear:</strong> beautiful cards weren't enough. People still didn't have the confidence to choose a plant.</p>
+              <p>Each recommendation was an image with a block of text underneath. Reviewing several plants at once was overwhelming, and people still didn't have the confidence to choose.</p>
               <p><strong>The answer was already in the nursery.</strong></p>
               <p>A seed packet puts the essentials on the front and the growing details on the back.</p>
               <p><strong>I brought that same pattern into the app:</strong> a scannable front for choosing, and a flip for everything else.</p>
@@ -246,8 +250,8 @@
         <div class="cs2-fix-body">
           <h2 id="fix2">Measuring without a measuring tape</h2>
           <div class="cs2-text">
-            <p>The assessment needed the garden's size, but almost no one can estimate square footage by eye.</p>
-            <p><strong>So we didn't ask for a number. We let people draw one:</strong> trace your boundary on the map, and the system calculates the area for you.</p>
+            <p>In the first round of testing, many people couldn't tell us their garden's square footage. Asking for a number would have brought back the same guessing we were trying to remove.</p>
+            <p><strong>So I didn't ask for a number. I let people draw one:</strong> trace your boundary on the map, and the system calculates the area for you.</p>
           </div>
         </div>
         <figure class="cs2-media cs2-fix-media">
@@ -262,7 +266,7 @@
         <div class="cs2-fix-body">
           <h2 id="fix3">Questions should be answered, not blocked</h2>
           <div class="cs2-text">
-            <p>People guessed on questions like soil type, and one wrong guess throws off everything after it.</p>
+            <p>The conversation helped, but some questions, like soil type or drainage, are hard to explain in words alone. One wrong guess there throws off everything after it.</p>
             <p>Here, you can just ask. The AI explains, shows a visual, and teaches you enough to answer honestly.</p>
           </div>
           <p class="cs2-result">In the retest, people stopped guessing once they understood the question.</p>
@@ -284,6 +288,9 @@
         <div class="cs2-highlight">
           <p class="cs2-highlight-n">18<span>/20</span></p>
           <p><strong>18 of 20 participants completed the core task without assistance on the revised build.</strong></p>
+        </div>
+        <div class="cs2-text">
+          <p>We also saw people answering from understanding instead of guessing, which is what the plan depends on.</p>
         </div>
       </section>
 
