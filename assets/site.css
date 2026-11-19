@@ -571,6 +571,7 @@ a:hover { text-decoration-thickness: 2px; }
 }
 .cs2-callout h3 { margin: 0 0 0.6rem; font-family: var(--font-display); font-weight: 750; font-size: clamp(1.3rem, 2.4vw, 1.6rem); line-height: 1.2; letter-spacing: -0.015em; color: var(--forest-deep); }
 .cs2-callout p { margin: 0; }
+.cs2-callout p + p { margin-top: 0.75rem; }
 
 .cs2-why { display: grid; grid-template-columns: 1fr; margin-top: 3rem; max-width: var(--media); }
 .cs2-why-flower { display: none; }
