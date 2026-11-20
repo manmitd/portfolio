@@ -318,3 +318,23 @@ body.presenter { overflow: auto; background: #0E1B2A; color: #E6EDF5; }
 .pv-next-row { display: grid; grid-template-columns: 46% 1fr; gap: 14px; align-items: start; }
 .pv-next-row .pv-label { text-transform: none; letter-spacing: 0.02em; font-size: 14px; line-height: 1.4; }
 .pv-side .pv-notes { flex: 1; font-size: 24px; }
+/* final targeted tweaks */
+.l-steps .media { aspect-ratio: 16 / 9; margin-top: 32px; }
+.l-steps .media video { object-fit: cover; }
+.l-steps .note { margin-top: 20px; }
+.l-timeline .timeline { margin-top: 72px; gap: 40px; }
+.l-timeline .tl-tag { font-size: 20px; }
+.l-timeline .tl-label { font-size: 50px; }
+.l-timeline .tl-text { font-size: 36px; line-height: 1.32; max-width: 20ch; color: var(--navy); }
+.l-split:not(.has-media) .rows dt { font-size: 21px; color: var(--navy); }
+.l-split:not(.has-media) .rows dd { font-size: 38px; line-height: 1.28; color: var(--navy); }
+.l-split:not(.has-media) .rows div { background: #fff; border-color: #C9D3DE; }
+.l-statements .closing { font-family: var(--f-sans); font-style: normal; font-weight: 500; font-size: 40px; line-height: 1.2; letter-spacing: -0.015em; color: var(--navy); }
+/* slide 7: steps down the left, larger recording on the right */
+.l-steps.has-media { display: grid; grid-template-columns: minmax(0, 1fr) 860px; grid-template-rows: auto auto 1fr auto; column-gap: 56px; align-content: center; }
+.l-steps.has-media > .kicker, .l-steps.has-media > .headline { grid-column: 1 / -1; }
+.l-steps.has-media > .headline { margin-bottom: 36px; }
+.l-steps.has-media .steps { grid-column: 1; grid-row: 3; margin: 0; grid-template-columns: 1fr; gap: 20px; align-content: start; }
+.l-steps.has-media .steps li { font-size: 32px; padding-top: 14px; }
+.l-steps.has-media .note { grid-column: 1; grid-row: 4; margin-top: 24px; }
+.l-steps.has-media .media { grid-column: 2; grid-row: 3 / 5; margin: 0; align-self: start; }
