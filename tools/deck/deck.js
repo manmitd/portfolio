@@ -22,15 +22,33 @@
     var w = esc(word), i = t.indexOf(w);
     return i < 0 ? t : t.slice(0, i) + "<em>" + w + "</em>" + t.slice(i + w.length);
   }
-  function slideTitle(s) { return s.headline || s.kicker || ("Slide"); }
+  function slideTitle(s) { return String(s.headline || s.kicker || "Slide").replace(/\n/g, " "); }
+  function hl(s, tag) { return "<" + (tag || "h2") + ' class="headline">' + marked(s.headline, s.mark).replace(/\n/g, "<br>") + "</" + (tag || "h2") + ">"; }
+  function br(t) { return esc(t).replace(/\n/g, "<br>"); }
+  function mediaGroup(m, extra) {
+    if (!m) return "";
+    if (!Array.isArray(m)) return mediaHtml(m, extra);
+    return '<div class="media-group n' + m.length + '">' + m.map(function (x) { return mediaHtml(x, extra); }).join("") + "</div>";
+  }
+  function rows(items) {
+    if (!items || !items.length) return "";
+    return '<dl class="rows">' + items.map(function (r) {
+      return '<div' + (r.strong ? ' class="strong"' : "") + "><dt>" + esc(r.label) + "</dt><dd>" + esc(r.text) + "</dd></div>";
+    }).join("") + "</dl>";
+  }
+  function footer(f) {
+    if (!f) return "";
+    return '<div class="foot">' + (f.label ? '<p class="foot-label">' + esc(f.label) + "</p>" : "") + '<p class="foot-text">' + esc(f.text) + "</p></div>";
+  }
   function mediaHtml(m, extra) {
     if (!m) return "";
     var cls = "media" + (extra ? " " + extra : "");
+    var style = m.ratio ? ' style="aspect-ratio:' + esc(m.ratio) + '"' : "";
     if (m.type === "video") {
-      return '<figure class="' + cls + '"><video muted loop playsinline preload="metadata"' + (m.poster ? ' poster="' + esc(m.poster) + '"' : "") +
+      return '<figure class="' + cls + '"' + style + '><video muted loop playsinline preload="metadata"' + (m.poster ? ' poster="' + esc(m.poster) + '"' : "") +
         ' aria-label="' + esc(m.alt || "") + '"><source src="' + esc(m.src) + '" type="video/mp4"></video></figure>';
     }
-    return '<figure class="' + cls + '"><img src="' + esc(m.src) + '" alt="' + esc(m.alt || "") + '" decoding="async"></figure>';
+    return '<figure class="' + cls + '"' + style + '><img src="' + esc(m.src) + '" alt="' + esc(m.alt || "") + '" decoding="async"></figure>';
   }
   function list(items, cls) {
     if (!items || !items.length) return "";
@@ -41,17 +59,48 @@
   /* ---------- layouts ---------- */
   var layouts = {
     title: function (s) {
-      return '<div><p class="kicker">' + esc(s.kicker || "") + '</p><h1 class="headline">' + marked(s.headline, s.mark) + "</h1>" +
-        (s.byline ? '<p class="byline">' + esc(s.byline) + "</p>" : "") + "</div>" + mediaHtml(s.media);
+      return "<div>" + kicker(s) + hl(s, "h1") + (s.sub ? '<p class="title-sub">' + esc(s.sub) + "</p>" : "") +
+        (s.byline ? '<p class="byline">' + br(s.byline) + "</p>" : "") + "</div>" + mediaHtml(s.media);
     },
     facts: function (s) {
       var facts = (s.facts || []).map(function (f) {
         var v = /^shipped$/i.test(f[1]) ? '<span class="status">' + esc(f[1]) + "</span>" : esc(f[1]);
         return "<div><dt>" + esc(f[0]) + "</dt><dd>" + v + "</dd></div>";
       }).join("");
-      var scope = s.scope || "", m = scope.match(/^([^:]+:)\s*(.*)$/);
-      var scopeHtml = scope ? '<p class="scope">' + (m ? "<b>" + esc(m[1]) + "</b> " + esc(m[2]) : esc(scope)) + "</p>" : "";
-      return '<h2 class="headline">' + esc(s.headline) + '</h2><dl class="facts">' + facts + "</dl>" + scopeHtml;
+      var scopeHtml = "";
+      if (s.scopeList) scopeHtml = '<div class="scope2"><p class="foot-label">' + esc(s.scopeLabel || "My scope") + "</p>" + list(s.scopeList, "chips") + "</div>";
+      else if (s.scope) { var m = s.scope.match(/^([^:]+:)\s*(.*)$/); scopeHtml = '<p class="scope">' + (m ? "<b>" + esc(m[1]) + "</b> " + esc(m[2]) : esc(s.scope)) + "</p>"; }
+      var body = kicker(s) + hl(s) + '<dl class="facts">' + facts + "</dl>" + scopeHtml;
+      return s.media ? '<div class="facts-col">' + body + "</div>" + mediaHtml(s.media) : body;
+    },
+    split: function (s) {
+      var body = kicker(s) + hl(s) + (s.lead ? '<p class="lead">' + esc(s.lead) + "</p>" : "") +
+        (s.pointsIntro ? '<p class="points-intro">' + esc(s.pointsIntro) + "</p>" : "") + list(s.points, "points") + rows(s.rows) + footer(s.footer);
+      return '<div class="split-text">' + body + "</div>" + mediaGroup(s.media);
+    },
+    compare: function (s) {
+      var steps = '<ol class="numbered">' + (s.numbered || []).map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ol>";
+      var cmp = '<div class="cmp">' + (s.compare || []).map(function (c, i) {
+        return '<div class="cmp-col' + (i ? " chosen" : "") + '">' + mediaHtml(c.media) + '<p class="foot-label">' + esc(c.label) + '</p><p class="cmp-flow">' + esc(c.flow) + "</p></div>";
+      }).join('<span class="cmp-arrow" aria-hidden="true">→</span>') + "</div>";
+      return '<div class="split-text">' + kicker(s) + hl(s) + steps + "</div>" + cmp;
+    },
+    tradeoff: function (s) {
+      var cols = '<div class="tcols">' + (s.columns || []).map(function (c) {
+        return '<div class="tcol' + (c.chosen ? " chosen" : "") + '"><p class="foot-label">' + esc(c.label) + "</p>" + list(c.points, "tlist") + "</div>";
+      }).join("") + "</div>";
+      return '<div class="split-text">' + kicker(s) + hl(s) + cols + footer(s.footer) + "</div>" + mediaHtml(s.media);
+    },
+    timeline: function (s) {
+      var st = '<ol class="timeline">' + (s.stages || []).map(function (x) {
+        return '<li' + (x.internal ? ' class="internal"' : "") + '><p class="tl-tag">' + esc(x.tag || "") + '</p><p class="tl-label">' + esc(x.label) + '</p><p class="tl-text">' + esc(x.text) + "</p></li>";
+      }).join("") + "</ol>";
+      return kicker(s) + hl(s) + st;
+    },
+    statements: function (s) {
+      var lines = (s.lines || []).map(function (l) { return '<p class="stmt">' + esc(l) + "</p>"; }).join("");
+      return '<div class="split-text">' + kicker(s) + hl(s) + lines + (s.closing ? '<p class="closing">' + esc(s.closing) + "</p>" : "") + "</div>" +
+        mediaGroup(s.media, "") ;
     },
     points: function (s) {
       return "<div>" + kicker(s) + '<h2 class="headline">' + marked(s.headline, s.mark) + "</h2>" + list(s.points, "points") + "</div>" + mediaHtml(s.media);
@@ -62,11 +111,13 @@
       return s.media ? "<div>" + body + "</div>" + mediaHtml(s.media) : body;
     },
     steps: function (s) {
-      return kicker(s) + '<h2 class="headline">' + marked(s.headline, s.mark) + "</h2>" + list(s.points, "steps") + mediaHtml(s.media);
+      return kicker(s) + hl(s) + list(s.points, "steps") + (s.note ? '<p class="note">' + esc(s.note) + "</p>" : "") + mediaHtml(s.media);
     },
     stats: function (s) {
       var stats = (s.stats || []).map(function (x) { return "<div><b>" + esc(x[0]) + "</b><span>" + esc(x[1]) + "</span></div>"; }).join("");
-      return kicker(s) + '<div class="stats">' + stats + '</div><h2 class="headline">' + marked(s.headline, s.mark) + "</h2>";
+      var note = s.note ? '<p class="note">' + esc(s.note) + "</p>" : "";
+      if (s.headlineFirst) return kicker(s) + hl(s) + '<div class="stats after">' + stats + "</div>" + note;
+      return kicker(s) + '<div class="stats">' + stats + '</div>' + hl(s) + note;
     },
     fix: function (s) {
       var extra = s.media && /map/.test(s.media.src) ? "r-map" : "";
@@ -85,7 +136,8 @@
     },
     bigstat: function (s) {
       var big = esc(s.stat).replace(/ of /, " <em>of</em> ");
-      return kicker(s) + '<p class="big">' + big + '</p><h2 class="headline">' + esc(s.headline) + "</h2>";
+      var body = kicker(s) + '<p class="big">' + big + '</p><h2 class="headline">' + esc(s.headline) + "</h2>" + (s.sub ? '<p class="bigsub">' + esc(s.sub) + "</p>" : "");
+      return s.media ? '<div class="split-text">' + body + "</div>" + mediaHtml(s.media) : body;
     },
     end: function (s) {
       return '<h2 class="headline">' + esc(s.headline) + "</h2>" + (s.sub ? '<p class="sub">' + esc(s.sub) + "</p>" : "") +
@@ -99,6 +151,7 @@
     if (s.media) cls += " has-media";
     if (s.media && s.media.portrait) cls += " portrait";
     if (s.points && s.points.length > 4) cls += " dense";
+    if (Array.isArray(s.media)) cls += " multi";
     return '<section class="' + cls + '" data-index="' + i + '" aria-roledescription="slide" aria-label="' + (i + 1) + " of " + total + '">' + layouts[layout](s) + "</section>";
   }
 
@@ -274,8 +327,8 @@
       '<span class="count" id="count"></span><span id="clock"></span>' +
       '<span class="hint">→ / Space next · ← back · Home first · type a number to jump · R reset timer</span></div>' +
       '<section class="pv-main"><p class="pv-label">Now showing</p><div class="pv-frame" id="cur"></div>' +
-      '<p class="pv-label">Notes</p><div class="pv-notes" id="notes" aria-live="polite"></div></section>' +
-      '<aside class="pv-side"><p class="pv-label">Up next</p><div class="pv-frame next" id="next"></div><p class="pv-label" id="next-title"></p></aside>' +
+      '<p class="pv-label">Up next</p><div class="pv-next-row"><div class="pv-frame next" id="next"></div><p class="pv-label" id="next-title"></p></div></section>' +
+      '<aside class="pv-side"><p class="pv-label">Notes</p><div class="pv-notes" id="notes" aria-live="polite"></div></aside>' +
       "</div>" +
       '<div class="jump" id="jump" aria-hidden="true"></div>';
     jumpEl = document.getElementById("jump");
