@@ -338,3 +338,34 @@ body.presenter { overflow: auto; background: #0E1B2A; color: #E6EDF5; }
 .l-steps.has-media .steps li { font-size: 32px; padding-top: 14px; }
 .l-steps.has-media .note { grid-column: 1; grid-row: 4; margin-top: 24px; }
 .l-steps.has-media .media { grid-column: 2; grid-row: 3 / 5; margin: 0; align-self: start; }
+/* v3: flows (form-first to AI-first) */
+.l-flows { justify-content: center; }
+.l-flows .headline { font-size: 60px; }
+.flows { margin-top: 40px; display: grid; grid-template-columns: 1fr 300px 1fr; gap: 36px; align-items: start; }
+.flow .media { aspect-ratio: 16 / 10; }
+.flow .foot-label { margin-top: 20px; }
+.flow.chosen .foot-label { color: var(--navy); }
+.chain { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 0; }
+.chain li { font-family: var(--f-sans); font-weight: 500; font-size: 27px; letter-spacing: -0.01em; color: var(--navy); }
+.chain li + li::before { content: "→"; margin: 0 12px; color: var(--dusty); font-weight: 400; }
+.flow-mid { align-self: center; margin-top: -40px; padding: 24px; border-radius: 16px; background: #fff; border: 1px solid #C9D3DE; position: relative; }
+.flow-problem { margin: 10px 0 0; font-size: 28px; line-height: 1.3; color: var(--navy); }
+.flow-arrow { display: none; }
+.flow-foot { margin: 36px 0 0; padding-left: 24px; border-left: 4px solid var(--dusty); font-size: 32px; line-height: 1.3; color: var(--navy); font-weight: 500; }
+/* v3: tradeoff two-line headline */
+.l-tradeoff .headline { font-size: 50px; }
+/* v3: closing Mako slide */
+.l-split.closing-slide { align-content: center; }
+.l-split.closing-slide .kicker { margin-bottom: 20px; }
+.l-split.closing-slide .headline { font-size: 72px; max-width: none; }
+.l-split.closing-slide .points { margin-top: 48px; gap: 22px; }
+.l-split.closing-slide .points li { font-size: 38px; max-width: none; color: var(--navy); }
+/* v3: reflection headline two lines */
+.l-statements .headline { font-size: 54px; }
+.chain { flex-direction: column; align-items: flex-start; gap: 4px; }
+.chain li + li::before { margin: 0 12px 0 0; }
+.l-tradeoff { grid-template-columns: minmax(0, 1fr) 520px; gap: 48px; }
+.l-tradeoff .headline { font-size: 50px; }
+.l-tradeoff .tcols { margin-top: 28px; }
+.l-statements .headline { font-size: 50px; }
+.l-tradeoff .headline { font-size: 46px; }

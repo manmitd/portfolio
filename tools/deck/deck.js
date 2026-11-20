@@ -85,6 +85,16 @@
       }).join('<span class="cmp-arrow" aria-hidden="true">→</span>') + "</div>";
       return '<div class="split-text">' + kicker(s) + hl(s) + steps + "</div>" + cmp;
     },
+    flows: function (s) {
+      function flow(f) {
+        return '<div class="flow' + (f.chosen ? " chosen" : "") + '">' + mediaHtml(f.media) + '<p class="foot-label">' + esc(f.label) + "</p>" +
+          '<ol class="chain">' + (f.steps || []).map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ol></div>";
+      }
+      var fl = s.flows || [];
+      var mid = s.problem ? '<div class="flow-mid"><p class="foot-label">' + esc(s.problem.label) + '</p><p class="flow-problem">' + esc(s.problem.text) + '</p><span class="flow-arrow" aria-hidden="true">→</span></div>' : "";
+      return kicker(s) + hl(s) + '<div class="flows">' + (fl[0] ? flow(fl[0]) : "") + mid + (fl[1] ? flow(fl[1]) : "") + "</div>" +
+        (s.footer ? '<p class="flow-foot">' + esc(s.footer.text) + "</p>" : "");
+    },
     tradeoff: function (s) {
       var cols = '<div class="tcols">' + (s.columns || []).map(function (c) {
         return '<div class="tcol' + (c.chosen ? " chosen" : "") + '"><p class="foot-label">' + esc(c.label) + "</p>" + list(c.points, "tlist") + "</div>";
@@ -152,6 +162,7 @@
     if (s.media && s.media.portrait) cls += " portrait";
     if (s.points && s.points.length > 4) cls += " dense";
     if (Array.isArray(s.media)) cls += " multi";
+    if (s.closingSlide) cls += " closing-slide";
     return '<section class="' + cls + '" data-index="' + i + '" aria-roledescription="slide" aria-label="' + (i + 1) + " of " + total + '">' + layouts[layout](s) + "</section>";
   }
 
