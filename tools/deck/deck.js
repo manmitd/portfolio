@@ -368,7 +368,16 @@
       paint(cur, n, true);
       paint(nxt, n + 1, false);
       var note = slides[n].notes || "";
-      notes.textContent = note || "No notes for this slide.";
+      if (note && typeof note === "object") {
+        var cues = note.cues || [], last = cues.length - 1;
+        notes.innerHTML = '<p class="pv-sec">Talking cues</p><ul class="pv-cues">' +
+          cues.map(function (c, i) { return "<li" + (i === last ? ' class="next"' : "") + ">" + esc(c) + "</li>"; }).join("") + "</ul>" +
+          (note.backup ? '<p class="pv-sec">Backup wording</p><p class="pv-backup">' + esc(note.backup) + "</p>" : "");
+        notes.classList.add("structured");
+      } else {
+        notes.textContent = note || "No notes for this slide.";
+        notes.classList.remove("structured");
+      }
       notes.classList.toggle("empty", !note);
       count.textContent = (n + 1) + " / " + total;
       nextTitle.textContent = n + 1 < total ? (n + 2) + ". " + slideTitle(slides[n + 1]) : "";

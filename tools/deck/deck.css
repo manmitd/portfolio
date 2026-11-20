@@ -369,3 +369,13 @@ body.presenter { overflow: auto; background: #0E1B2A; color: #E6EDF5; }
 .l-tradeoff .tcols { margin-top: 28px; }
 .l-statements .headline { font-size: 50px; }
 .l-tradeoff .headline { font-size: 46px; }
+/* presenter: talking cues + backup wording */
+.pv-notes.structured { white-space: normal; padding: 18px 26px 20px; }
+.pv-sec { margin: 0 0 8px; font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: #8FA6BF; }
+.pv-cues { list-style: none; margin: 0 0 18px; padding: 0; display: grid; gap: 6px; }
+.pv-cues li { position: relative; padding-left: 22px; font-size: 25px; line-height: 1.25; font-weight: 500; color: #fff; }
+.pv-cues li::before { content: ""; position: absolute; left: 2px; top: 0.5em; width: 8px; height: 8px; border-radius: 50%; background: #7FA3CC; }
+.pv-cues li.next { margin-top: 6px; color: #BFD3EA; font-style: italic; font-weight: 400; }
+.pv-cues li.next::before { content: "→"; background: none; width: auto; height: auto; top: 0; color: #7FA3CC; font-style: normal; }
+.pv-backup { margin: 0; padding-top: 14px; border-top: 1px solid #2A4058; font-size: 16px; line-height: 1.5; color: #93A8BE; }
+.pv-cues li.next { padding-left: 30px; }
