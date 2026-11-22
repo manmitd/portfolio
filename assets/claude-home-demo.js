@@ -11,7 +11,7 @@
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   var current = -1;
-  var playing = !reduce;
+  var playing = true;
   var sceneTimer = null;
   var typeTimers = [];
   var countTimer = null;
