@@ -657,7 +657,7 @@
     var h = parseInt(p.hour, 10) % 24, weekend = p.weekday === "Sat" || p.weekday === "Sun";
     var time = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Vancouver", hour: "numeric", minute: "2-digit" }).format(now)
       .replace(/\s?a\.m\./i, " am").replace(/\s?p\.m\./i, " pm");
-    el.innerHTML = '<span class="fc-dot" aria-hidden="true"></span>It’s ' + time + " for me in Vancouver,<span class=\"fc-sep\"> </span><span class=\"fc-line\">so I\u2019m probably " + line(h, weekend) + "</span>";
+    el.innerHTML = '<span class="fc-dot" aria-hidden="true"></span>It’s ' + time + " in Vancouver,<span class=\"fc-sep\"> </span><span class=\"fc-line\">so I\u2019m probably " + line(h, weekend) + "</span>";
   }
   render();
   setInterval(render, 30000);
