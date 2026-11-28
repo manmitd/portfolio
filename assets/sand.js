@@ -14,6 +14,17 @@
   var DRIFT = small ? 40 : 90;
   var W = 0, H = 0, dpr = 1;
 
+  // Winter: from December to February the sand becomes snow. Same shapes, same cursor scatter,
+  // just icy colours, a slower drifting pour, and soft flakes falling in the background.
+  // Preview any time with ?season=winter (or ?season=sand to force the normal look).
+  var WINTER = (function () {
+    var q = /[?&]season=(winter|sand)/.exec(location.search);
+    if (q) return q[1] === "winter";
+    var m = new Date().getMonth();
+    return m === 11 || m === 0 || m === 1;
+  })();
+  if (WINTER) document.documentElement.classList.add("is-winter");
+
   // ---- shapes, drawn as thick strokes on a 400 x 400 sheet, then sampled into points ----
   var SHAPES = [
     function cursor(g) {
@@ -96,6 +107,7 @@
       vx[i] = 0; vy[i] = 0;
       falling[i] = 1;
       wait[i] = Math.random() * 70 + (1 - ty[i] / H) * 20;  // a staggered pour, lower parts of the shape fill first
+      if (WINTER) { x[i] = tx[i] + (Math.random() - 0.5) * 220; wait[i] *= 0.6; }
     }
     drift = [];
     for (var j = 0; j < DRIFT; j++) drift.push({ x: Math.random() * W, y: Math.random() * H, a: Math.random() * 6.28, s: 0.12 + Math.random() * 0.25, r: Math.random() < 0.3 ? 2.2 : 1.6 });
@@ -129,10 +141,15 @@
     for (var i = 0; i < N; i++) {
       if (falling[i]) {
         if (wait[i] > 0) { wait[i] -= 1; continue; }
-        vy[i] += 0.32;                                       // gravity while pouring
-        vx[i] += (tx[i] - x[i]) * 0.01; vx[i] *= 0.94;
+        if (WINTER) {                                        // snow drifts down instead of pouring
+          vy[i] += 0.07; vy[i] *= 0.985;
+          vx[i] += (tx[i] - x[i]) * 0.006 + Math.sin((y[i] + i) * 0.03) * 0.05; vx[i] *= 0.94;
+        } else {
+          vy[i] += 0.32;                                     // gravity while pouring
+          vx[i] += (tx[i] - x[i]) * 0.01; vx[i] *= 0.94;
+        }
         x[i] += vx[i]; y[i] += vy[i];
-        if (y[i] >= ty[i]) { y[i] = ty[i]; vy[i] *= -0.18; vx[i] += (Math.random() - 0.5) * 1.2; falling[i] = 0; }
+        if (y[i] >= ty[i]) { y[i] = ty[i]; vy[i] *= WINTER ? 0 : -0.18; vx[i] += (Math.random() - 0.5) * (WINTER ? 0.4 : 1.2); falling[i] = 0; }
         continue;
       }
       if (wait[i] > 0) {
@@ -151,18 +168,34 @@
     }
     for (var j = 0; j < drift.length; j++) {
       var p = drift[j]; p.a += (Math.random() - 0.5) * 0.2;
-      p.x += Math.cos(p.a) * p.s; p.y += Math.sin(p.a) * p.s;
+      if (WINTER) { p.x += Math.cos(p.a) * p.s * 0.5; p.y += p.s * 1.6 + 0.15; }   // flakes fall gently
+      else { p.x += Math.cos(p.a) * p.s; p.y += Math.sin(p.a) * p.s; }
       var ex = p.x - px, ey = p.y - py, e2 = ex * ex + ey * ey;
       if (e2 < R2) { var e = Math.sqrt(e2) || 1; p.x += ex / e * 1.5; p.y += ey / e * 1.5; }
       if (p.x < 0) p.x += W; if (p.x > W) p.x -= W; if (p.y < 0) p.y += H; if (p.y > H) p.y -= H;
     }
   }
-  var TONES = [["rgba(82,119,160,0.95)", 1.7], ["rgba(82,119,160,0.55)", 1.3], ["rgba(17,46,75,0.85)", 1.8]];
+  var TONES = WINTER
+    ? [["rgba(124,160,201,0.95)", 2], ["rgba(255,255,255,1)", 2.2], ["rgba(74,109,150,0.85)", 1.9]]   // icy blue, white, and a few deeper flakes for shape
+    : [["rgba(82,119,160,0.95)", 1.7], ["rgba(82,119,160,0.55)", 1.3], ["rgba(17,46,75,0.85)", 1.8]];
+  // A soft round flake, drawn once and reused for the background snowfall
+  var flake = null;
+  if (WINTER) {
+    flake = document.createElement("canvas"); flake.width = flake.height = 16;
+    var fg = flake.getContext("2d"), grd = fg.createRadialGradient(8, 8, 0, 8, 8, 8);
+    grd.addColorStop(0, "rgba(255,255,255,1)"); grd.addColorStop(0.55, "rgba(236,243,250,0.95)"); grd.addColorStop(1, "rgba(124,160,201,0)");
+    fg.fillStyle = grd; fg.beginPath(); fg.arc(8, 8, 8, 0, 6.283); fg.fill();
+    fg.strokeStyle = "rgba(124,160,201,0.55)"; fg.lineWidth = 1; fg.beginPath(); fg.arc(8, 8, 4.6, 0, 6.283); fg.stroke();
+  }
   function draw() {
     ctx.clearRect(0, 0, W, H);
     for (var t = 0; t < 3; t++) {
       ctx.fillStyle = TONES[t][0]; var sz = TONES[t][1];
       for (var i = 0; i < N; i++) if (tone[i] === t && !(falling[i] && wait[i] > 0)) ctx.fillRect(x[i], y[i], sz, sz);
+    }
+    if (WINTER) {
+      for (var k = 0; k < drift.length; k++) { var fs = drift[k].r * 3.4; ctx.drawImage(flake, drift[k].x - fs / 2, drift[k].y - fs / 2, fs, fs); }
+      return;
     }
     ctx.fillStyle = "rgba(82,119,160,0.3)";
     for (var j = 0; j < drift.length; j++) ctx.fillRect(drift[j].x, drift[j].y, drift[j].r, drift[j].r);
