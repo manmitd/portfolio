@@ -1632,5 +1632,5 @@ body:has(main.cs2) .nav-pill { display: none; }
 .fc-sep { margin: 0 0.3rem; opacity: 0.6; }
 @media (prefers-reduced-motion: no-preference) { .fc-dot { animation: fc-pulse 2.4s ease-in-out infinite; } }
 @keyframes fc-pulse { 50% { opacity: 0.35; } }
-.fc-sep { margin: 0; }
+.fc-sep { margin: 0; opacity: 1; }
 @media (max-width: 600px) { .fc-sep { display: none; } .fc-line { display: block; padding-left: calc(7px + 0.5rem); } }
