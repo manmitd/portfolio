@@ -195,8 +195,13 @@
 (function () {
   var body = document.querySelector(".cs2-body");
   if (!body) return;
+  // Each case study gets its own progress line: a sprout for Wildlight, a running stitch for Sewjo.
+  var path = location.pathname;
+  var theme = /\/accenture\//.test(path) ? "sprout" : /\/sewjo/.test(path) ? "stitch" : "";
+  if (theme) document.documentElement.classList.add("rp-" + theme);
   var bar = document.createElement("div");
   bar.className = "cs2-progress"; bar.setAttribute("aria-hidden", "true");
+  if (theme) bar.innerHTML = '<span class="rp-tip"></span>';
   var clientBar = document.querySelector(".client-bar");
   (clientBar || document.body).appendChild(bar);
   var head = document.querySelector(".cs2-head");
@@ -207,6 +212,7 @@
     var total = r.height - window.innerHeight;
     var p = total > 0 ? Math.min(1, Math.max(0, -r.top / total)) : 1;
     root.style.setProperty("--read", p.toFixed(4));
+    if (theme) root.classList.toggle("rp-done", p > 0.985);
     if (clientBar && head) clientBar.classList.toggle("is-on", head.getBoundingClientRect().bottom < 0);
   }
   function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
@@ -617,4 +623,42 @@
     if (t) t.scrollIntoView({ behavior: "instant", block: "start" });
     setTimeout(function () { document.documentElement.style.scrollBehavior = ""; }, 50);
   });
+})();
+
+// Footer clock: the time in Vancouver, with a little line about what I'm probably up to.
+(function () {
+  var host = document.querySelector(".footer-id > div");
+  if (!host || !window.Intl) return;
+  var el = document.createElement("p");
+  el.className = "footer-clock";
+  host.appendChild(el);
+  function parts(d) {
+    var o = {};
+    new Intl.DateTimeFormat("en-CA", { timeZone: "America/Vancouver", hour: "numeric", minute: "2-digit", hour12: false, weekday: "short" })
+      .formatToParts(d).forEach(function (p) { o[p.type] = p.value; });
+    return o;
+  }
+  function line(h, weekend) {
+    if (h < 6) return "probably asleep";
+    if (h < 10) return "matcha time";
+    if (weekend) {
+      if (h < 12) return "slow morning, second matcha";
+      if (h < 17) return "probably on the pickleball court";
+      if (h < 21) return "probably out skating";
+      return "probably reading";
+    }
+    if (h < 17) return "probably deep in Figma";
+    if (h < 20) return "probably out skating";
+    if (h < 23) return "probably reading";
+    return "probably asleep";
+  }
+  function render() {
+    var now = new Date(), p = parts(now);
+    var h = parseInt(p.hour, 10) % 24, weekend = p.weekday === "Sat" || p.weekday === "Sun";
+    var time = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Vancouver", hour: "numeric", minute: "2-digit" }).format(now)
+      .replace(/\s?a\.m\./i, " am").replace(/\s?p\.m\./i, " pm");
+    el.innerHTML = '<span class="fc-dot" aria-hidden="true"></span>It’s ' + time + " in Vancouver<span class=\"fc-sep\" aria-hidden=\"true\"> · </span><span class=\"fc-line\">" + line(h, weekend) + "</span>";
+  }
+  render();
+  setInterval(render, 30000);
 })();
